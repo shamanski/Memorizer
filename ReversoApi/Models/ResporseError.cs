@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ReversoApi.Models
 {
+    [Serializable]
     public class ResporseError
     {
         public bool Error { get; set; }

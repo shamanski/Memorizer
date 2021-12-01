@@ -19,10 +19,5 @@
   <ItemGroup>
     <ProjectReference Include="..\ReversoApi\ReversoApi.csproj" />
   </ItemGroup>
-  
-
-  <ItemGroup>
-    <Folder Include="Algorithm\" />
-  </ItemGroup>
 
 </Project>

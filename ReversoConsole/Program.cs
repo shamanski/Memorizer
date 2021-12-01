@@ -51,32 +51,54 @@ namespace ReversoApi
 
     class Program
     {
-        static async Task Main(string[] args)
+        static void Migration()
         {
-
+            var translates = ReadTranslates();
+            var dbmodel = new List<Word>();
+            foreach (var word in translates)
+            {
+                if (!word.Error && word.Success)
+                {
+                    var w = new Word();
+                    w.Text = word.Sources[0].DisplaySource;
+                    var items = ( from translate in word.Sources[0].Translations
+                                select new Translate
+                                {
+                                    Text = translate.Translation
+                                } ).ToList();
+                    w.TranslatesList = new List<Translate>();
+                    w.TranslatesList.AddRange(items);
+                    dbmodel.Add(w);
+                }
+                else Console.WriteLine($"{word.Sources[0].DisplaySource }");
+            }
             using (var db = new ReversoConsole.Controller.AppContext())
             {
-                // создаем два объекта User
-                var t1 = new List<Translate> { new Translate { Text = "test" } };
-                var p1 = new List<Phrase> { new Phrase {PhraseText = "test phrase" } };
-                Word w1 = new Word { Text = "word 1", PhrasesList=p1, TranslatesList = t1 };
-                Word w2 = new Word { Text = "word 1", PhrasesList = p1, TranslatesList = t1 };
-
-                // добавляем их в бд
-                db.Words.Add(w1);
-                db.Words.Add(w2);
+                db.AddRange(dbmodel);
                 db.SaveChanges();
                 Console.WriteLine("Объекты успешно сохранены");
-
-                // получаем объекты из бд и выводим на консоль
-                var words = db.Words.ToList();
-                Console.WriteLine("Список объектов:");
-                foreach (Word w in words)
-                {
-                    Console.WriteLine($"{w.Id}. {w.Text} {w.TranslatesList[0].Text} - {w.PhrasesList[0].PhraseText}");
-                }
             }
-            Console.Read();
+            
+        }
+        static async Task Main(string[] args)
+        {
+            //Migration();
+            Console.WriteLine("input ID");
+            int id =Int32.Parse(Console.ReadLine());
+            using (var db = new ReversoConsole.Controller.AppContext())
+            {
+                var w = db.Words.Include(u => u.TranslatesList);
+                var n = (from word in w
+                        where word.Id == id
+                        select word).ToList();
+                Console.WriteLine(n[0].Text);
+                foreach (var translate in n[0].TranslatesList)
+                {
+                    Console.Write($"{translate.Text} ");
+                }
+                
+            }
+            
         }
 
 
@@ -110,13 +132,13 @@ namespace ReversoApi
                 Console.WriteLine("Список сериализован");
             }
         }
-            static Words Read()
+            static List<TranslatedResponse> ReadTranslates()
         {
-            var wds = new Words();
-            XmlSerializer formatter = new XmlSerializer(typeof(Words));
+            var wds = new List<TranslatedResponse>();
+            XmlSerializer formatter = new XmlSerializer(typeof(List<TranslatedResponse>));
             using (FileStream fs = new FileStream("d:\\words.xml", FileMode.OpenOrCreate))
             {
-                wds = (Words)formatter.Deserialize(fs);
+                wds = (List<TranslatedResponse>)formatter.Deserialize(fs);
 
                 Console.WriteLine("Список десериализован");
             }

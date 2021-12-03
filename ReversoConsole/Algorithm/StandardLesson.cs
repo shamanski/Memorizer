@@ -13,7 +13,7 @@ namespace ReversoConsole.Algorithm
         public List<LearningWord> Words { get; }
         public StandardLesson(User user)
         {
-            this.user = user ?? throw new ArgumentNullException("Пользователь не может быть пустым.", nameof(user));
+            this.user = user ?? throw new ArgumentNullException("Username is null or empty", nameof(user));
             Words = GetAllWords();
 
         }

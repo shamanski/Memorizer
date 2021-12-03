@@ -7,7 +7,7 @@ namespace ReversoConsole.Algorithm
 {
     class Lesson
     {
-        public bool Completed { get; set; }
+        public bool Completed { get; set; } = false;
         public List<LessonWord> WordsList { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ReversoConsole.Controller;
 using ReversoConsole.DbModel;
@@ -25,13 +26,33 @@ namespace ReversoConsole.Algorithm
             Save(Words);
 
         }
+        private List<string> GetAdditionalWords()
+        {
+            var list = new List<string>();
+            for (int i = 0; i < 5; i++)
+            {
+                list.Add(Words.Where(w => w.Id == i).Select(u => u.WordToLearn.Text).FirstOrDefault());
+            }
+            return list;
+        }
+        private LessonWord MakeLessonWord(LearningWord word)
+        {
+            return new LessonWord
+            {
+                Word = word.WordToLearn,
+                TimeFinished = word.LastTime,
+                AdditionalWords = GetAdditionalWords()
+            };
+        }
         public Lesson GetNextLesson()
         {
-            using (var db = new ReversoConsole.Controller.AppContext())
+            var lesson = new Lesson();
+            var newWords = Words.Where(i => i.Level == 0).Take(2);
+            foreach (var word in newWords)
             {
-                throw new NotImplementedException();
-
+                lesson.WordsList.Add(MakeLessonWord(word));
             }
+            return lesson;
         }
 
         public void ReturnFinishedLesson(Lesson lesson)

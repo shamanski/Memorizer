@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using ReversoConsole.DbModel;
 using ReversoConsole.Controller;
 using Microsoft.EntityFrameworkCore;
+using ReversoConsole.Algorithm;
 
 namespace ReversoApi
 {
@@ -98,7 +99,63 @@ namespace ReversoApi
                 }
                 
             }
-            
+
+            Console.WriteLine("EnterName");
+            var name = Console.ReadLine();
+
+            var userController = new UserController(name);
+            var standardLesson = new StandardLesson(userController.CurrentUser);
+            //var exerciseController = new ExerciseController(userController.CurrentUser);
+            if (userController.IsNewUser)
+            {
+
+                userController.SetNewUserData(name);
+            }
+
+
+            Console.WriteLine(userController.CurrentUser);
+
+
+
+            while (true)
+            {
+                Console.WriteLine("Что вы хотите сделать?");
+                Console.WriteLine("E - ввести слово");
+                Console.WriteLine("A - урок");
+                Console.WriteLine("Q - выход");
+                var key = Console.ReadKey();
+                Console.WriteLine();
+                switch (key.Key)
+                {
+                    case ConsoleKey.E:
+                        Console.Write("Введите слово:");
+                        string word = Console.ReadLine();
+                        var newWord = new LearningWord()
+                        userController.AddNewWord(newWord);
+
+                        foreach (var item in eatingController.Eating.Foods)
+                        {
+                            Console.WriteLine($"\t{item.Key} - {item.Value}");
+                        }
+                        break;
+                    case ConsoleKey.A:
+                        var exe = EnterExercise();
+
+                        exerciseController.Add(exe.Activity, exe.Begin, exe.End);
+
+                        foreach (var item in exerciseController.Exercises)
+                        {
+                            Console.WriteLine($"\t{item.Activity} c {item.Start.ToShortTimeString()} до {item.Finish.ToShortTimeString()}");
+                        }
+                        break;
+                    case ConsoleKey.Q:
+                        Environment.Exit(0);
+                        break;
+                }
+
+                Console.ReadLine();
+            }
+
         }
 
 

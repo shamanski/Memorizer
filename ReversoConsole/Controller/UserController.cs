@@ -38,24 +38,10 @@ namespace ReversoConsole.Controller
         {
             Save(Users);
         }
-        public void AddNewWord(LearningWord word)
-        {
-            CurrentUser.Words.Add(word);
-        }
 
-        public List<LearningWord> GetCheckedWords()
+        public void SetNewUserData(string Name)
         {
-            return CurrentUser.Words;
-        }
-
-        public void RemovecheckedWord(LearningWord word)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateCheckedWords(List<LearningWord> words)
-        {
-            CurrentUser.Words = words;
+            Save();
         }
     }
 }

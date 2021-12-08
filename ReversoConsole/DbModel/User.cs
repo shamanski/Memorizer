@@ -18,6 +18,7 @@ namespace ReversoConsole.DbModel
             }
 
             Name = name;
+            Words = new List<LearningWord>();
         }
 
     }

@@ -12,6 +12,7 @@ namespace ReversoConsole.Controller
         public LearningController(User user)
         {
             this.user = user ?? throw new ArgumentNullException("Пользователь не может быть пустым.", nameof(user));
+            this.Words = user.Words;
             Words = GetAllWords();
         }
         private List<LearningWord> GetAllWords()
@@ -26,6 +27,7 @@ namespace ReversoConsole.Controller
         public void AddNewWord(LearningWord word)
         {
             Words.Add(word);
+            Update(word);
         }
 
         public List<LearningWord> GetCheckedWords()
@@ -40,7 +42,7 @@ namespace ReversoConsole.Controller
 
         public void UpdateCheckedWords(List<LearningWord> words)
         {
-            Words = words;
+           // Words = words;
         }
     }
 }

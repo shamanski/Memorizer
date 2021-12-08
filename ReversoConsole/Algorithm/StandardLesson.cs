@@ -14,13 +14,10 @@ namespace ReversoConsole.Algorithm
         public StandardLesson(User user)
         {
             this.user = user ?? throw new ArgumentNullException("Username is null or empty", nameof(user));
-            Words = GetAllWords();
+            Words = user.Words;
 
         }
-        private List<LearningWord> GetAllWords()
-        {
-            return Load<LearningWord>() ?? new List<LearningWord>();
-        }
+
         private void Save()
         {
             Save(Words);

@@ -24,5 +24,13 @@ namespace ReversoConsole.Controller
                 db.SaveChanges();
             }
         }
+        public void Update<T>(T item) where T : class
+        {
+            using (var db = new AppContext())
+            {
+                db.Set<T>().Attach(item);
+                db.SaveChanges();
+            }
+        }
     }
 }

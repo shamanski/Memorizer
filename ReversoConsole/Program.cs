@@ -84,27 +84,29 @@ namespace ReversoApi
         static async Task Main(string[] args)
         {
             //Migration();
-            Console.WriteLine("input ID");
-            int id =Int32.Parse(Console.ReadLine());
-            using (var db = new ReversoConsole.Controller.AppContext())
-            {
-                var w = db.Words.Include(u => u.TranslatesList);
-                var n = (from word in w
-                        where word.Id == id
-                        select word).ToList();
-                Console.WriteLine(n[0].Text);
-                foreach (var translate in n[0].TranslatesList)
-                {
-                    Console.Write($"{translate.Text} ");
-                }
+            //Console.WriteLine("input ID");
+            //int id =Int32.Parse(Console.ReadLine());
+            //using (var db = new ReversoConsole.Controller.AppContext())
+            //{
+            //    var w = db.Words.Include(u => u.TranslatesList);
+            //    var n = (from word in w
+            //            where word.Id == id
+            //            select word).ToList();
+            //    Console.WriteLine(n[0].Text);
+            //    foreach (var translate in n[0].TranslatesList)
+            //    {
+            //        Console.Write($"{translate.Text} ");
+            //    }
                 
-            }
+            //}
 
             Console.WriteLine("EnterName");
             var name = Console.ReadLine();
 
             var userController = new UserController(name);
             var standardLesson = new StandardLesson(userController.CurrentUser);
+            var allWords = new AllWordsController();
+            var learningController = new LearningController(userController.CurrentUser);
             //var exerciseController = new ExerciseController(userController.CurrentUser);
             if (userController.IsNewUser)
             {
@@ -130,23 +132,16 @@ namespace ReversoApi
                     case ConsoleKey.E:
                         Console.Write("Введите слово:");
                         string word = Console.ReadLine();
-                        var newWord = new LearningWord()
-                        userController.AddNewWord(newWord);
+                        var makeWord = allWords.FindWordByName(word);
+                        var newWord = new LearningWord(userController.CurrentUser, makeWord);
+                        learningController.AddNewWord(newWord);
 
-                        foreach (var item in eatingController.Eating.Foods)
+                        foreach (var item in learningController.Words)
                         {
-                            Console.WriteLine($"\t{item.Key} - {item.Value}");
+                            Console.WriteLine($"\t{item.WordToLearn.Text} - {item.WordToLearn.TranslatesList[0].Text}");
                         }
                         break;
                     case ConsoleKey.A:
-                        var exe = EnterExercise();
-
-                        exerciseController.Add(exe.Activity, exe.Begin, exe.End);
-
-                        foreach (var item in exerciseController.Exercises)
-                        {
-                            Console.WriteLine($"\t{item.Activity} c {item.Start.ToShortTimeString()} до {item.Finish.ToShortTimeString()}");
-                        }
                         break;
                     case ConsoleKey.Q:
                         Environment.Exit(0);

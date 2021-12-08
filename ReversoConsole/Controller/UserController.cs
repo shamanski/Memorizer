@@ -29,14 +29,14 @@ namespace ReversoConsole.Controller
 
             if (CurrentUser == null)
             {
-                CurrentUser = new User(userName);
-                Users.Add(CurrentUser);
+                Users.Add(new User(userName));
                 IsNewUser = true;
+                CurrentUser = Users.SingleOrDefault(u => u.Name == userName);
             }
         }
         public void Save()
         {
-            Save(Users);
+            Update(CurrentUser);
         }
 
         public void SetNewUserData(string Name)

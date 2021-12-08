@@ -12,10 +12,16 @@ namespace ReversoConsole.Controller
         {
             manager.Save(item);
         }
+        protected void Update<T>(T item) where T : class
+        {
+            manager.Update(item);
+        }
 
         protected List<T> Load<T>() where T : class
         {
             return manager.Load<T>();
         }
-    }
+
+
+}
 }

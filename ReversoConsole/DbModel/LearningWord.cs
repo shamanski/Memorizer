@@ -16,6 +16,7 @@ namespace ReversoConsole.DbModel
         {
             this.User = user;
             this.WordToLearn = wordToLearn;
+            this.LastTime = DateTime.Now;
         }
 
     }

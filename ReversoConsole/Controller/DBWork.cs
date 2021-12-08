@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ReversoConsole.Controller
 {
@@ -20,7 +21,10 @@ namespace ReversoConsole.Controller
         {
             using (var db = new AppContext())
             {
-                db.Set<T>().AddRange(item);
+                foreach (var i in item) 
+                {
+                    db.Entry(i).State = EntityState.Modified;
+                }
                 db.SaveChanges();
             }
         }

@@ -146,8 +146,8 @@ namespace ReversoApi
                         var lesson = learning.Lesson.GetNextLesson();
                         foreach (var currWord in lesson.WordsList)
                         {
-                            Console.WriteLine(currWord.Word.Translates[0].Text);
-                            if (Console.ReadLine() == currWord.Word.Text)
+                            Console.WriteLine(currWord.LearningWord.WordToLearn.Translates[0].Text);
+                            if (Console.ReadLine() == currWord.LearningWord.WordToLearn.Text)
                             {
                                 currWord.isSuccessful = IsSuccessful.True;
                                 Console.WriteLine("Yes");
@@ -157,8 +157,9 @@ namespace ReversoApi
                                 currWord.isSuccessful = IsSuccessful.False;
                                 Console.WriteLine("No");
                             }
-                            learning.Lesson.ReturnFinishedLesson(lesson);       
+                                   
                         }
+                        learning.Lesson.ReturnFinishedLesson(lesson);
                         break;
                     case ConsoleKey.Q:
                         Environment.Exit(0);

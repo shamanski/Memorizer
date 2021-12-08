@@ -53,8 +53,9 @@ namespace ReversoConsole.Controller
             var w = new Word();
             if (!translatedWord.Error && translatedWord.Success)
             {
-                w.Text = translatedWord.Sources[0].DisplaySource;
-                var items = (from translate in translatedWord.Sources[0].Translations
+                w.Text = translatedWord.Sources.First().DisplaySource;
+                var items = (from translate in translatedWord.Sources.First().Translations
+                             where (translate.IsRude == false)
                              select new Translate
                              {
                                  Text = translate.Translation

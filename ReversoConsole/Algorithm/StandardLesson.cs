@@ -52,12 +52,10 @@ namespace ReversoConsole.Algorithm
         {
             var lesson = new Lesson();
             var newWords = Words.Where(i => i.Level == 0).Take(settings.NewWordsInLesson).ToList();
-            foreach (var word in newWords)
-            {
-                lesson.WordsList.Add(MakeLessonWord(word));
-            }
-            int repeatWords = settings.WordsInLesson - newWords.Count();
-            var repeat = Words.OrderBy( i => GetNextTime( i ) ).Take(repeatWords);
+            var repeat = Words
+                .OrderBy( i => GetNextTime( i ) )
+                .Union(newWords)
+                .Take(settings.WordsInLesson);
             foreach (var word in repeat)
             {
                 lesson.WordsList.Add(MakeLessonWord(word));

@@ -67,8 +67,8 @@ namespace ReversoApi
                                 {
                                     Text = translate.Translation
                                 } ).ToList();
-                    w.TranslatesList = new List<Translate>();
-                    w.TranslatesList.AddRange(items);
+                    w.Translates = new List<Translate>();
+                    w.Translates.AddRange(items);
                     dbmodel.Add(w);
                 }
                 else Console.WriteLine($"{word.Sources[0].DisplaySource }");
@@ -138,10 +138,27 @@ namespace ReversoApi
 
                         foreach (var item in learningController.Words)
                         {
-                            Console.WriteLine($"\t{item.WordToLearn.Text} - {item.WordToLearn.TranslatesList[0].Text}");
+                            Console.WriteLine($"\t{item.WordToLearn.Text} - {item.WordToLearn.Translates[0].Text}");
                         }
                         break;
                     case ConsoleKey.A:
+                        var learning = new LearningController(userController.CurrentUser);
+                        var lesson = learning.Lesson.GetNextLesson();
+                        foreach (var currWord in lesson.WordsList)
+                        {
+                            Console.WriteLine(currWord.Word.Translates[0].Text);
+                            if (Console.ReadLine() == currWord.Word.Text)
+                            {
+                                currWord.isSuccessful = IsSuccessful.True;
+                                Console.WriteLine("Yes");
+                            }
+                            else
+                            {
+                                currWord.isSuccessful = IsSuccessful.False;
+                                Console.WriteLine("No");
+                            }
+                            learning.Lesson.ReturnFinishedLesson(lesson);       
+                        }
                         break;
                     case ConsoleKey.Q:
                         Environment.Exit(0);

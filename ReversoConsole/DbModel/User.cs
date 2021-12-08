@@ -8,7 +8,7 @@ namespace ReversoConsole.DbModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<LearningWord> Words { get; set; }
+        public virtual List<LearningWord> Words { get; set; }
         public User() { }
         public User(string name)
         {

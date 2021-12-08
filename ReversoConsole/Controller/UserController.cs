@@ -1,4 +1,5 @@
 ﻿using ReversoConsole.DbModel;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,9 @@ namespace ReversoConsole.Controller
         public bool IsNewUser { get; } = false;
         private List<User> GetUsersData()
         {
-            return Load<User>() ?? new List<User>();
+            var db = new AppContext();
+            return db.Users.Include(u => u.Words).ThenInclude(u => u.WordToLearn).ThenInclude(u => u.Translates).ToList();
+            //return Load<User>() ?? new List<User>();
         }
         public UserController(string userName)
         {

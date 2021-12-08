@@ -1,6 +1,8 @@
-﻿using ReversoConsole.DbModel;
+﻿using ReversoConsole.Algorithm;
+using ReversoConsole.DbModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ReversoConsole.Controller
@@ -9,16 +11,14 @@ namespace ReversoConsole.Controller
     {
         private readonly User user;
         public List<LearningWord> Words { get; }
+        public ITakingLesson Lesson { get; }
         public LearningController(User user)
         {
             this.user = user ?? throw new ArgumentNullException("Пользователь не может быть пустым.", nameof(user));
             this.Words = user.Words;
-            Words = GetAllWords();
+            this.Lesson = new StandardLesson(user);
         }
-        private List<LearningWord> GetAllWords()
-        {
-            return Load<LearningWord>() ?? new List<LearningWord>();
-        }
+
 
         private void Save()
         {

@@ -8,6 +8,6 @@ namespace ReversoConsole.Algorithm
     class Lesson
     {
         public bool Completed { get; set; } = false;
-        public List<LessonWord> WordsList { get; set; }
+        public List<LessonWord> WordsList { get; set; } = new List<LessonWord>();
     }
 }

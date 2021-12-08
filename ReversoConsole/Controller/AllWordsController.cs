@@ -59,8 +59,8 @@ namespace ReversoConsole.Controller
                              {
                                  Text = translate.Translation
                              }).ToList();
-                w.TranslatesList = new List<Translate>();
-                w.TranslatesList.AddRange(items);
+                w.Translates = new List<Translate>();
+                w.Translates.AddRange(items);
             }      
             return w;
         }

@@ -8,6 +8,7 @@ namespace ReversoConsole.Controller
         public DbSet<Word> Words { get; set; }
         public DbSet<LearningWord> LearningWords { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Translate> Translates{ get; set; }
 
         public AppContext()
         {

@@ -11,7 +11,7 @@ namespace ReversoConsole.Algorithm
     {
         private readonly User user;
         public readonly LessonSetings settings;
-        public List<LearningWord> Words { get; }
+        public List<LearningWord> Words { get; private set; }
         public StandardLesson(User user)
         {
             this.user = user ?? throw new ArgumentNullException("Username is null or empty", nameof(user));
@@ -27,16 +27,18 @@ namespace ReversoConsole.Algorithm
         private List<string> GetAdditionalWords()
         {
             var list = new List<string>();
+            var rnd = new Random();
             for (int i = 0; i < 5; i++)
             {
-                list.Add(Words.Where(w => w.Id == i).Select(u => u.WordToLearn.Text).FirstOrDefault());
+                list.Add(Words.Where(w => w.Id == rnd.Next(1,Words.Count)).Select(u => u.WordToLearn.Text).FirstOrDefault());
             }
             return list;
         }
         private DateTime GetNextTime(LearningWord word)
         {
-            return word.LastTime+word.Level;
+            return word.LastTime+TimeSpan.FromMinutes(settings.PeriodsInMinutes[word.Level]);
         }
+
         private LessonWord MakeLessonWord(LearningWord word)
         {
             return new LessonWord
@@ -51,12 +53,17 @@ namespace ReversoConsole.Algorithm
         public Lesson GetNextLesson()
         {
             var lesson = new Lesson();
-            var newWords = Words.Where(i => i.Level == 0).Take(2);
+            var newWords = Words.Where(i => i.Level == 0).Take(settings.NewWordsInLesson).ToList();
             foreach (var word in newWords)
             {
                 lesson.WordsList.Add(MakeLessonWord(word));
             }
-            //var repeat = Words.GroupBy(i => i.Level).
+            int repeatWords = settings.WordsInLesson - newWords.Count();
+            var repeat = Words.OrderBy( i => GetNextTime( i ) ).Take(repeatWords);
+            foreach (var word in repeat)
+            {
+                lesson.WordsList.Add(MakeLessonWord(word));
+            }
             return lesson;
         }
 
@@ -67,12 +74,12 @@ namespace ReversoConsole.Algorithm
             {
                 if (i.isSuccessful == IsSuccessful.True)
                 {
-                    int lvl = (i.Level < 7) ? i.Level++ : i.Level;///TODO: Remove magic number
+                    int lvl = (i.Level < settings.maxLevel) ? i.Level++ : i.Level;
                     words.Add(new LearningWord(user, i.Word) { LastTime = DateTime.Now, Level = lvl }) ;
                 }
                 else if (i.isSuccessful == IsSuccessful.False)
                 {
-                    int lvl = (i.Level > 0) ? i.Level-- : i.Level;///TODO: Remove magic number
+                    int lvl = (i.Level > 0) ? i.Level-- : i.Level;
                     words.Add(new LearningWord(user, i.Word) { LastTime = DateTime.Now, Level = lvl });
                 }
                 else

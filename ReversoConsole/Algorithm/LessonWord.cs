@@ -17,7 +17,7 @@ namespace ReversoConsole.Algorithm
         public Word Word { get; set; }
         public IsSuccessful isSuccessful { get; set; } = IsSuccessful.NotStarted;
         public List<String> AdditionalWords { get; set; }
-        public DateTime? TimeFinished { get; set; }
+        public DateTime TimeFinished { get; set; }
         public int Level { get; set; }
     }
 }

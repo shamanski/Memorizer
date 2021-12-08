@@ -43,11 +43,9 @@ namespace ReversoConsole.Algorithm
         {
             return new LessonWord
             {
-                Word = word.WordToLearn,
-                Level = word.Level,
-                TimeFinished = word.LastTime,
+                LearningWord = word,
                 AdditionalWords = GetAdditionalWords()
-                
+
             };
         }
         public Lesson GetNextLesson()
@@ -72,20 +70,16 @@ namespace ReversoConsole.Algorithm
             var words = new List<LearningWord>();
             foreach (var i in lesson.WordsList)
             {
+                i.LearningWord.LastTime = DateTime.Now;
                 if (i.isSuccessful == IsSuccessful.True)
                 {
-                    int lvl = (i.Level < settings.maxLevel) ? i.Level++ : i.Level;
-                    words.Add(new LearningWord(user, i.Word) { LastTime = DateTime.Now, Level = lvl }) ;
+                    if (i.LearningWord.Level < settings.maxLevel) i.LearningWord.Level++;
                 }
                 else if (i.isSuccessful == IsSuccessful.False)
                 {
-                    int lvl = (i.Level > 0) ? i.Level-- : i.Level;
-                    words.Add(new LearningWord(user, i.Word) { LastTime = DateTime.Now, Level = lvl });
+                    i.LearningWord.Level = 1;                   
                 }
-                else
-                {
-                    words.Add(new LearningWord(user, i.Word) { LastTime = i.TimeFinished, Level = i.Level });
-                }
+                Save();
             }
         }
     }

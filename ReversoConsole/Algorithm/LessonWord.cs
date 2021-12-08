@@ -14,10 +14,9 @@ namespace ReversoConsole.Algorithm
 
     class LessonWord
     {
-        public Word Word { get; set; }
+        public LearningWord LearningWord { get; set; }
         public IsSuccessful isSuccessful { get; set; } = IsSuccessful.NotStarted;
         public List<String> AdditionalWords { get; set; }
-        public DateTime TimeFinished { get; set; }
-        public int Level { get; set; }
+
     }
 }

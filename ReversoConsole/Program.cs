@@ -15,6 +15,7 @@ using ReversoConsole.DbModel;
 using ReversoConsole.Controller;
 using Microsoft.EntityFrameworkCore;
 using ReversoConsole.Algorithm;
+using ReversoConsole.ConsoleCommands;
 
 namespace ReversoApi
 {
@@ -171,7 +172,17 @@ namespace ReversoApi
 
         }
 
-
+        static async void runCommand (User user, string message, ICommandService service)
+        {
+            foreach (var command in service.Get())
+            {
+                if (command.Contains(message))
+                {
+                    await command.Execute(user, message);
+                    break;
+                }
+            }
+        }
 
 
         static void Save()

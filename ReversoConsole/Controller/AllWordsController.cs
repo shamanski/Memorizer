@@ -37,7 +37,6 @@ namespace ReversoConsole.Controller
                 return result;
             }
 
-            return new Word();
         }
         public void Save()
         {

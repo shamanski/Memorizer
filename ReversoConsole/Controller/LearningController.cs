@@ -19,11 +19,16 @@ namespace ReversoConsole.Controller
             this.Lesson = new StandardLesson(user);
         }
 
-
         private void Save()
         {
             Save(Words);
         }
+
+        public LearningWord Find(string name)
+        {
+            return Words.Where(i => i.WordToLearn.Text == name).FirstOrDefault();
+        }
+
         public void AddNewWord(LearningWord word)
         {
             Words.Add(word);
@@ -35,9 +40,9 @@ namespace ReversoConsole.Controller
             return Words;
         }
 
-        public void RemovecheckedWord(LearningWord word)
+        public bool RemoveWord(LearningWord word)
         {
-            throw new NotImplementedException();
+            return Words.Remove(word);
         }
 
         public void UpdateCheckedWords(List<LearningWord> words)

@@ -1,6 +1,6 @@
 ﻿namespace ReversoConsole.DbModel
 {
-    class Phrase
+    public class Phrase
     {
         public int Id { get; set; }
         public string PhraseTextSource { get; set; }

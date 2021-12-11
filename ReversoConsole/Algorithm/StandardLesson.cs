@@ -22,18 +22,22 @@ namespace ReversoConsole.Algorithm
         private void Save()
         {
             Save(Words);
-
         }
+       
         private List<string> GetAdditionalWords()
         {
             var list = new List<string>();
             var rnd = new Random();
             for (int i = 0; i < 5; i++)
             {
-                list.Add(Words.Where(w => w.Id == rnd.Next(1,Words.Count)).Select(u => u.WordToLearn.Text).FirstOrDefault());
+                list.Add(Words
+                    .Where(w => w.Id == rnd.Next(1,Words.Count))
+                    .Select(u => u.WordToLearn.Text)
+                    .FirstOrDefault());
             }
             return list;
         }
+
         private DateTime GetNextTime(LearningWord word)
         {
             return word.LastTime+TimeSpan.FromMinutes(settings.PeriodsInMinutes[word.Level]);
@@ -45,13 +49,15 @@ namespace ReversoConsole.Algorithm
             {
                 LearningWord = word,
                 AdditionalWords = GetAdditionalWords()
-
             };
         }
         public Lesson GetNextLesson()
         {
             var lesson = new Lesson();
-            var newWords = Words.Where(i => i.Level == 0).Take(settings.NewWordsInLesson).ToList();
+            var newWords = Words
+                .Where(i => i.Level == 0)
+                .Take(settings.NewWordsInLesson)
+                .ToList();
             var repeat = Words
                 .OrderBy( i => GetNextTime( i ) )
                 .Union(newWords)
@@ -60,6 +66,7 @@ namespace ReversoConsole.Algorithm
             {
                 lesson.WordsList.Add(MakeLessonWord(word));
             }
+           
             return lesson;
         }
 
@@ -73,10 +80,12 @@ namespace ReversoConsole.Algorithm
                 {
                     if (i.LearningWord.Level < settings.maxLevel) i.LearningWord.Level++;
                 }
+                
                 else if (i.isSuccessful == IsSuccessful.False)
                 {
                     i.LearningWord.Level = 1;                   
                 }
+                
                 Save();
             }
         }

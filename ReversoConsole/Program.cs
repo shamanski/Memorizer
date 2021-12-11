@@ -84,103 +84,25 @@ namespace ReversoApi
         }
         static async Task Main(string[] args)
         {
-            //Migration();
-            //Console.WriteLine("input ID");
-            //int id =Int32.Parse(Console.ReadLine());
-            //using (var db = new ReversoConsole.Controller.AppContext())
-            //{
-            //    var w = db.Words.Include(u => u.TranslatesList);
-            //    var n = (from word in w
-            //            where word.Id == id
-            //            select word).ToList();
-            //    Console.WriteLine(n[0].Text);
-            //    foreach (var translate in n[0].TranslatesList)
-            //    {
-            //        Console.Write($"{translate.Text} ");
-            //    }
-                
-            //}
 
             Console.WriteLine("EnterName");
             var name = Console.ReadLine();
-
-            var userController = new UserController(name);
-            var standardLesson = new StandardLesson(userController.CurrentUser);
-            var allWords = new AllWordsController();
-            var learningController = new LearningController(userController.CurrentUser);
-            //var exerciseController = new ExerciseController(userController.CurrentUser);
+            var userController = new UserController(name);                      
             if (userController.IsNewUser)
             {
-
                 userController.SetNewUserData(name);
             }
 
-
-            Console.WriteLine(userController.CurrentUser);
-
-
+            var command = new CommandService();
+            foreach (var c in command.Get())
+            {
+                Console.WriteLine( $"{c.Key} - {c.Value.Name}" );
+            }
 
             while (true)
             {
-                Console.WriteLine("Что вы хотите сделать?");
-                Console.WriteLine("E - ввести слово");
-                Console.WriteLine("A - урок");
-                Console.WriteLine("Q - выход");
-                var key = Console.ReadKey();
-                Console.WriteLine();
-                switch (key.Key)
-                {
-                    case ConsoleKey.E:
-                        Console.Write("Введите слово:");
-                        string word = Console.ReadLine();
-                        var makeWord = allWords.FindWordByName(word);
-                        var newWord = new LearningWord(userController.CurrentUser, makeWord);
-                        learningController.AddNewWord(newWord);
-
-                        foreach (var item in learningController.Words)
-                        {
-                            Console.WriteLine($"\t{item.WordToLearn.Text} - {item.WordToLearn.Translates[0].Text}");
-                        }
-                        break;
-                    case ConsoleKey.A:
-                        var learning = new LearningController(userController.CurrentUser);
-                        var lesson = learning.Lesson.GetNextLesson();
-                        foreach (var currWord in lesson.WordsList)
-                        {
-                            Console.WriteLine(currWord.LearningWord.WordToLearn.Translates[0].Text);
-                            if (Console.ReadLine() == currWord.LearningWord.WordToLearn.Text)
-                            {
-                                currWord.isSuccessful = IsSuccessful.True;
-                                Console.WriteLine("Yes");
-                            }
-                            else
-                            {
-                                currWord.isSuccessful = IsSuccessful.False;
-                                Console.WriteLine("No");
-                            }
-                                   
-                        }
-                        learning.Lesson.ReturnFinishedLesson(lesson);
-                        break;
-                    case ConsoleKey.Q:
-                        Environment.Exit(0);
-                        break;
-                }
-
-                Console.ReadLine();
-            }
-
-        }
-
-        static async void runCommand (User user, string message, ICommandService service)
-        {
-            foreach (var command in service.Get())
-            {
-                if (command.Contains(message))
-                {
-                    await command.Execute(user, message);
-                    break;
-                }
+                Console.Write("Enter command: >");
+                var i = command.Execute(userController.CurrentUser, Console.ReadLine());
             }
         }
 

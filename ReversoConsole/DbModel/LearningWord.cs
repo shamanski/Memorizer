@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ReversoConsole.DbModel
 {
-    class LearningWord
+    public class LearningWord
     {
         public int Id { get; set; }
         public int UserId { get; set; }

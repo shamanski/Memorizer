@@ -16,9 +16,14 @@ namespace ReversoConsole.Controller
         private List<User> GetUsersData()
         {
             var db = new AppContext();
-            return db.Users.Include(u => u.Words).ThenInclude(u => u.WordToLearn).ThenInclude(u => u.Translates).ToList();
+            return db.Users
+                .Include(u => u.Words)
+                .ThenInclude(u => u.WordToLearn)
+                .ThenInclude(u => u.Translates)
+                .ToList();
             //return Load<User>() ?? new List<User>();
         }
+ 
         public UserController(string userName)
         {
             if (string.IsNullOrWhiteSpace(userName))
@@ -27,15 +32,14 @@ namespace ReversoConsole.Controller
             }
 
             Users = GetUsersData();
-
             CurrentUser = Users.SingleOrDefault(u => u.Name == userName);
-
             if (CurrentUser == null)
             {
                 Users.Add(new User(userName));
                 IsNewUser = true;
                 CurrentUser = Users.SingleOrDefault(u => u.Name == userName);
             }
+
         }
         public void Save()
         {

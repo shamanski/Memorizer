@@ -1,25 +1,42 @@
-﻿using System;
+﻿using ReversoConsole.ConsoleCommands.Commands;
+using ReversoConsole.DbModel;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ReversoConsole.ConsoleCommands
 {
     class CommandService : ICommandService
     {
-        private readonly List<ConsoleCommand> _commands;
+        private readonly Dictionary<string, ConsoleCommand> _commands;
 
         public CommandService()
         {
-            _commands = new List<ConsoleCommand>
+            _commands = new Dictionary<string, ConsoleCommand>
             {
-                new HelpCommand(),
-                new MainCommand(),
-                new RankCommand(),
-                new ShopCommand(),
-                new StartCommand()
+                { "H", new HelpCommand() },
+                { "L", new LessonCommand() },
+                { "A", new AddCommand() },
+               // new RemoveCommand(),
+               // new StatCommand()
+               { "Q", new QuitCommand() }
             };
         }
 
-        public List<ConsoleCommand> Get() => _commands;
+        public Dictionary<string, ConsoleCommand> Get() => _commands;
+        public Task Execute(User user, string message)
+        {
+            var split = Regex.Split(message, @"\s+").Where(s => s != string.Empty);
+            try
+            {
+                return _commands[split.First()].Execute(user, split.Skip(1));
+            }
+            catch
+            {
+                System.Console.WriteLine("Command doesn't exists");
+                return Task.CompletedTask;
+            }
+        }
     }
 }

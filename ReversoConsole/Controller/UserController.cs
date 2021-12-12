@@ -21,7 +21,7 @@ namespace ReversoConsole.Controller
                 .ThenInclude(u => u.WordToLearn)
                 .ThenInclude(u => u.Translates)
                 .ToList();
-            //return Load<User>() ?? new List<User>();
+
         }
  
         public UserController(string userName)

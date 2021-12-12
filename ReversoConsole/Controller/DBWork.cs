@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using ReversoConsole.DbModel;
 
 namespace ReversoConsole.Controller
 {
@@ -34,6 +36,23 @@ namespace ReversoConsole.Controller
             {
                 db.Set<T>().Attach(item);
                 db.SaveChanges();
+            }
+        }
+        public void Delete<T>(T item) where T : LearningModelBase
+        {
+            using (var db = new AppContext())
+            {
+                db.Entry(item).State = EntityState.Deleted;
+                db.SaveChanges();
+            }         
+        }
+
+        public void LoadElement<T> (ref T item, string collection) where T: LearningModelBase
+        {
+            using (var db = new AppContext())
+            {
+                db.Attach<T>(item);
+                db.Entry(item).Collection(collection).Load();
             }
         }
     }

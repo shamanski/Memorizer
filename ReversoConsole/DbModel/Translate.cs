@@ -2,9 +2,9 @@
 
 namespace ReversoConsole.DbModel
 {
-    public class Translate
+    public class Translate : LearningModelBase
     {
-        public int Id { get; set; }
+        public  override int Id { get; set; }
         public string Text { get; set; }
 
 

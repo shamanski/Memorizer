@@ -8,7 +8,7 @@ namespace ReversoApi
     internal class ReversoApi
     {
         public const string Url = "https://cps.reverso.net/api2";
-        private readonly RestClient _client;
+        private readonly RestClient _client;  
         public ReversoApi()
         {
             _client = new RestClient(Url);

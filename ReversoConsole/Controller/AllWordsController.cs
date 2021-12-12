@@ -17,31 +17,45 @@ namespace ReversoConsole.Controller
         {
             Words = GetAllWords();
         }
+
         private List<Word> GetAllWords()
         {
             return Load<Word>() ?? new List<Word>();
         }
+
+        private void LoadWord(ref Word inp)
+        {
+            LoadElement<Word>(ref inp, nameof(inp.Translates));
+        }
+
         public Word FindWordByName(string name)
         {
             var result = Words.SingleOrDefault(f => f.Text == name);
             if (result == null)
             {
-                
-                var res =  Do(name).Result ?? null;
+                var res = Do(name).Result ?? null;
+                if (res == null)
+                {
+                    throw new Exception("Translate server error");
+                };
                 Words.Add(res);
                 Update(res);
                 return res;
             }
+
             else
             {
-                return result;
+                var update = this.Words.Find(i => i.Text == name);
+                LoadWord(ref update);
+                return update;
             }
-
         }
+
         public void Save()
         {
             Save(Words);
         }
+
         private static async Task<Word> Do(string wordName)
         {
             var service = new ReversoService();
@@ -49,9 +63,10 @@ namespace ReversoConsole.Controller
             {
                 Word = wordName
             });
-            var w = new Word();
+            
             if (!translatedWord.Error && translatedWord.Success)
             {
+                Word w = new Word();
                 w.Text = translatedWord.Sources.First().DisplaySource;
                 var items = (from translate in translatedWord.Sources.First().Translations
                              where (translate.IsRude == false)
@@ -59,10 +74,12 @@ namespace ReversoConsole.Controller
                              {
                                  Text = translate.Translation
                              }).ToList();
-                w.Translates = new List<Translate>();
+                w.Translates = new List<Translate>();                
                 w.Translates.AddRange(items);
-            }      
-            return w;
+                return w;
+            }
+
+            return null;
         }
 
         

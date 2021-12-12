@@ -14,7 +14,7 @@ namespace ReversoConsole.Controller
         public ITakingLesson Lesson { get; }
         public LearningController(User user)
         {
-            this.user = user ?? throw new ArgumentNullException("Пользователь не может быть пустым.", nameof(user));
+            this.user = user ?? throw new ArgumentNullException("Username is empty", nameof(user));
             this.Words = user.Words;
             this.Lesson = new StandardLesson(user);
         }
@@ -31,8 +31,17 @@ namespace ReversoConsole.Controller
 
         public void AddNewWord(LearningWord word)
         {
-            Words.Add(word);
-            Update(word);
+           if (Find(word.WordToLearn.Text) == null)
+            {
+                Words.Add(word);
+                Update(word);
+            }
+
+           else
+            {
+                throw new ArgumentException($"Word '{word.WordToLearn.Text}' is already added");
+            }
+            
         }
 
         public List<LearningWord> GetCheckedWords()
@@ -42,7 +51,14 @@ namespace ReversoConsole.Controller
 
         public bool RemoveWord(LearningWord word)
         {
-            return Words.Remove(word);
+            if (user.Words.Remove(word))
+            {
+                Words.Remove(word);
+                Delete(word);
+                return true;
+            }
+
+            return false;
         }
 
         public void UpdateCheckedWords(List<LearningWord> words)

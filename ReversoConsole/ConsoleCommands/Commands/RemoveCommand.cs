@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ReversoConsole.ConsoleCommands.Commands
 {
-    class AddCommand : ConsoleCommand
+    class RemoveCommand : ConsoleCommand
     {
-        public override string Name { get; } = "Add new word(s) to your list";
+        public override string Name { get; } = "Remove word(s) from your list";
 
         public override bool Contains(string message)
         {
@@ -26,14 +26,18 @@ namespace ReversoConsole.ConsoleCommands.Commands
                 Console.Write("Type the word:");
                 message = new string[] { Console.ReadLine() };
             }
-            foreach (var word in message )
+
+            foreach (var word in message)
             {
-                var makeWord = allWords.FindWordByName(word);
-                var newWord = new LearningWord(user, makeWord);
-                learningController.AddNewWord(newWord);
+                var rmWord = learningController.Find(word); 
+
+                if (learningController.RemoveWord(rmWord)) 
+                {
+                    Console.WriteLine($"Word {rmWord.WordToLearn.Text} removed.");
+                } 
             }
 
-            foreach (var item in user.Words)
+            foreach (var item in learningController.Words)
             {
                 Console.WriteLine($"\t{item.WordToLearn.Text} - {item.WordToLearn.Translates[0].Text}");
             }

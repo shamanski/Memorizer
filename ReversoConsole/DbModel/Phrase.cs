@@ -1,8 +1,8 @@
 ﻿namespace ReversoConsole.DbModel
 {
-    public class Phrase
+    public class Phrase : LearningModelBase
     {
-        public int Id { get; set; }
+        public override int Id { get; set; }
         public string PhraseTextSource { get; set; }
         public string PhraseTextTranslate { get; set; }
     }

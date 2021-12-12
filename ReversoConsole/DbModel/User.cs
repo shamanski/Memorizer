@@ -4,9 +4,9 @@ using System.Text;
 
 namespace ReversoConsole.DbModel
 {
-    public class User
+    public class User : LearningModelBase
     {
-        public int Id { get; set; }
+        public override int Id { get; set; }
         public string Name { get; set; }
         public virtual List<LearningWord> Words { get; set; }
         public User() { }

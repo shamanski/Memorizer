@@ -56,9 +56,9 @@ namespace ReversoConsole.Algorithm
             var lesson = new Lesson();
             var newWords = Words
                 .Where(i => i.Level == 0)
-                .Take(settings.NewWordsInLesson)
-                .ToList();
+                .Take(settings.NewWordsInLesson);
             var repeat = Words
+                .Where(i => i.Level > 0)
                 .OrderBy( i => GetNextTime( i ) )
                 .Union(newWords)
                 .Take(settings.WordsInLesson);

@@ -17,6 +17,7 @@ namespace ReversoConsole.Algorithm
             this.user = user ?? throw new ArgumentNullException("Username is null or empty", nameof(user));
             Words = user.Words;
             settings = new LessonSetings();
+            
         }
 
         private void Save()
@@ -44,7 +45,7 @@ namespace ReversoConsole.Algorithm
         }
 
         private LessonWord MakeLessonWord(LearningWord word)
-        {
+        {            
             return new LessonWord
             {
                 LearningWord = word,
@@ -66,7 +67,6 @@ namespace ReversoConsole.Algorithm
             {
                 lesson.WordsList.Add(MakeLessonWord(word));
             }
-           
             return lesson;
         }
 

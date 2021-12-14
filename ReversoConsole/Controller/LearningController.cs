@@ -15,7 +15,7 @@ namespace ReversoConsole.Controller
         public LearningController(User user)
         {
             this.user = user ?? throw new ArgumentNullException("Username is empty", nameof(user));
-            this.Words = user.Words;
+            this.Words = Load<LearningWord>();
             this.Lesson = new StandardLesson(user);
         }
 

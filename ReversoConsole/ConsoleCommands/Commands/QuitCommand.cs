@@ -8,7 +8,7 @@ namespace ReversoConsole.ConsoleCommands.Commands
 {
     class QuitCommand : ConsoleCommand
     {
-        public override string Name { get; } = "Q";
+        public override string Name { get; } = "Quit";
 
         public override bool Contains(string message)
         {

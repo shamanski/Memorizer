@@ -10,7 +10,7 @@ namespace ReversoConsole.ConsoleCommands.Commands
 {
     class LessonCommand : ConsoleCommand
     {
-        public override string Name { get; } = "L";
+        public override string Name { get; } = "Start new lesson";
 
         public override bool Contains(string message)
         {

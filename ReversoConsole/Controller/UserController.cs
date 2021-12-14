@@ -10,16 +10,14 @@ namespace ReversoConsole.Controller
 {
     class UserController : BaseController
     {
+        private User _user;
         public List<User> Users { get; }
-        public User CurrentUser { get; }
+        public User CurrentUser { get { return _user; }  }
         public bool IsNewUser { get; } = false;
         private List<User> GetUsersData()
         {
             var db = new AppContext();
             return db.Users
-                .Include(u => u.Words)
-                .ThenInclude(u => u.WordToLearn)
-                .ThenInclude(u => u.Translates)
                 .ToList();
 
         }
@@ -32,14 +30,16 @@ namespace ReversoConsole.Controller
             }
 
             Users = GetUsersData();
-            CurrentUser = Users.SingleOrDefault(u => u.Name == userName);
-            if (CurrentUser == null)
+            _user = Users.SingleOrDefault(u => u.Name == userName);
+            if (_user == null)
             {
                 Users.Add(new User(userName));
                 IsNewUser = true;
-                CurrentUser = Users.SingleOrDefault(u => u.Name == userName);
+                _user = Users.SingleOrDefault(u => u.Name == userName);
+                
             }
-
+            LoadElement<User>(ref _user, nameof(_user.Words));
+            //LoadElement<Word>(ref _user.Words, nameof(LearningWord.WordToLearn));
         }
         public void Save()
         {

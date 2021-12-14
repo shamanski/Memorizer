@@ -19,7 +19,7 @@ namespace ReversoConsole.ConsoleCommands.Commands
         {
             var learningController = new LearningController(user);
 
-            foreach (var item in learningController.Words)
+            foreach (var item in learningController.GetAll())
             {
                 Console.WriteLine($"\t{item.WordToLearn.Text} - {item.WordToLearn.Translates[0].Text}");
             }

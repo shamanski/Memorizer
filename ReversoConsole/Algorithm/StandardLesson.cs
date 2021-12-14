@@ -24,7 +24,12 @@ namespace ReversoConsole.Algorithm
         {
             Save(Words);
         }
-       
+
+        private List<Word> Load()
+        {
+           return Load<Word>();
+        }
+
         private List<string> GetAdditionalWords()
         {
             var list = new List<string>();
@@ -45,7 +50,8 @@ namespace ReversoConsole.Algorithm
         }
 
         private LessonWord MakeLessonWord(LearningWord word)
-        {            
+        {
+            word = LoadElement<LearningWord>(word, nameof(LearningWord));
             return new LessonWord
             {
                 LearningWord = word,

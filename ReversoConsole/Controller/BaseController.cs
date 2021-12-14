@@ -7,7 +7,7 @@ namespace ReversoConsole.Controller
 {
     public abstract class BaseController
     {
-        private readonly IDataSaver manager = new DBWork();
+        private readonly IDataSaver manager = new DBWork(new AppContext());
 
         protected void Save<T>(List<T> item) where T : class
         {
@@ -23,9 +23,9 @@ namespace ReversoConsole.Controller
             return manager.Load<T>();
         }
 
-        protected void LoadElement<T>(ref T item, string collection) where T: LearningModelBase
+        protected T LoadElement<T>(T item, string collection) where T: LearningModelBase
         {
-            manager.LoadElement<T>(ref item, collection);
+           return manager.LoadElement<T>(item, collection);
         }
 
         protected void Delete<T>(T item) where T : LearningModelBase

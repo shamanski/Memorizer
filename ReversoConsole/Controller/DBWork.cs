@@ -46,11 +46,27 @@ namespace ReversoConsole.Controller
                 db.SaveChanges();     
         }
 
-        public void LoadElement<T> (ref T item, string collection) where T: LearningModelBase
+        public T LoadElement<T> (T item, string collection) where T: LearningModelBase
         {
 
                 db.Attach<T>(item);
+            var memberEntry = db.Entry(item).Member(collection);
+
+            // if (memberEntry is DbCollectionEntry collectionMember)
+            //     collectionMember.Load();
+
+            // if (memberEntry is DbReferenceEntry referenceMember)
+            //     referenceMember.Load();
+            try
+            {
                 db.Entry(item).Collection(collection).Load();
+            }
+            catch
+            {
+                db.Entry(item).Reference(collection).Load();
+            }
+            db.SaveChanges();
+            return db.Entry(item).Entity;
         }
     }
 }

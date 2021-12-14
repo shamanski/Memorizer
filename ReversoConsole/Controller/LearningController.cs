@@ -9,13 +9,13 @@ namespace ReversoConsole.Controller
 {
     class LearningController: BaseController
     {
-        private readonly User user;
-        public List<LearningWord> Words { get; }
+        private User user;
+        private List<LearningWord> Words { get { return user.Words; } set { } }
         public ITakingLesson Lesson { get; }
         public LearningController(User user)
         {
             this.user = user ?? throw new ArgumentNullException("Username is empty", nameof(user));
-            this.Words = Load<LearningWord>();
+           // this.Words = Load<LearningWord>();
             this.Lesson = new StandardLesson(user);
         }
 
@@ -24,6 +24,21 @@ namespace ReversoConsole.Controller
             Save(Words);
         }
 
+        public List<LearningWord> GetAll()
+        {
+            var result = new List<LearningWord>();
+            if (Words.FirstOrDefault().WordToLearn == null) 
+            {
+                foreach (var i in Words)
+                {
+                    var el = LoadElement<LearningWord>(i, nameof(LearningWord.WordToLearn));
+                    el.WordToLearn = LoadElement<Word>(el.WordToLearn, nameof(el.WordToLearn.Translates));
+                    result.Add(el);                   
+                }
+            }
+            Words = result;
+            return result;
+        }
         public LearningWord Find(string name)
         {
             return Words.Where(i => i.WordToLearn.Text == name).FirstOrDefault();
@@ -35,6 +50,7 @@ namespace ReversoConsole.Controller
             {
                 Words.Add(word);
                 Update(word);
+                 
             }
 
            else

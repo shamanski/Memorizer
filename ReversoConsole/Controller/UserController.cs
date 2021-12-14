@@ -38,7 +38,7 @@ namespace ReversoConsole.Controller
                 _user = Users.SingleOrDefault(u => u.Name == userName);
                 
             }
-            LoadElement<User>(ref _user, nameof(_user.Words));
+            _user = LoadElement<User>(_user, nameof(_user.Words));
             //LoadElement<Word>(ref _user.Words, nameof(LearningWord.WordToLearn));
         }
         public void Save()

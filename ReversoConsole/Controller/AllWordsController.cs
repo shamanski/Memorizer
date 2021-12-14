@@ -25,7 +25,7 @@ namespace ReversoConsole.Controller
 
         private void LoadWord(ref Word inp)
         {
-            LoadElement<Word>(ref inp, nameof(inp.Translates));
+            inp = LoadElement<Word>(inp, nameof(inp.Translates));
         }
 
         public Word FindWordByName(string name)

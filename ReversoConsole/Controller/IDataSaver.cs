@@ -10,7 +10,7 @@ namespace ReversoConsole.Controller
         void Save<T>(List<T> item) where T : class;
         void Update<T>(T item) where T : class;
         List<T> Load<T>() where T : class;
-        void LoadElement<T>(ref T item, string collection) where T: LearningModelBase;
+        T LoadElement<T>(T item, string collection) where T: LearningModelBase;
         void Delete<T>(T item) where T : LearningModelBase;
 
     }

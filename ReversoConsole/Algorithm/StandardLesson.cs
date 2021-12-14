@@ -51,7 +51,6 @@ namespace ReversoConsole.Algorithm
 
         private LessonWord MakeLessonWord(LearningWord word)
         {
-            word = LoadElement<LearningWord>(word, nameof(LearningWord));
             return new LessonWord
             {
                 LearningWord = word,
@@ -60,6 +59,7 @@ namespace ReversoConsole.Algorithm
         }
         public Lesson GetNextLesson()
         {
+            if (!(Words?.Any() ?? false)) throw new Exception("Nothing to learn");
             var lesson = new Lesson();
             var newWords = Words
                 .Where(i => i.Level == 0)

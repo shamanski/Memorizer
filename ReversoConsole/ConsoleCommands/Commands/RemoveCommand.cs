@@ -35,6 +35,10 @@ namespace ReversoConsole.ConsoleCommands.Commands
                 {
                     Console.WriteLine($"Word {rmWord.WordToLearn.Text} removed.");
                 } 
+                else
+                {
+                    Console.WriteLine($"Word {word} not found.");
+                }
             }
 
             foreach (var item in learningController.GetAll())

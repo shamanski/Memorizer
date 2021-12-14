@@ -15,8 +15,23 @@ namespace ReversoConsole.Controller
         public LearningController(User user)
         {
             this.user = user ?? throw new ArgumentNullException("Username is empty", nameof(user));
-           // this.Words = Load<LearningWord>();
+            LoadAll();
             this.Lesson = new StandardLesson(user);
+        }
+
+        private void LoadAll()
+        {
+            if (Words?.FirstOrDefault()?.WordToLearn == null)
+            {
+                var result = new List<LearningWord>();
+                foreach (var i in Words)
+                {
+                    var el = LoadElement<LearningWord>(i, nameof(LearningWord.WordToLearn));
+                    el.WordToLearn = LoadElement<Word>(el.WordToLearn, nameof(el.WordToLearn.Translates));
+                    result.Add(el);
+                }
+                user.Words = result;
+            }
         }
 
         private void Save()
@@ -26,18 +41,7 @@ namespace ReversoConsole.Controller
 
         public List<LearningWord> GetAll()
         {
-            var result = new List<LearningWord>();
-            if (Words.FirstOrDefault().WordToLearn == null) 
-            {
-                foreach (var i in Words)
-                {
-                    var el = LoadElement<LearningWord>(i, nameof(LearningWord.WordToLearn));
-                    el.WordToLearn = LoadElement<Word>(el.WordToLearn, nameof(el.WordToLearn.Translates));
-                    result.Add(el);                   
-                }
-            }
-            Words = result;
-            return result;
+            return Words;
         }
         public LearningWord Find(string name)
         {

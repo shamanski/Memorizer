@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ReversoConsole.Controller
 {
-    class LearningController: BaseController
+    public class LearningController: BaseController
     {
         private User user;
         private List<LearningWord> Words { get { return user.Words; } set { } }
@@ -32,11 +32,6 @@ namespace ReversoConsole.Controller
                 }
                 user.Words = result;
             }
-        }
-
-        private void Save()
-        {
-            Save(Words);
         }
 
         public List<LearningWord> GetAll()

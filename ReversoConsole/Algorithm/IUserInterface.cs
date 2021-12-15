@@ -5,7 +5,7 @@ using ReversoConsole.DbModel;
 
 namespace ReversoConsole.Algorithm
 {
-    interface IUserInterface
+    public interface IUserInterface
     {
         public List<LearningWord> GetCheckedWords();
         public void UpdateCheckedWords(List<LearningWord> wordList);

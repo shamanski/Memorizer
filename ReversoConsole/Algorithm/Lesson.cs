@@ -5,7 +5,7 @@ using ReversoConsole.DbModel;
 
 namespace ReversoConsole.Algorithm
 {
-    class Lesson
+    public class Lesson
     {
         public bool Completed { get; set; } = false;
         public List<LessonWord> WordsList { get; set; } = new List<LessonWord>();

@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ReversoConsole.Controller
 {
-    class UserController : BaseController
+    public class UserController : BaseController
     {
         private User _user;
         public List<User> Users { get; }

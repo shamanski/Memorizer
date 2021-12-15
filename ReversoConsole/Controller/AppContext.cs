@@ -3,7 +3,7 @@ using ReversoConsole.DbModel;
 
 namespace ReversoConsole.Controller
 {
-    class AppContext: DbContext
+    public class AppContext: DbContext
     {
         public DbSet<Word> Words { get; set; }
         public DbSet<LearningWord> LearningWords { get; set; }

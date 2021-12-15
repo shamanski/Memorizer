@@ -7,10 +7,10 @@ using ReversoConsole.DbModel;
 
 namespace ReversoConsole.Algorithm
 {
-    class StandardLesson : BaseController, ITakingLesson
+    public class StandardLesson : BaseController, ITakingLesson
     {
-        private readonly User user;
         public readonly LessonSetings settings;
+        public User user;
         public List<LearningWord> Words { get; private set; }
         public StandardLesson(User user)
         {
@@ -25,10 +25,6 @@ namespace ReversoConsole.Algorithm
             Save(Words);
         }
 
-        private List<Word> Load()
-        {
-           return Load<Word>();
-        }
 
         private List<string> GetAdditionalWords()
         {

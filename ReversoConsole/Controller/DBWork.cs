@@ -8,7 +8,7 @@ using ReversoConsole.DbModel;
 
 namespace ReversoConsole.Controller
 {
-    class DBWork : IDataSaver        
+   public class DBWork : IDataSaver        
     {
         DbContext db;
         public DBWork(DbContext context)

@@ -12,7 +12,7 @@ namespace ReversoConsole.Algorithm
         True
     }
 
-    class LessonWord
+    public class LessonWord
     {
         public LearningWord LearningWord { get; set; }
         public IsSuccessful isSuccessful { get; set; } = IsSuccessful.NotStarted;

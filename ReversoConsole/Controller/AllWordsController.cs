@@ -10,7 +10,7 @@ using ReversoApi.Models.Word;
 
 namespace ReversoConsole.Controller
 {
-    class AllWordsController: BaseController
+    public class AllWordsController: BaseController
     {
         public List<Word> Words { get; }
         public AllWordsController()
@@ -66,8 +66,10 @@ namespace ReversoConsole.Controller
             
             if (!translatedWord.Error && translatedWord.Success)
             {
-                Word w = new Word();
-                w.Text = translatedWord.Sources.First().DisplaySource;
+                Word w = new Word
+                {
+                    Text = translatedWord.Sources.First().DisplaySource
+                };
                 var items = (from translate in translatedWord.Sources.First().Translations
                              where (translate.IsRude == false)
                              select new Translate

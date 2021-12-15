@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ReversoConsole.Controller
 {
-    interface IDataSaver
+    public interface IDataSaver
     {
         void Save<T>(List<T> item) where T : class;
         void Update<T>(T item) where T : class;

@@ -12,12 +12,12 @@ namespace ReversoConsole.Algorithm
         public readonly LessonSetings settings;
         public User user;
         public List<LearningWord> Words { get; private set; }
+       
         public StandardLesson(User user)
         {
             this.user = user ?? throw new ArgumentNullException("Username is null or empty", nameof(user));
             Words = user.Words;
-            settings = new LessonSetings();
-            
+            settings = new LessonSetings();            
         }
 
         private void Save()
@@ -25,17 +25,15 @@ namespace ReversoConsole.Algorithm
             Save(Words);
         }
 
-
-        private List<string> GetAdditionalWords()
+        private List<string> GetAdditionalWords(string source)
         {
-            var list = new List<string>();
-            var rnd = new Random();
-            for (int i = 0; i < 5; i++)
-            {
-                list.Add(Words[rnd.Next(Words.Count)].WordToLearn.Text);
-
-            }
-            return list;
+           var rnd = new Random();
+           return Words.Where(x => x.ToString() != source).
+                OrderBy(x => rnd.Next()).
+                Take(5).
+                Select(x => x.
+                ToString()).
+                ToList();
         }
 
         private DateTime GetNextTime(LearningWord word)
@@ -48,9 +46,10 @@ namespace ReversoConsole.Algorithm
             return new LessonWord
             {
                 LearningWord = word,
-                AdditionalWords = GetAdditionalWords()
+                AdditionalWords = GetAdditionalWords(word.ToString())
             };
         }
+
         public Lesson GetNextLesson()
         {
             if (!(Words?.Any() ?? false)) throw new Exception("Nothing to learn");

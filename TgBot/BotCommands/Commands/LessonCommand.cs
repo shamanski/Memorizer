@@ -20,48 +20,55 @@ namespace TgBot.BotCommands.Commands
         {
             learning = new LearningController(user);
             lesson = learning.Lesson.GetNextLesson();
-            var translates = String.Join(',', lesson.WordsList[0].LearningWord.WordToLearn.Translates);
-            message.Text = translates;
-            var w = lesson.WordsList[count].AdditionalWords;
-            w.Add(lesson.WordsList[0].LearningWord.WordToLearn.Text);
-            message.ReplyMarkup = new LessonKeyboard(w.ToArray()).Keyboard;
-            ChatController.ReplyMessage(message);
-            return Task.CompletedTask;
+            StepAnswer(message);
+            return  Task.CompletedTask;
         }
 
-        public override bool Next(ReversoConsole.DbModel.User user, Message message)
+        private void StepAnswer(Message message)
         {
-            var currWord = lesson.WordsList[count].LearningWord.WordToLearn.Text; 
-            lesson.WordsList[count].isSuccessful = (currWord == message.Text) ? IsSuccessful.True : IsSuccessful.False;
-            count++;
-            foreach (var i in message?.ReplyMarkup?.InlineKeyboard)
-            {
-                foreach (var n in i)
-                {
-                    n.Text = currWord == n.Text ? n.Text += '\u2713'.ToString() : '\u274C'.ToString();                    
-                }
-            }
-            ChatController.EditMessage(message);
-            if (count == lesson.WordsList.Count)
-            {
-                learning.Lesson.ReturnFinishedLesson(lesson);
-                int successful = 0;
-                foreach (var i in lesson.WordsList)
-                {
-                    if (i.isSuccessful == IsSuccessful.True) successful++;
-                }
-                message.Text = $"Урок окончен. Результат: { successful} из {lesson.WordsList.Count}";
-                message.ReplyMarkup = null;
-                ChatController.ReplyMessage(message);
-                return false;
-            }
             var translates = String.Join(',', lesson.WordsList[count].LearningWord.WordToLearn.Translates);
             message.Text = translates;
             var w = lesson.WordsList[count].AdditionalWords;
             w.Add(lesson.WordsList[count].LearningWord.WordToLearn.Text);
             message.ReplyMarkup = new LessonKeyboard(w.ToArray()).Keyboard;
             ChatController.ReplyMessage(message);
+        }
+
+        public override bool Next(ReversoConsole.DbModel.User user, Message message)
+        {
+            var currWord = lesson.WordsList[count].ToString();
+            lesson.WordsList[count].isSuccessful = (currWord == message.Text) ? IsSuccessful.True : IsSuccessful.False;
+            count++;
+            foreach (var i in message?.ReplyMarkup?.InlineKeyboard)
+            {
+                foreach (var n in i)
+                {
+                    n.Text += currWord == n.Text ?  '\u2713': '\u274C';                    
+                }
+            }
+
+            ChatController.EditMessageAsync(message);
+            if (count == lesson.WordsList.Count)
+            {
+                Last(message);
+                return false;
+            }
+
+            StepAnswer(message);
             return true;
+        }
+
+        public void Last(Message message)
+        {
+            learning.Lesson.ReturnFinishedLesson(lesson);
+            int successful = 0;
+            foreach (var i in lesson.WordsList)
+            {
+                if (i.isSuccessful == IsSuccessful.True) successful++;
+            }
+            message.Text = $"Урок окончен. Результат: { successful} из {lesson.WordsList.Count}";
+            message.ReplyMarkup = null;
+            ChatController.ReplyMessage(message);
         }
     }
 }

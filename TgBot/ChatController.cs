@@ -67,7 +67,7 @@ namespace TgBot
                 cancellationToken: new CancellationToken());
         }
 
-        public static async void EditMessage(Message message)
+        public static async void EditMessageAsync(Message message)
         {
             var chatId = message.Chat.Id;
             var messageId = message.MessageId;

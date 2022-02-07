@@ -24,9 +24,5 @@ namespace TgBot
             Console.WriteLine("Bot started...");
             Console.ReadKey();
         }
-
-
-   
-       
     }
-    }
+}

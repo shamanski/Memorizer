@@ -32,10 +32,8 @@ namespace ReversoConsole.Algorithm
             var rnd = new Random();
             for (int i = 0; i < 5; i++)
             {
-                list.Add(Words
-                    .Where(w => w.Id == rnd.Next(1,Words.Count))
-                    .Select(u => u.WordToLearn.Text)
-                    .FirstOrDefault());
+                list.Add(Words[rnd.Next(Words.Count)].WordToLearn.Text);
+
             }
             return list;
         }
@@ -62,9 +60,10 @@ namespace ReversoConsole.Algorithm
                 .Take(settings.NewWordsInLesson);
             var repeat = Words
                 .Where(i => i.Level > 0)
-                .OrderBy( i => GetNextTime( i ) )
-                .Union(newWords)
-                .Take(settings.WordsInLesson);
+                .OrderBy(i => GetNextTime(i))
+                .Take(settings.WordsInLesson - newWords.Count())
+                .Union(newWords);
+                
             foreach (var word in repeat)
             {
                 lesson.WordsList.Add(MakeLessonWord(word));

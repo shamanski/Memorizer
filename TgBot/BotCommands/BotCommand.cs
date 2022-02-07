@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Telegram.Bot.Types;
 
 namespace TgBot.BotCommands
 {
@@ -11,8 +12,9 @@ namespace TgBot.BotCommands
     {
         public abstract string Name { get; }
 
-        public abstract Task Execute(User user, IEnumerable<string> arguments);
+        public abstract Task Execute(ReversoConsole.DbModel.User user, Message arguments);
 
-        public abstract bool Contains(string message);
+
+        public abstract bool Next(ReversoConsole.DbModel.User user, Message arguments);
     }
 }

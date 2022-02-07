@@ -21,5 +21,8 @@ namespace ReversoConsole.DbModel
             this.LastTime = DateTime.Now;
         }
 
+        public override string ToString() => WordToLearn.Text;
+
     }
+    
 }

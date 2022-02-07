@@ -12,6 +12,7 @@ namespace ReversoConsole.Controller
         private User user;
         private List<LearningWord> Words { get { return user.Words; } set { } }
         public ITakingLesson Lesson { get; }
+        
         public LearningController(User user)
         {
             this.user = user ?? throw new ArgumentNullException("Username is empty", nameof(user));
@@ -38,6 +39,7 @@ namespace ReversoConsole.Controller
         {
             return Words;
         }
+
         public LearningWord Find(string name)
         {
             return Words.Where(i => i.WordToLearn.Text == name).FirstOrDefault();
@@ -59,6 +61,7 @@ namespace ReversoConsole.Controller
             
         }
 
+       
         public List<LearningWord> GetCheckedWords()
         {
             return Words;
@@ -68,8 +71,9 @@ namespace ReversoConsole.Controller
         {
             if (user.Words.Remove(word))
             {
-                Words.Remove(word);
-                Delete(word);
+                //Delete(word);
+                //LoadAll();
+               Words.Remove(word);          
                 return true;
             }
 

@@ -8,31 +8,19 @@ namespace TgBot.Keybords
     class LessonKeyboard
     {
         public InlineKeyboardMarkup Keyboard { get; set; }
-        public LessonKeyboard() 
+        public LessonKeyboard(string[] words) 
         {
-            var i = InlineKeyboardButton.WithCallbackData("string");
             var keyboard = new List<List<InlineKeyboardButton>>
                 {
-                    new List<InlineKeyboardButton> {InlineKeyboardButton.WithCallbackData("strinfgdslkjgfsdlkjghfdjkhgfjkdgdfg"), InlineKeyboardButton.WithCallbackData("string") },
-                    new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData("string"), InlineKeyboardButton.WithCallbackData("string") },
-                    new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData("string"), InlineKeyboardButton.WithCallbackData("string") }
+                    new List<InlineKeyboardButton> {InlineKeyboardButton.WithCallbackData(words[0]), InlineKeyboardButton.WithCallbackData(words[1]) },
+                    new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData(words[2]), InlineKeyboardButton.WithCallbackData(words[3]) },
+                    new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData(words[4]), InlineKeyboardButton.WithCallbackData(words[5]) }
                    
                    
                 };
-            keyboard.Add(LessonMenu());
 
             Keyboard = new InlineKeyboardMarkup(keyboard);
 
-        }
-
-        private List<InlineKeyboardButton> LessonMenu()
-        {
-            return new List<InlineKeyboardButton>
-            {
-                InlineKeyboardButton.WithCallbackData("string"),
-                InlineKeyboardButton.WithCallbackData("string"),
-                InlineKeyboardButton.WithCallbackData("string")
-            };
-        }
+        }      
     }
 }

@@ -13,6 +13,7 @@ namespace ReversoConsole.Controller
         private User _user;
         public List<User> Users { get; }
         public User CurrentUser { get { return _user; }  }
+        public List<User> InLesson { get; set; }
         public bool IsNewUser { get; } = false;
         private List<User> GetUsersData()
         {
@@ -20,6 +21,23 @@ namespace ReversoConsole.Controller
             return db.Users
                 .ToList();
 
+        }
+        public UserController()
+        {
+            Users = GetUsersData();
+        }
+
+            public User GetUser(string userName)
+        {
+            _user = Users.SingleOrDefault(u => u.Name == userName);
+            if (_user == null)
+            {
+                Users.Add(new User(userName));
+                _user = Users.SingleOrDefault(u => u.Name == userName);
+                Save();
+            }
+            _user = LoadElement<User>(_user, nameof(_user.Words));
+            return _user;
         }
  
         public UserController(string userName)

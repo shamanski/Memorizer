@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Telegram.Bot.Types;
 
 namespace TgBot.BotCommands
 {
     interface ICommandService
     {
         Dictionary<string, BotCommand> Get();
-        Task Execute(User user, string message);
+        Task Execute(ReversoConsole.DbModel.User user, Message message);
     }
 }

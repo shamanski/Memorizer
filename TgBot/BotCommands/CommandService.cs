@@ -29,10 +29,10 @@ namespace TgBot.BotCommands
             _commands = new Dictionary<string, BotCommand>
             {
                // { "H", new HelpCommand() },
-                { "L", new LessonCommand() },
-                { "A", new AddCommand() },
-                { "R", new RemoveCommand() },
-                { "I", new InfoCommand() },
+                { "/lesson", new LessonCommand() },
+                { "/add", new AddCommand() },
+                { "/remove", new RemoveCommand() },
+                { "/info", new InfoCommand() },
                // new StatCommand()
               // { "Q", new QuitCommand() }
             };

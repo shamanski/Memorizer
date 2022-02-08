@@ -33,21 +33,35 @@ namespace TgBot.BotCommands.Commands
             message.ReplyMarkup = new LessonKeyboard(w.ToArray()).Keyboard;
             ChatController.ReplyMessage(message);
         }
+        
+        private void CheckBox(Message message, string currWord)
+        {
+            if (message.ReplyMarkup != null)
+            {
+                foreach (var i in message?.ReplyMarkup?.InlineKeyboard)
+                {
+                    foreach (var n in i)
+                    {
+                        n.Text += currWord == n.Text ? '\u2713' : '\u274C';
+                    }
+                }
+                ChatController.EditMessageAsync(message);
+            }
+
+            else
+            {
+                message.Text += currWord == message.Text ? '\u2713' : '\u274C';
+                ChatController.ReplyMessage(message);
+            }
+            
+        }
 
         public override bool Next(ReversoConsole.DbModel.User user, Message message)
         {
             var currWord = lesson.WordsList[count].ToString();
             lesson.WordsList[count].isSuccessful = (currWord == message.Text) ? IsSuccessful.True : IsSuccessful.False;
             count++;
-            foreach (var i in message?.ReplyMarkup?.InlineKeyboard)
-            {
-                foreach (var n in i)
-                {
-                    n.Text += currWord == n.Text ?  '\u2713': '\u274C';                    
-                }
-            }
-
-            ChatController.EditMessageAsync(message);
+            CheckBox(message, currWord); 
             if (count == lesson.WordsList.Count)
             {
                 Last(message);

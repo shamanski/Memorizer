@@ -23,9 +23,9 @@ namespace ReversoConsole.Controller
             return Load<Word>() ?? new List<Word>();
         }
 
-        private void LoadWord(ref Word inp)
+        private Word LoadWord( Word inp)
         {
-            inp = LoadElement<Word>(inp, nameof(inp.Translates));
+            return LoadElement<Word>(inp, nameof(inp.Translates));
         }
 
         public Word FindWordByName(string name)
@@ -47,15 +47,21 @@ namespace ReversoConsole.Controller
             else
             {
                 var update = this.Words.Find(i => i.Text == name);
-                LoadWord(ref update);
-                return update;
+                
+                return LoadWord(update); ;
             }
         }
 
-        public void Save()
-        {
-            Save(Words);
-        }
+        public List<Word> FindWordsById(int start, int count) => 
+            Words
+                .Skip(start)
+                .Take(count)
+                .Select((x) => LoadWord(x))
+                .ToList();
+
+
+        public void Save() => Save(Words);
+
 
         private static async Task<Word> Do(string wordName)
         {

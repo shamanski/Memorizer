@@ -32,8 +32,7 @@ namespace TgBot.BotCommands
                 { "L", new LessonCommand() },
                 { "A", new AddCommand() },
                 { "R", new RemoveCommand() },
-              //  { "R", new RemoveCommand() },
-              //  { "I", new InfoCommand() },
+                { "I", new InfoCommand() },
                // new StatCommand()
               // { "Q", new QuitCommand() }
             };
@@ -41,7 +40,7 @@ namespace TgBot.BotCommands
 
         public Dictionary<string, BotCommand> Get() => _commands;
 
-        public Task Execute(ReversoConsole.DbModel.User user, Message message)
+        public bool Execute(ReversoConsole.DbModel.User user, Message message)
         {
             var state = states.GetUserState(user.Name);
             if (state != null)
@@ -51,7 +50,7 @@ namespace TgBot.BotCommands
                     states.RemoveUserState(user.Name);
                     Refresh();
                 }
-                    return Task.CompletedTask;
+                    return false;
             }
 
             else
@@ -61,7 +60,7 @@ namespace TgBot.BotCommands
                 {
 
                     var res = _commands[split.First()].Execute(user, message);
-                    states.Add(user.Name, _commands[split.First()]);
+                    if (res == true) states.Add(user.Name, _commands[split.First()]);
                     return res;
 
                 }
@@ -70,7 +69,7 @@ namespace TgBot.BotCommands
                 {
                     if (currentCommand?.Next(user, message) == false) currentCommand = null;
                     System.Console.WriteLine("Command doesn't exists");
-                    return Task.CompletedTask;
+                    return false;
                 }
 
             }

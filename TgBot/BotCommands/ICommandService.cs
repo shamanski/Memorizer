@@ -10,6 +10,6 @@ namespace TgBot.BotCommands
     interface ICommandService
     {
         Dictionary<string, BotCommand> Get();
-        Task Execute(ReversoConsole.DbModel.User user, Message message);
+        bool Execute(ReversoConsole.DbModel.User user, Message message);
     }
 }

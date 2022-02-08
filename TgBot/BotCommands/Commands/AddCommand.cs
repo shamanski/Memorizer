@@ -15,14 +15,14 @@ namespace TgBot.BotCommands.Commands
         private LearningController learningController;
         private AllWordsController allWords;
 
-        public override Task Execute(ReversoConsole.DbModel.User user, Message message)
+        public override bool Execute(ReversoConsole.DbModel.User user, Message message)
         {
             allWords = new AllWordsController();
             learningController = new LearningController(user);
             message.Text = $"Введите слово:";
             message.ReplyMarkup = null;
             ChatController.ReplyMessage(message);       
-            return Task.CompletedTask;
+            return true;
         }
 
         public override bool Next(ReversoConsole.DbModel.User user, Message message)

@@ -14,13 +14,13 @@ namespace TgBot.BotCommands.Commands
         public override string Name { get; } = "Remove word(s) from your list";
         private LearningController learningController;
 
-        public override Task Execute(ReversoConsole.DbModel.User user, Message message)
+        public override bool Execute(ReversoConsole.DbModel.User user, Message message)
         {
             learningController = new LearningController(user);
             message.Text = $"Введите слово:";
             message.ReplyMarkup = null;
             ChatController.ReplyMessage(message);
-            return Task.CompletedTask;
+            return true;
         }
 
         public override bool Next(ReversoConsole.DbModel.User user, Message message)

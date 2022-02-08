@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -9,7 +10,7 @@ namespace TgBot.Keybords
     {
         public InlineKeyboardMarkup Keyboard { get; set; }
 
-        public AddWordsKeyboard(string[] words)
+        public AddWordsKeyboard(List<string> words)
         {
             var keyboard = new List<List<InlineKeyboardButton>>();
             keyboard.Add(new List<InlineKeyboardButton>());

@@ -30,6 +30,7 @@ namespace ReversoConsole.Controller
 
         public Word FindWordByName(string name)
         {
+            name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
             var result = Words.SingleOrDefault(f => f.Text == name);
             if (result == null)
             {

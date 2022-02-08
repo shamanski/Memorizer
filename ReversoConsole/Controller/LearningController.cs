@@ -42,12 +42,13 @@ namespace ReversoConsole.Controller
 
         public LearningWord Find(string name)
         {
-            return Words.Where(i => i.WordToLearn.Text == name).FirstOrDefault();
+            name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
+            return Words.Where(i => i.ToString() == name).FirstOrDefault();
         }
 
         public void AddNewWord(LearningWord word)
         {
-           if (Find(word.WordToLearn.Text) == null)
+           if (Find(word.ToString()) == null)
             {
                 Words.Add(word);
                 Update(word);

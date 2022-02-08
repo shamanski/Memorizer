@@ -83,12 +83,19 @@ namespace TgBot
         {
             await Task.Run(() =>
             {
-                if (update.Type == UpdateType.CallbackQuery) { OnCallBack(update.CallbackQuery); return; }
+                if (update.Type == UpdateType.CallbackQuery) 
+                { 
+                    OnCallBack(update.CallbackQuery); return; 
+                }
 
                 if (update.Message?.Type != MessageType.Text)
                     return;
-                if (update.Message?.Type == MessageType.Text) OnMessage(update.Message);
-                return;
+                if (update.Message?.Type == MessageType.Text)
+                {
+                    OnMessage(update.Message);
+                } 
+                    
+                    return;
             });
         }
 

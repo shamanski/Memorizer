@@ -16,12 +16,12 @@ namespace TgBot.BotCommands.Commands
         private LearningController learning;
         private Lesson lesson;
         int count = 0;
-        public override Task Execute(ReversoConsole.DbModel.User user, Message message)
+        public override bool Execute(ReversoConsole.DbModel.User user, Message message)
         {
             learning = new LearningController(user);
             lesson = learning.Lesson.GetNextLesson();
             StepAnswer(message);
-            return  Task.CompletedTask;
+            return  true;
         }
 
         private void StepAnswer(Message message)

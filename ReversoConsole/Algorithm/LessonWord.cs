@@ -9,7 +9,8 @@ namespace ReversoConsole.Algorithm
     {
         NotStarted,
         False,
-        True
+        True,
+        Finished
     }
 
     public class LessonWord

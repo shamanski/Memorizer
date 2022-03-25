@@ -18,9 +18,9 @@ namespace TgBot.BotCommands
 
         private Dictionary<string, BotCommand> _commands;
 
-        public CommandService()
+        public CommandService(StateController state)
         {
-            states = new StateController();
+            states = state;
             Refresh(); 
         }
 
@@ -60,7 +60,11 @@ namespace TgBot.BotCommands
                 {
 
                     var res = _commands[split.First()].Execute(user, message);
-                    if (res) states.Add(user.Name, _commands[split.First()]);
+                    if (res)
+                    {
+                        states.Add(user.Name, _commands[split.First()]);
+                    }
+                    
                     return res;
 
                 }

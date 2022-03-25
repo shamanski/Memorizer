@@ -28,11 +28,12 @@ namespace TgBot.BotCommands.Commands
 
         private void StepAnswer(Message message)
         {
-            var translates = String.Join(',', lesson.WordsList[count].LearningWord.WordToLearn.Translates);
+            var currentWord = lesson.WordsList[count].LearningWord.WordToLearn;
+            var translates = String.Join(',', currentWord.Translates);
             message.Text = translates;
             var w = lesson.WordsList[count].AdditionalWords;
             w.Add(lesson.WordsList[count].LearningWord.WordToLearn.Text);
-            message.ReplyMarkup = new LessonKeyboard(w.ToArray()).Keyboard;
+            message.ReplyMarkup = new LessonKeyboard(w.ToArray(), currentWord.Text).Keyboard;
             ChatController.ReplyMessage(message);
         }
         
@@ -63,7 +64,15 @@ namespace TgBot.BotCommands.Commands
         public override bool Next(ReversoConsole.DbModel.User user, Message message)
         {
             var currWord = lesson.WordsList[count].ToString();
-            lesson.WordsList[count].isSuccessful = (currWord == message.Text.Substring(1)) ? IsSuccessful.True : IsSuccessful.False;
+            if (message.Text == "/rm")
+            {
+                lesson.WordsList[count].isSuccessful = IsSuccessful.Finished;
+            }
+            else
+            {
+                lesson.WordsList[count].isSuccessful = (currWord == message.Text.Substring(1)) ? IsSuccessful.True : IsSuccessful.False;
+            }
+            
             count++;
             CheckBox(message, currWord); 
             if (count == lesson.WordsList.Count)

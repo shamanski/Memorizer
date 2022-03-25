@@ -9,7 +9,7 @@ namespace TgBot.Keybords
     class LessonKeyboard
     {
         public InlineKeyboardMarkup Keyboard { get; set; }
-        public LessonKeyboard(string[] words) 
+        public LessonKeyboard(string[] words, string sourceWord) 
         {
             words = words.Select((x) => x.Insert(0, '\u25A1'.ToString())).ToArray();
             var keyboard = new List<List<InlineKeyboardButton>>
@@ -17,8 +17,7 @@ namespace TgBot.Keybords
                     new List<InlineKeyboardButton> {InlineKeyboardButton.WithCallbackData(words[0]), InlineKeyboardButton.WithCallbackData(words[1]) },
                     new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData(words[2]), InlineKeyboardButton.WithCallbackData(words[3]) },
                     new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData(words[4]), InlineKeyboardButton.WithCallbackData(words[5]) },
-                    new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData('\u26a1'.ToString()) + "Remove this word" }
-
+                    new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData('\u26a1'.ToString()) + "Remove this word", "/rm" }
                 };
 
             Keyboard = new InlineKeyboardMarkup(keyboard);

@@ -26,7 +26,7 @@ namespace TgBot
         static ChatController()
         {
             Users = new UserController();
-            Command = new CommandService();
+            Command = new CommandService(new StateController());
         }
         
         public static void SetBot(string token)

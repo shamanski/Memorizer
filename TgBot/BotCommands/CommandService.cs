@@ -33,8 +33,7 @@ namespace TgBot.BotCommands
                 { "/add", new AddCommand() },
                 { "/remove", new RemoveCommand() },
                 { "/info", new InfoCommand() },
-               // new StatCommand()
-              // { "Q", new QuitCommand() }
+                { "/startpack", new StartCommand() },
             };
         }
 
@@ -45,7 +44,7 @@ namespace TgBot.BotCommands
             var state = states.GetUserState(user.Name);
             if (state != null)
             {
-                if (!state.Next(user, message))
+                if (!state.Next(user, message).Result)
                 {
                     states.RemoveUserState(user.Name);
                     Refresh();
@@ -59,7 +58,7 @@ namespace TgBot.BotCommands
                 try
                 {
 
-                    var res = _commands[split.First()].Execute(user, message);
+                    var res = _commands[split.First()].Execute(user, message).Result;
                     if (res)
                     {
                         states.Add(user.Name, _commands[split.First()]);
@@ -71,8 +70,8 @@ namespace TgBot.BotCommands
 
                 catch (KeyNotFoundException)
                 {
-                    if (currentCommand?.Next(user, message) == false) currentCommand = null;
-                    System.Console.WriteLine("Command doesn't exists");
+                    if (currentCommand?.Next(user, message).Result == false) currentCommand = null;
+                    System.Console.WriteLine($"Command {split.First()} doesn't exists");
                     return false;
                 }
 

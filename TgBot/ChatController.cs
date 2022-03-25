@@ -60,7 +60,7 @@ namespace TgBot
         {
             var chatId = message.Chat.Id;
             var messageText = message.Text;
-            Message sentMessage = await bot.SendTextMessageAsync(
+            await bot.SendTextMessageAsync(
                 chatId: chatId,
                 text: messageText,
                 replyMarkup: message.ReplyMarkup,
@@ -71,11 +71,10 @@ namespace TgBot
         {
             var chatId = message.Chat.Id;
             var messageId = message.MessageId;
-            Message sentMessage = await bot.EditMessageReplyMarkupAsync(
+            _ = await bot.EditMessageReplyMarkupAsync(
                 chatId: chatId,
                 messageId: messageId,
                 replyMarkup: message.ReplyMarkup);
-            Message callBack = new Message();
             await bot.AnswerCallbackQueryAsync(message.Caption);
         }
 

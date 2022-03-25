@@ -14,7 +14,7 @@ namespace ReversoConsole.DbModel
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("Name is empty or null", nameof(name));
+                throw new ArgumentNullException(nameof(name), "Name is empty or null");
             }
 
             Name = name;

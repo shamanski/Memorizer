@@ -9,13 +9,11 @@ namespace ReversoConsole.Algorithm
 {
     public class StandardLesson : BaseController, ITakingLesson
     {
-        public readonly LessonSetings settings;
-        private readonly User user;
+        public readonly LessonSetings settings;       
         public List<LearningWord> Words { get; private set; }
        
         public StandardLesson(User user)
         {
-            this.user = user ?? throw new ArgumentNullException(nameof(user), "Username is null or empty");
             Words = user.Words;
             settings = new LessonSetings();            
         }
@@ -75,15 +73,13 @@ namespace ReversoConsole.Algorithm
             foreach (var i in lesson.WordsList)
             {
                 i.LearningWord.LastTime = DateTime.Now;
-                if (i.isSuccessful == IsSuccessful.True)
+                i.LearningWord.Level = i.IsSuccessful switch
                 {
-                    if (i.LearningWord.Level < settings.maxLevel) i.LearningWord.Level++;
-                }
-                
-                else if (i.isSuccessful == IsSuccessful.False)
-                {
-                    i.LearningWord.Level = 1;                   
-                }
+                    IsSuccessful.True when (i.LearningWord.Level < settings.maxLevel) => i.LearningWord.Level + 1,
+                    IsSuccessful.False => 1,
+                    IsSuccessful.Finished => -1,
+                    _ => i.LearningWord.Level
+                };
                 
                 Save();
             }

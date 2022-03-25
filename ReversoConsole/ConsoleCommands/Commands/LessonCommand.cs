@@ -17,9 +17,8 @@ namespace ReversoConsole.ConsoleCommands.Commands
             throw new NotImplementedException();
         }
 
-        public override Task Execute(User user, IEnumerable<string> message)
+        public override Task Execute(User user, IEnumerable<string> arguments)
         {
-            var learning = new LearningController(user);
             var lessonController = new StandardLesson(user);
             var lesson = lessonController.GetNextLesson();
             foreach (var currWord in lesson.WordsList)
@@ -27,12 +26,12 @@ namespace ReversoConsole.ConsoleCommands.Commands
                 Console.WriteLine(currWord.LearningWord.WordToLearn.Translates[0].Text);
                 if (Console.ReadLine() == currWord.LearningWord.WordToLearn.Text)
                 {
-                    currWord.isSuccessful = IsSuccessful.True;
+                    currWord.IsSuccessful = IsSuccessful.True;
                     Console.WriteLine("Yes");
                 }
                 else
                 {
-                    currWord.isSuccessful = IsSuccessful.False;
+                    currWord.IsSuccessful = IsSuccessful.False;
                     Console.WriteLine("No");
                 }
 

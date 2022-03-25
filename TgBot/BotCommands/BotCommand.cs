@@ -12,9 +12,9 @@ namespace TgBot.BotCommands
     {
         public abstract string Name { get; }
 
-        public abstract bool Execute(ReversoConsole.DbModel.User user, Message arguments);
+        public abstract Task<bool> Execute(ReversoConsole.DbModel.User user, Message message);
 
 
-        public abstract bool Next(ReversoConsole.DbModel.User user, Message arguments);
+        public abstract Task<bool> Next(ReversoConsole.DbModel.User user, Message message);
     }
 }

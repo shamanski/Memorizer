@@ -10,29 +10,38 @@ namespace TgBot.BotCommands.Commands
 {
     class InfoCommand : BotCommand
     {
-        private LearningController learningController;
         public override string Name => throw new NotImplementedException();
 
-        public override bool Execute(User user, Telegram.Bot.Types.Message message)
+        public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message)
         {
-            learningController = new LearningController(user);
+            var learningController = new LearningController(user);
             var i = learningController.GetAll();
             var str = new StringBuilder();
             foreach (var word in i)
             {
-                str.Append(Enumerable.Repeat('\u25CF', word.Level).ToArray());
-                str.Append(Enumerable.Repeat('\u25CB', 7 - word.Level).ToArray());
-                str.Append($"   {word.ToString()} - {word.WordToLearn.Translates[0].Text}".PadRight(30));               
+                if (word.Level == -1)
+                {
+                    str.Append(Enumerable.Repeat('\u25CF', 8).ToArray());
+                }
+                else
+                {
+                    str.Append(Enumerable.Repeat('\u25CF', word.Level).ToArray());
+                    str.Append(Enumerable.Repeat('\u25CB', 8 - word.Level).ToArray());
+                }
+                
+                str.Append($"   {word} - {word.WordToLearn.Translates[0].Text}".PadRight(30));               
                 str.AppendLine();
             }
-            str.Append($"Всего {i.Count} слов");
-            
+            str.AppendLine($"Всего {i.Count} слов");
+            str.AppendLine($"Изучено {i.Count(word => word.Level == -1)} слов");
+
+
             message.Text = str.ToString();
-            ChatController.ReplyMessage(message);
+            await ChatController.ReplyMessage(message);
             return false;
         }
 
-        public override bool Next(User user, Telegram.Bot.Types.Message message)
+        public override Task<bool> Next(User user, Telegram.Bot.Types.Message message)
         {
             throw new NotImplementedException();
         }

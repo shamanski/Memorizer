@@ -12,9 +12,9 @@ namespace ReversoConsole.Controller
 
         public AppContext()
         {
-          //  Database.EnsureDeleted();
             Database.EnsureCreated();
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Test;Trusted_Connection=True") ;

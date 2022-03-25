@@ -60,9 +60,9 @@ namespace ReversoConsole.Controller
             
         }
 
-        public void AddNewWords(List<LearningWord> words)
+        public void AddNewWords(List<Word> words)
         {
-            foreach (var word in words) AddNewWord(word);
+            foreach (var word in words) AddNewWord(new LearningWord(user, word));
         }
 
 

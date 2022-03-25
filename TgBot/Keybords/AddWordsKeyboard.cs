@@ -12,8 +12,10 @@ namespace TgBot.Keybords
 
         public AddWordsKeyboard(List<string> words)
         {
-            var keyboard = new List<List<InlineKeyboardButton>>();
-            keyboard.Add(new List<InlineKeyboardButton>());
+            var keyboard = new List<List<InlineKeyboardButton>>
+            {
+                new List<InlineKeyboardButton>()
+            };
             foreach (var i in words)
             {
                 keyboard[0].Add(new InlineKeyboardButton(i) {CallbackData = i });

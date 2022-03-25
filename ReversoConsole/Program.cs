@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ReversoApi;
 using ReversoApi.Models;
-using ReversoApi.Models.Segment;
-using ReversoApi.Models.Text;
 using ReversoApi.Models.Word;
 using System.Xml.Serialization;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using ReversoConsole.DbModel;
 using ReversoConsole.Controller;
-using Microsoft.EntityFrameworkCore;
-using ReversoConsole.Algorithm;
 using ReversoConsole.ConsoleCommands;
 
 namespace ReversoApi
@@ -22,8 +15,8 @@ namespace ReversoApi
     [Serializable]
     public class WordDescription
     {
-        public string ID  = "0";
-        public string Word  = "-";
+        public string ID { get; }
+        public string Word { get; }
         public WordDescription(string id, string word)
         {
             this.ID = id;
@@ -36,22 +29,22 @@ namespace ReversoApi
         }
     }
     [Serializable]
-    public class Words
+    public class NWords
     {
-        public List<WordDescription> words {get;}
+        public List<WordDescription> Words {get;}
 
-        public Words() 
+        public NWords() 
         {
-            this.words = new List<WordDescription>();
+            this.Words = new List<WordDescription>();
         }
 
-        public Words(List<WordDescription> words)
+        public NWords(List<WordDescription> words)
         {
-            this.words = words;
+            this.Words = words;
         }
     }
 
-    class Program
+    static class Program
     {
         static void Migration()
         {
@@ -61,8 +54,10 @@ namespace ReversoApi
             {
                 if (!word.Error && word.Success)
                 {
-                    var w = new Word();
-                    w.Text = word.Sources[0].DisplaySource;
+                    var w = new Word
+                    {
+                        Text = word.Sources[0].DisplaySource
+                    };
                     var items = ( from translate in word.Sources[0].Translations
                                 select new Translate
                                 {
@@ -74,13 +69,11 @@ namespace ReversoApi
                 }
                 else Console.WriteLine($"{word.Sources[0].DisplaySource }");
             }
-            using (var db = new ReversoConsole.Controller.AppContext())
-            {
-                db.AddRange(dbmodel);
-                db.SaveChanges();
-                Console.WriteLine("Объекты успешно сохранены");
-            }
-            
+            using var db = new ReversoConsole.Controller.AppContext();
+            db.AddRange(dbmodel);
+            db.SaveChanges();
+            Console.WriteLine("Объекты успешно сохранены");
+
         }
         static async Task Main(string[] args)
         {
@@ -94,10 +87,10 @@ namespace ReversoApi
                 Console.WriteLine( $"{c.Key} - {c.Value.Name}" );
             }
 
-            while (true)
+            while (Console.ReadKey(true).Key != ConsoleKey.Escape)
             {
                 Console.Write("Enter command: >");
-                var i = command.Execute(userController.CurrentUser, Console.ReadLine());
+                await command.Execute(userController.CurrentUser, Console.ReadLine());
             }
         }
 
@@ -110,46 +103,40 @@ namespace ReversoApi
                          .Select(i => new WordDescription(i[0],i[1]))
                          .ToList();
             Console.WriteLine(res[0].Word);
-            var wds = new Words(res);
-            XmlSerializer formatter = new XmlSerializer(typeof(Words));
-            using (FileStream fs = new FileStream("d:\\words.xml", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, wds);
+            var wds = new NWords(res);
+            XmlSerializer formatter = new XmlSerializer(typeof(NWords));
+            using FileStream fs = new FileStream("d:\\words.xml", FileMode.OpenOrCreate);
+            formatter.Serialize(fs, wds);
 
-                Console.WriteLine("Список сериализован");
-            }
+            Console.WriteLine("Список сериализован");
         }
 
         static void SaveTranslates(List<TranslatedResponse> list)
         {
             XmlSerializer formatter = new XmlSerializer(typeof(List<TranslatedResponse>));
-            using (FileStream fs = new FileStream("d:\\words.xml", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, list);
+            using FileStream fs = new FileStream("d:\\words.xml", FileMode.OpenOrCreate);
+            formatter.Serialize(fs, list);
 
-                Console.WriteLine("Список сериализован");
-            }
+            Console.WriteLine("Список сериализован");
         }
             static List<TranslatedResponse> ReadTranslates()
         {
-            var wds = new List<TranslatedResponse>();
+            
             XmlSerializer formatter = new XmlSerializer(typeof(List<TranslatedResponse>));
-            using (FileStream fs = new FileStream("d:\\words.xml", FileMode.OpenOrCreate))
-            {
-                wds = (List<TranslatedResponse>)formatter.Deserialize(fs);
-
-                Console.WriteLine("Список десериализован");
-            }
+            using FileStream fs = new FileStream("d:\\words.xml", FileMode.OpenOrCreate);
+            var wds = (List<TranslatedResponse>)formatter.Deserialize(fs);
+            Console.WriteLine("Список десериализован");
             return wds;
+
         }
 
-        static List<TranslatedResponse> Request(Words words)
+        static List<TranslatedResponse> Request(NWords words)
         {
             var responses = new List<TranslatedResponse>(); 
-            foreach (var word in words.words)
+            foreach (var word in words.Words.Select(x => x.Word))
             {
-                 responses.Add (Do(word.Word).Result);
-                Console.WriteLine(word.Word);
+                 responses.Add (Do(word).Result);
+                Console.WriteLine(word);
             }
             return responses;
         }

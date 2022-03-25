@@ -17,7 +17,7 @@ namespace TgBot.Keybords
                     new List<InlineKeyboardButton> {InlineKeyboardButton.WithCallbackData(words[0]), InlineKeyboardButton.WithCallbackData(words[1]) },
                     new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData(words[2]), InlineKeyboardButton.WithCallbackData(words[3]) },
                     new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData(words[4]), InlineKeyboardButton.WithCallbackData(words[5]) },
-                    new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData('\u26a1'.ToString()) + "Remove this word", "/rm" }
+                    new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData('\u26a1'.ToString() + "Уже запомнил", "/rm") }
                 };
 
             Keyboard = new InlineKeyboardMarkup(keyboard);

@@ -14,35 +14,35 @@ namespace TgBot.BotCommands.Commands
         public override string Name { get; } = "Remove word(s) from your list";
         private LearningController learningController;
 
-        public override bool Execute(ReversoConsole.DbModel.User user, Message message)
+        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message)
         {
             learningController = new LearningController(user);
             message.Text = $"Введите слово:";
             message.ReplyMarkup = null;
-            ChatController.ReplyMessage(message);
+            await ChatController.ReplyMessage(message);
             return true;
         }
 
-        public override bool Next(ReversoConsole.DbModel.User user, Message message)
+        public async override Task<bool> Next(ReversoConsole.DbModel.User user, Message message)
         {
             try
             {
                 var word = learningController.Find(message.Text);
                 if (learningController.RemoveWord(word) )
-                     message.Text = $"Удалено {word.ToString()}";
+                     message.Text = $"Удалено {word}";
                 else
                 {
-                    message.Text = $"Такого слова не найдено {word.ToString()}";
+                    message.Text = $"Такого слова не найдено {word}";
                 }
             }
             catch
             {
                 message.Text = $"Ошибка связи с сервером. Попробуйте позже.";
-                ChatController.ReplyMessage(message);
+                await ChatController.ReplyMessage(message);
                 return false;
             }
 
-            ChatController.ReplyMessage(message);
+            await ChatController.ReplyMessage(message);
             return false;
         }
     }

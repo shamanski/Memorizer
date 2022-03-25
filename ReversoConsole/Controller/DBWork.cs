@@ -10,7 +10,7 @@ namespace ReversoConsole.Controller
 {
    public class DBWork : IDataSaver        
     {
-        DbContext db;
+        readonly DbContext db;
         public DBWork(DbContext context)
         {
             db = context;
@@ -49,14 +49,7 @@ namespace ReversoConsole.Controller
         public T LoadElement<T> (T item, string collection) where T: LearningModelBase
         {
 
-                db.Attach<T>(item);
-            var memberEntry = db.Entry(item).Member(collection);
-
-            // if (memberEntry is DbCollectionEntry collectionMember)
-            //     collectionMember.Load();
-
-            // if (memberEntry is DbReferenceEntry referenceMember)
-            //     referenceMember.Load();
+            db.Attach<T>(item);
             try
             {
                 db.Entry(item).Collection(collection).Load();

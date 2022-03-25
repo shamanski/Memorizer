@@ -27,24 +27,11 @@ namespace ReversoConsole.Controller
             Users = GetUsersData();
         }
 
-            public User GetUser(string userName)
-        {
-            _user = Users.SingleOrDefault(u => u.Name == userName);
-            if (_user == null)
-            {
-                Users.Add(new User(userName));
-                _user = Users.SingleOrDefault(u => u.Name == userName);
-                Save();
-            }
-            _user = LoadElement<User>(_user, nameof(_user.Words));
-            return _user;
-        }
- 
         public UserController(string userName)
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
-                throw new ArgumentNullException("User Name is empty", nameof(userName));
+                throw new ArgumentNullException(nameof(userName), "User Name is empty");
             }
 
             Users = GetUsersData();
@@ -57,16 +44,25 @@ namespace ReversoConsole.Controller
                 
             }
             _user = LoadElement<User>(_user, nameof(_user.Words));
-            //LoadElement<Word>(ref _user.Words, nameof(LearningWord.WordToLearn));
         }
+
+        public User GetUser(string userName)
+        {
+            _user = Users.SingleOrDefault(u => u.Name == userName);
+            if (_user == null)
+            {
+                Users.Add(new User(userName));
+                _user = Users.SingleOrDefault(u => u.Name == userName);
+                Save();
+            }
+            _user = LoadElement<User>(_user, nameof(_user.Words));
+            return _user;
+        }
+
         public void Save()
         {
             Update(CurrentUser);
         }
 
-        public void SetNewUserData(string Name)
-        {
-            Save();
-        }
     }
 }

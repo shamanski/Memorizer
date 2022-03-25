@@ -34,11 +34,7 @@ namespace ReversoConsole.Controller
             var result = Words.SingleOrDefault(f => f.Text == name);
             if (result == null)
             {
-                var res = Do(name).Result ?? null;
-                if (res == null)
-                {
-                    throw new Exception("Translate server error");
-                };
+                var res = Do(name).Result;
                 Words.Add(res);
                 Update(res);
                 return res;
@@ -46,9 +42,8 @@ namespace ReversoConsole.Controller
 
             else
             {
-                var update = this.Words.Find(i => i.Text == name);
-                
-                return LoadWord(update); ;
+                var update = this.Words.Find(i => i.Text == name);                
+                return LoadWord(update);
             }
         }
 
@@ -78,7 +73,7 @@ namespace ReversoConsole.Controller
                     Text = translatedWord.Sources.First().DisplaySource
                 };
                 var items = (from translate in translatedWord.Sources.First().Translations
-                             where (translate.IsRude == false)
+                             where (!translate.IsRude)
                              select new Translate
                              {
                                  Text = translate.Translation

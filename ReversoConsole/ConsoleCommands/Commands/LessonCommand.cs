@@ -20,7 +20,8 @@ namespace ReversoConsole.ConsoleCommands.Commands
         public override Task Execute(User user, IEnumerable<string> message)
         {
             var learning = new LearningController(user);
-            var lesson = learning.Lesson.GetNextLesson();
+            var lessonController = new StandardLesson(user);
+            var lesson = lessonController.GetNextLesson();
             foreach (var currWord in lesson.WordsList)
             {
                 Console.WriteLine(currWord.LearningWord.WordToLearn.Translates[0].Text);
@@ -36,7 +37,7 @@ namespace ReversoConsole.ConsoleCommands.Commands
                 }
 
             }
-            learning.Lesson.ReturnFinishedLesson(lesson);
+            lessonController.ReturnFinishedLesson(lesson);
             return Task.CompletedTask;
         }
     }

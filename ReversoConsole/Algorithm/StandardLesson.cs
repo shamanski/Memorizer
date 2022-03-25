@@ -10,12 +10,12 @@ namespace ReversoConsole.Algorithm
     public class StandardLesson : BaseController, ITakingLesson
     {
         public readonly LessonSetings settings;
-        public User user;
+        private readonly User user;
         public List<LearningWord> Words { get; private set; }
        
         public StandardLesson(User user)
         {
-            this.user = user ?? throw new ArgumentNullException("Username is null or empty", nameof(user));
+            this.user = user ?? throw new ArgumentNullException(nameof(user), "Username is null or empty");
             Words = user.Words;
             settings = new LessonSetings();            
         }
@@ -52,7 +52,7 @@ namespace ReversoConsole.Algorithm
 
         public Lesson GetNextLesson()
         {
-            if (!(Words?.Any() ?? false)) throw new Exception("Nothing to learn");
+            if (!(Words?.Any() ?? false)) throw new ArgumentException("Nothing to learn");
             var lesson = new Lesson();
             var newWords = Words
                 .Where(i => i.Level == 0)
@@ -72,7 +72,6 @@ namespace ReversoConsole.Algorithm
 
         public void ReturnFinishedLesson(Lesson lesson)
         {
-            var words = new List<LearningWord>();
             foreach (var i in lesson.WordsList)
             {
                 i.LearningWord.LastTime = DateTime.Now;

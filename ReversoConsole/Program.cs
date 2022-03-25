@@ -88,11 +88,6 @@ namespace ReversoApi
             Console.WriteLine("EnterName");
             var name = Console.ReadLine();
             var userController = new UserController(name);                      
-            if (userController.IsNewUser)
-            {
-                userController.SetNewUserData(name);
-            }
-
             var command = new CommandService();
             foreach (var c in command.Get())
             {

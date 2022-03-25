@@ -14,12 +14,14 @@ namespace TgBot.BotCommands.Commands
     {
         public override string Name { get; } = "Start new lesson";
         private LearningController learning;
+        private StandardLesson lessonController;
         private Lesson lesson;
         int count = 0;
         public override bool Execute(ReversoConsole.DbModel.User user, Message message)
         {
             learning = new LearningController(user);
-            lesson = learning.Lesson.GetNextLesson();
+            lessonController = new StandardLesson(user);
+            lesson = lessonController.GetNextLesson();
             StepAnswer(message);
             return  true;
         }
@@ -36,13 +38,15 @@ namespace TgBot.BotCommands.Commands
         
         private void CheckBox(Message message, string currWord)
         {
-            if (message.ReplyMarkup != null)
+            if (message.ReplyMarkup != null )
             {
                 foreach (var i in message?.ReplyMarkup?.InlineKeyboard)
                 {
                     foreach (var n in i)
                     {
-                        n.Text += currWord == n.Text ? '\u2713' : '\u274C';
+                        n.Text = n.Text.Remove(0,1).Insert(0,  currWord == n.Text.Substring(1) ? '\u2705'.ToString() : '\u274C'.ToString());
+                        //if (n.Text.EndsWith('\u2713') || n.Text.EndsWith('\u274C')) return;
+                            //n.Text += currWord == n.Text ? '\u2713' : '\u274C';
                     }
                 }
                 ChatController.EditMessageAsync(message);
@@ -59,7 +63,7 @@ namespace TgBot.BotCommands.Commands
         public override bool Next(ReversoConsole.DbModel.User user, Message message)
         {
             var currWord = lesson.WordsList[count].ToString();
-            lesson.WordsList[count].isSuccessful = (currWord == message.Text) ? IsSuccessful.True : IsSuccessful.False;
+            lesson.WordsList[count].isSuccessful = (currWord == message.Text.Substring(1)) ? IsSuccessful.True : IsSuccessful.False;
             count++;
             CheckBox(message, currWord); 
             if (count == lesson.WordsList.Count)
@@ -73,8 +77,8 @@ namespace TgBot.BotCommands.Commands
         }
 
         public void Last(Message message)
-        {
-            learning.Lesson.ReturnFinishedLesson(lesson);
+        {           
+            lessonController.ReturnFinishedLesson(lesson);
             int successful = 0;
             foreach (var i in lesson.WordsList)
             {

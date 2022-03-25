@@ -56,7 +56,7 @@ namespace TgBot
 
         }
 
-        public static async void ReplyMessage(Message message)
+        public static async Task ReplyMessage(Message message)
         {
             var chatId = message.Chat.Id;
             var messageText = message.Text;
@@ -67,7 +67,7 @@ namespace TgBot
                 cancellationToken: new CancellationToken());
         }
 
-        public static async void EditMessageAsync(Message message)
+        public static async Task EditMessageAsync(Message message)
         {
             var chatId = message.Chat.Id;
             var messageId = message.MessageId;
@@ -94,8 +94,6 @@ namespace TgBot
                 {
                     OnMessage(update.Message);
                 } 
-                    
-                    return;
             });
         }
 

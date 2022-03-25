@@ -19,9 +19,5 @@ namespace ReversoConsole.Controller
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Test;Trusted_Connection=True") ;
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //modelBuilder.Entity<Translate>().HasIndex(u => u.Text).IsUnique();
-        }
     }
 }

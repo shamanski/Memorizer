@@ -20,9 +20,9 @@ namespace TgBot.BotCommands.Commands
             var str = new StringBuilder();
             foreach (var word in i)
             {
-                str.Append($"{word.ToString()} - {word.WordToLearn.Translates[0].Text}".PadRight(30));
-                str.Append(Enumerable.Repeat('\u2588', word.Level).ToArray());
-                str.Append(Enumerable.Repeat('\u2591', 7 - word.Level).ToArray());
+                str.Append(Enumerable.Repeat('\u25CF', word.Level).ToArray());
+                str.Append(Enumerable.Repeat('\u25CB', 7 - word.Level).ToArray());
+                str.Append($"   {word.ToString()} - {word.WordToLearn.Translates[0].Text}".PadRight(30));               
                 str.AppendLine();
             }
             str.Append($"Всего {i.Count} слов");

@@ -45,7 +45,7 @@ namespace TgBot.BotCommands
             var state = states.GetUserState(user.Name);
             if (state != null)
             {
-                if (state.Next(user, message) == false)
+                if (!state.Next(user, message))
                 {
                     states.RemoveUserState(user.Name);
                     Refresh();
@@ -60,7 +60,7 @@ namespace TgBot.BotCommands
                 {
 
                     var res = _commands[split.First()].Execute(user, message);
-                    if (res == true) states.Add(user.Name, _commands[split.First()]);
+                    if (res) states.Add(user.Name, _commands[split.First()]);
                     return res;
 
                 }

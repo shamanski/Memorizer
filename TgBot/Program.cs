@@ -12,7 +12,7 @@ using TgBot.Keybords;
 
 namespace TgBot
 {
-    class Program
+    static class Program
     {
         private static string token = "5065451258:AAF73Y8um3nU30RXEPQ59kVq98XnUTYYfeg";
         public static CancellationTokenSource Cts { get; set; }

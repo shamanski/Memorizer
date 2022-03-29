@@ -1,4 +1,5 @@
-﻿using ReversoConsole.Controller;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ReversoConsole.Controller;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,49 +15,19 @@ using TgBot.Keybords;
 
 namespace TgBot
 {
-    static class ChatController
+    public class ChatController
     {
         
         private delegate bool nextStep(Message message);
-        static private TelegramBotClient bot;
-        public static CommandService Command { get; set; }
-        public static UserController Users { get; set; }
+        private readonly TelegramBotClient bot;
 
        
-        static ChatController()
+        public ChatController(TelegramBot tgBot)
         {
-            Users = new UserController();
-            Command = new CommandService(new StateController());
+            bot = tgBot.GetBot().Result;
         }
-        
-        public static void SetBot(string token)
-        {
-            bot = new TelegramBotClient(token);
-            var receiverOptions = new ReceiverOptions
-            {
-                AllowedUpdates = { }
-            };
-
-            using var cts = new CancellationTokenSource();
-            bot.StartReceiving(
-            HandleUpdateAsync,
-            HandleErrorAsync,
-            receiverOptions,
-            cancellationToken: cts.Token);
-        }
-
-        public static Message OnMessage(Message message)
-        {
-            var chatId = message.Chat.Id;
-            var messageText = message.Text;
-            var user = Users.GetUser(message.From.Id.ToString());
-            Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
-            Command.Execute(user, message);
-            return null;
-
-        }
-
-        public static async Task ReplyMessage(Message message)
+       
+        public async Task ReplyMessage(Message message)
         {
             var chatId = message.Chat.Id;
             var messageText = message.Text;
@@ -67,7 +38,7 @@ namespace TgBot
                 cancellationToken: new CancellationToken());
         }
 
-        public static async Task EditMessageAsync(Message message)
+        public async Task EditMessageAsync(Message message)
         {
             var chatId = message.Chat.Id;
             var messageId = message.MessageId;
@@ -78,43 +49,10 @@ namespace TgBot
             await bot.AnswerCallbackQueryAsync(message.Caption);
         }
 
-        static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
-        {
-            await Task.Run(() =>
-            {
-                if (update.Type == UpdateType.CallbackQuery) 
-                { 
-                    OnCallBack(update.CallbackQuery); return; 
-                }
+        
 
-                if (update.Message?.Type != MessageType.Text)
-                    return;
-                if (update.Message?.Type == MessageType.Text)
-                {
-                    OnMessage(update.Message);
-                } 
-            });
-        }
+        
 
-        private async static void OnCallBack(CallbackQuery data) 
-        {
-            var user = Users.GetUser(data.From.Id.ToString());
-            data.Message.Text = data.Data;
-            data.Message.Caption = data.Id;
-            await Task.Run(() => Command.Execute(user, data.Message));
-        }
-
-        static Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
-        {
-            var ErrorMessage = exception switch
-            {
-                ApiRequestException apiRequestException
-                    => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-                _ => exception.ToString()
-            };
-
-            Console.WriteLine(ErrorMessage);
-            return Task.CompletedTask;
-        }
+        
     }
 }

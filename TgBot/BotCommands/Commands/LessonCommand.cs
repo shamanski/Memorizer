@@ -1,23 +1,27 @@
 ﻿using ReversoConsole.Algorithm;
 using ReversoConsole.Controller;
-using ReversoConsole.DbModel;
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using TgBot.Keybords;
 
 namespace TgBot.BotCommands.Commands
 {
-    class LessonCommand : BotCommand
+    public class LessonCommand : BotCommand
     {
-        public override string Name { get; } = "Start new lesson";
+        private const string positive = "\u2705";
+        private const string negative = "\u274C";
+        public override string Name { get; } = "/lesson";
         private StandardLesson lessonController;
         private Lesson lesson;
         int count = 0;
-        
+
+        public LessonCommand(ChatController chatController) : base(chatController)
+        {
+        }
+
         public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message)
         {
             var learning = new LearningController(user);
@@ -25,7 +29,7 @@ namespace TgBot.BotCommands.Commands
             if (learning.GetAll().Count < 10)
             {
                 message.Text = "Добавьте хотя бы 10 слов для изучения. Можно использовать /startpack";
-                await ChatController.ReplyMessage(message);
+                await chat.ReplyMessage(message);
                 return false;
             } 
             lesson = lessonController.GetNextLesson();
@@ -39,9 +43,10 @@ namespace TgBot.BotCommands.Commands
             var translates = String.Join(", ", currentWord.Translates.Take(10));
             message.Text = translates;
             var w = lesson.WordsList[count].AdditionalWords;
-            w.Add(lesson.WordsList[count].LearningWord.WordToLearn.Text);
+            var rnd = new Random(); 
+            w.Insert(rnd.Next(w.Count), lesson.WordsList[count].LearningWord.WordToLearn.Text);
             message.ReplyMarkup = new LessonKeyboard(w.ToArray(), currentWord.Text).Keyboard;
-            await ChatController.ReplyMessage(message);  
+            await chat.ReplyMessage(message);  
         }
         
         private async Task CheckBox(Message message, string currWord)
@@ -55,32 +60,42 @@ namespace TgBot.BotCommands.Commands
                         if (!n.CallbackData.StartsWith('/'))
                         {
                             n.Text = n.Text.Remove(0, 1).Insert(0, currWord == n.Text[1..] 
-                                ? '\u2705'.ToString() 
-                                : '\u274C'.ToString());
+                                ? positive 
+                                : negative);
                         }
                     }
                 }
-                await ChatController.EditMessageAsync(message);
+                await chat.EditMessageAsync(message);
             }
 
             else
             {
-                message.Text += currWord == message.Text ? '\u2713' : '\u274C';
-                await ChatController.ReplyMessage(message);
+                message.Text = currWord == message.Text ? message.Text.Insert(0, positive) : message.Text.Insert(0, negative);
+                await chat.ReplyMessage(message);
             }
             
         }
 
+        private string Clear(string input)
+        {
+            var w = input;
+            if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
+            if (!char.IsLetter(input[0])) w = input[1..];
+            TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
+            return ti.ToTitleCase(w);
+        } 
+        
         public async override Task<bool> Next(ReversoConsole.DbModel.User user, Message message)
         {
             var currWord = lesson.WordsList[count].ToString();
-            if (message.Text == "/rm")
+            if (message.Text == "!rm")
             {
                 lesson.WordsList[count].IsSuccessful = IsSuccessful.Finished;
             }
             else
             {
-                lesson.WordsList[count].IsSuccessful = (currWord == message.Text[1..]) ? IsSuccessful.True : IsSuccessful.False;
+                message.Text = Clear(message.Text);
+                lesson.WordsList[count].IsSuccessful = (currWord == message.Text) ? IsSuccessful.True : IsSuccessful.False;
             }
             
             count++;
@@ -103,7 +118,7 @@ namespace TgBot.BotCommands.Commands
                               select i).Count();
             message.Text = $"Урок окончен. Результат: { successful} из {lesson.WordsList.Count}";
             message.ReplyMarkup = null;
-            await ChatController.ReplyMessage(message);
+            await chat.ReplyMessage(message);
         }
     }
 }

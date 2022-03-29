@@ -1,17 +1,17 @@
 ﻿using ReversoConsole.Controller;
-using ReversoConsole.DbModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
 namespace TgBot.BotCommands.Commands
 {
-    class StartCommand : BotCommand
+    public class StartCommand : BotCommand
     {
-        public override string Name { get; } = "Add start words to your list";     
+        public StartCommand(ChatController chatController) : base(chatController)
+        {
+        }
+
+        public override string Name { get; } = "/startpack";     
         
         public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message)
         {
@@ -26,13 +26,14 @@ namespace TgBot.BotCommands.Commands
             {
                 message.Text = $"Ошибка";
             }
-            await ChatController.ReplyMessage(message);
+            await chat.ReplyMessage(message);
             return false;
         }
 
         public async override Task<bool> Next(ReversoConsole.DbModel.User user, Message message)
         {
-            throw new NotImplementedException();
+            await Task.FromResult(true);
+            return false;
         }
     }
 }

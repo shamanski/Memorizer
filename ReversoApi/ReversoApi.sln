@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReversoConsole", "..\Revers
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgBot", "..\TgBot\TgBot.csproj", "{6E0B4647-D2B7-4C5F-8F0B-32742FA2717D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspTelegramServer", "..\AspTelegramServer\AspTelegramServer.csproj", "{DF489061-AB33-459E-A095-A8EB01DA4307}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspTelegramServer", "..\AspTelegramServer\AspTelegramServer.csproj", "{DF489061-AB33-459E-A095-A8EB01DA4307}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebBot", "..\WebBot\WebBot.csproj", "{426BFD8A-FA76-47ED-8A17-9F092085988E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{DF489061-AB33-459E-A095-A8EB01DA4307}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF489061-AB33-459E-A095-A8EB01DA4307}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF489061-AB33-459E-A095-A8EB01DA4307}.Release|Any CPU.Build.0 = Release|Any CPU
+		{426BFD8A-FA76-47ED-8A17-9F092085988E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{426BFD8A-FA76-47ED-8A17-9F092085988E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{426BFD8A-FA76-47ED-8A17-9F092085988E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{426BFD8A-FA76-47ED-8A17-9F092085988E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

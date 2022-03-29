@@ -73,14 +73,14 @@ namespace ReversoConsole.Controller
                     Text = translatedWord.Sources.First().DisplaySource
                 };
                 var items = (from translate in translatedWord.Sources.First().Translations
-                             where (!translate.IsRude)
+                             where (!translate.IsRude && translate.IsFromDict)
                              select new Translate
                              {
                                  Text = translate.Translation
                              }).ToList();
                 w.Translates = new List<Translate>();                
                 w.Translates.AddRange(items);
-                return w;
+                if (w.Translates.Count > 0) return w;
             }
 
             return null;

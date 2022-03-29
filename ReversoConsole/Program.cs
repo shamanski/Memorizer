@@ -46,6 +46,10 @@ namespace ReversoApi
 
     static class Program
     {
+
+        private static readonly string txtfile = "d:\\words.txt";
+        private static readonly string xmlfile = "d:\\words.xml";
+
         static void Migration()
         {
             var translates = ReadTranslates();
@@ -97,7 +101,7 @@ namespace ReversoApi
 
         static void Save()
         {
-          var res =  File.ReadLines("d:\\words.txt")
+          var res =  File.ReadLines(txtfile)
                          .Where(l => l.Length > 0)
                          .Select(x => x.Split(new[] { ')' }, StringSplitOptions.RemoveEmptyEntries))
                          .Select(i => new WordDescription(i[0],i[1]))
@@ -105,7 +109,7 @@ namespace ReversoApi
             Console.WriteLine(res[0].Word);
             var wds = new NWords(res);
             XmlSerializer formatter = new XmlSerializer(typeof(NWords));
-            using FileStream fs = new FileStream("d:\\words.xml", FileMode.OpenOrCreate);
+            using FileStream fs = new FileStream(xmlfile, FileMode.OpenOrCreate);
             formatter.Serialize(fs, wds);
 
             Console.WriteLine("Список сериализован");
@@ -114,7 +118,7 @@ namespace ReversoApi
         static void SaveTranslates(List<TranslatedResponse> list)
         {
             XmlSerializer formatter = new XmlSerializer(typeof(List<TranslatedResponse>));
-            using FileStream fs = new FileStream("d:\\words.xml", FileMode.OpenOrCreate);
+            using FileStream fs = new FileStream(xmlfile, FileMode.OpenOrCreate);
             formatter.Serialize(fs, list);
 
             Console.WriteLine("Список сериализован");
@@ -123,7 +127,7 @@ namespace ReversoApi
         {
             
             XmlSerializer formatter = new XmlSerializer(typeof(List<TranslatedResponse>));
-            using FileStream fs = new FileStream("d:\\words.xml", FileMode.OpenOrCreate);
+            using FileStream fs = new FileStream(xmlfile, FileMode.OpenOrCreate);
             var wds = (List<TranslatedResponse>)formatter.Deserialize(fs);
             Console.WriteLine("Список десериализован");
             return wds;

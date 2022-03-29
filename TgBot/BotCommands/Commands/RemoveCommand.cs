@@ -1,25 +1,24 @@
 ﻿using ReversoConsole.Controller;
-using ReversoConsole.DbModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
 namespace TgBot.BotCommands.Commands
 {
-    class RemoveCommand : BotCommand
+    public class RemoveCommand : BotCommand
     {
-        public override string Name { get; } = "Remove word(s) from your list";
+        public override string Name { get; } = "/remove";
         private LearningController learningController;
+
+        public RemoveCommand(ChatController chatController) : base(chatController)
+        {
+        }
 
         public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message)
         {
             learningController = new LearningController(user);
             message.Text = $"Введите слово:";
             message.ReplyMarkup = null;
-            await ChatController.ReplyMessage(message);
+            await chat.ReplyMessage(message);
             return true;
         }
 
@@ -38,11 +37,11 @@ namespace TgBot.BotCommands.Commands
             catch
             {
                 message.Text = $"Ошибка связи с сервером. Попробуйте позже.";
-                await ChatController.ReplyMessage(message);
+                await chat.ReplyMessage(message);
                 return false;
             }
 
-            await ChatController.ReplyMessage(message);
+            await chat.ReplyMessage(message);
             return false;
         }
     }

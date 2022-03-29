@@ -16,7 +16,7 @@ namespace ReversoConsole.Algorithm
     public class LessonWord
     {
         public LearningWord LearningWord { get; set; }
-        public IsSuccessful isSuccessful { get; set; } = IsSuccessful.NotStarted;
+        public IsSuccessful IsSuccessful { get; set; } = IsSuccessful.NotStarted;
         public List<String> AdditionalWords { get; set; }
         public override string ToString() => LearningWord.ToString();
     }

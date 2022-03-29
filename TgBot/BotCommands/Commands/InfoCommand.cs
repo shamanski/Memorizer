@@ -8,14 +8,20 @@ using System.Threading.Tasks;
 
 namespace TgBot.BotCommands.Commands
 {
-    class InfoCommand : BotCommand
+    public class InfoCommand : BotCommand
     {
-        public override string Name => throw new NotImplementedException();
+        public InfoCommand(ChatController chatController) : base(chatController)
+        {
+        }
+
+        public override string Name { get; } = "/info";
 
         public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message)
         {
             var learningController = new LearningController(user);
-            var i = learningController.GetAll();
+            var i = learningController
+                .GetAll().OrderByDescending(i => i.Level)
+                .ToList();
             var str = new StringBuilder();
             foreach (var word in i)
             {
@@ -37,7 +43,7 @@ namespace TgBot.BotCommands.Commands
 
 
             message.Text = str.ToString();
-            await ChatController.ReplyMessage(message);
+            await chat.ReplyMessage(message);
             return false;
         }
 

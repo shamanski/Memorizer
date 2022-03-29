@@ -35,15 +35,6 @@ namespace TgBot.Keybords
                 InlineKeyboardButton.WithCallbackData("Закончить"),
                 InlineKeyboardButton.WithCallbackData(">>>")
             };
-        }
-
-        private void CheckUncheck(InlineKeyboardButton button) =>
-            button.Text = button.Text
-            .StartsWith('\u2611') ? 
-            button.Text.Replace('\u2611', '\u2705') : 
-            button.Text.Replace('\u2705', '\u2611');
-       
-            
-
+        }                  
     }
 }

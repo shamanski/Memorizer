@@ -1,82 +1,76 @@
-﻿using ReversoConsole.ConsoleCommands.Commands;
-using ReversoConsole.DbModel;
-using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ReversoConsole.ConsoleCommands.Commands;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using TgBot.BotCommands.Commands;
 
 namespace TgBot.BotCommands
 {
-    class CommandService : ICommandService
+    public class CommandService : ICommandService
     {
+        private readonly StateController states;
+        private readonly ChatController chat; 
+        private List<BotCommand> _commands;
 
-        private BotCommand currentCommand = null;
-        private static StateController states;
-
-        private Dictionary<string, BotCommand> _commands;
-
-        public CommandService(StateController state)
+        public CommandService(StateController state, ChatController chatController)
         {
             states = state;
+            chat = chatController;  
             Refresh(); 
         }
 
         private void Refresh()
         {
-            _commands = new Dictionary<string, BotCommand>
+            _commands = new List<BotCommand>
             {
-               // { "H", new HelpCommand() },
-                { "/lesson", new LessonCommand() },
-                { "/add", new AddCommand() },
-                { "/remove", new RemoveCommand() },
-                { "/info", new InfoCommand() },
-                { "/startpack", new StartCommand() },
+                {new LessonCommand(chat) },
+                {new AddCommand(chat) },
+                { new RemoveCommand(chat) },
+                { new InfoCommand(chat) },
+                { new RemoveCommand(chat) },
+                { new RemoveCommand(chat) },
+                {new StartCommand(chat) }
             };
         }
 
-        public Dictionary<string, BotCommand> Get() => _commands;
+        public List<BotCommand> Get() => _commands;
 
         public bool Execute(ReversoConsole.DbModel.User user, Message message)
         {
             var state = states.GetUserState(user.Name);
-            if (state != null)
+            var split = message.Text.Split(' ');
+            try
             {
-                if (!state.Next(user, message).Result)
+                if (split.First().StartsWith('/')) // Got a command
                 {
-                    states.RemoveUserState(user.Name);
-                    Refresh();
-                }
-                    return false;
-            }
-
-            else
-            {
-                var split = message.Text.Split(' ');
-                try
-                {
-
-                    var res = _commands[split.First()].Execute(user, message).Result;
-                    if (res)
+                    states.RemoveUserState(user.Name);  //Stop current command if exists
+                    var res = _commands.FirstOrDefault(i => i.Name == split.First()).Execute(user, message).Result; //Try to execute new command
+                    if (res) // Command should continue
                     {
-                        states.Add(user.Name, _commands[split.First()]);
+                        states.Add(user.Name, _commands.First(i => i.Name == split.First())); //Save command
                     }
-                    
-                    return res;
-
+                    return res; //True if command has next steps
                 }
 
-                catch (KeyNotFoundException)
+                else if (state != null) // If request is not a command and saved command exists
                 {
-                    if (currentCommand?.Next(user, message).Result == false) currentCommand = null;
-                    System.Console.WriteLine($"Command {split.First()} doesn't exists");
-                    return false;
+                    if (!state.Next(user, message).Result) //Execute saved command and check if it should continue
+                    {
+                        states.RemoveUserState(user.Name);
+                        Refresh();
+                    }
+                    return false; // Nothing to do
                 }
-
+            }            
+            catch (KeyNotFoundException) // Command not founded
+            {
+                System.Console.WriteLine($"Command {split.First()} doesn't exists");
+                return false;
             }
-           
+
+            return false; // If request is not a command and saved command doesn't exists
         }
+
     }
 }

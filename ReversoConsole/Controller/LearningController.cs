@@ -51,13 +51,7 @@ namespace ReversoConsole.Controller
                 Words.Add(word);
                 Update(word);
                  
-            }
-
-           else
-            {
-                throw new ArgumentException($"Word '{word.WordToLearn.Text}' is already added");
-            }
-            
+            }           
         }
 
         public void AddNewWords(List<Word> words)

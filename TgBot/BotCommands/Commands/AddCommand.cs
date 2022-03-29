@@ -1,19 +1,20 @@
 ﻿using ReversoConsole.Controller;
 using ReversoConsole.DbModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
 namespace TgBot.BotCommands.Commands
 {
-    class AddCommand : BotCommand
+    [Command]
+    public class AddCommand : BotCommand
     {
-        public override string Name { get; } = "Add new word(s) to your list";
+        public override string Name { get; } = "/add";
         private LearningController learningController;
         private AllWordsController allWords;
+
+        public AddCommand(ChatController chatController) : base(chatController)
+        {
+        }
 
         public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message)
         {
@@ -21,7 +22,7 @@ namespace TgBot.BotCommands.Commands
             learningController = new LearningController(user);
             message.Text = $"Введите слово:";
             message.ReplyMarkup = null;
-            await ChatController.ReplyMessage(message);       
+            await chat.ReplyMessage(message);       
             return true;
         }
 
@@ -35,7 +36,7 @@ namespace TgBot.BotCommands.Commands
             catch
             {
                 message.Text = $"Ошибка связи с сервером. Попробуйте позже.";
-                await ChatController.ReplyMessage(message);
+                await chat.ReplyMessage(message);
                 return false;
             }
 
@@ -49,7 +50,7 @@ namespace TgBot.BotCommands.Commands
             {
                 message.Text = $"Уже было добавлено {newWord}";
             }
-            await ChatController.ReplyMessage(message);
+            await chat.ReplyMessage(message);
             return false;
         }
     }

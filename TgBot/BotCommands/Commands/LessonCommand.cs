@@ -9,6 +9,7 @@ using TgBot.Keybords;
 
 namespace TgBot.BotCommands.Commands
 {
+    [Command(Description = "/lesson - Начать урок")]
     public class LessonCommand : BotCommand
     {
         private const string positive = "\u2705";

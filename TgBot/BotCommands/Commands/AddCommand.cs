@@ -5,7 +5,7 @@ using Telegram.Bot.Types;
 
 namespace TgBot.BotCommands.Commands
 {
-    [Command]
+    [Command(Description = "/add - Добавить слово")]
     public class AddCommand : BotCommand
     {
         public override string Name { get; } = "/add";

@@ -30,6 +30,7 @@ namespace TgBot.BotCommands
                 { new InfoCommand(chat) },
                 { new RemoveCommand(chat) },
                 { new RemoveCommand(chat) },
+                { new HelpCommand(chat) },
                 {new StartCommand(chat) }
             };
         }

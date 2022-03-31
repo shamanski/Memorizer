@@ -6,14 +6,16 @@ using TgBot.Keybords;
 
 namespace TgBot.BotCommands.Commands
 {
+
+    [Command(Description = "/startpack - Добавить набор слов")]
     public class StartCommand : BotCommand
     {
         public StartCommand(ChatController chatController) : base(chatController)
         {
         }
 
-        public override string Name { get; } = "/startpack";     
-        
+        public override string Name { get; } = "/startpack";
+
         public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)
         {
             LearningController learningController = new LearningController(user);
@@ -24,6 +26,7 @@ namespace TgBot.BotCommands.Commands
                 case 0:
                     {
                         message.ReplyMarkup = new AddWordsKeyboard().Keyboard;
+                        message.Text = "Наборы слов (от простых к сложным)";
                         await chat.ReplyMessage(message);
                         return false;
                     }

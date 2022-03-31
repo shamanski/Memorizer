@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace TgBot.BotCommands.Commands
 {
+    [Command(Description = "/info - Статистика")]
     public class InfoCommand : BotCommand
     {
         public InfoCommand(ChatController chatController) : base(chatController)

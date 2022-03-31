@@ -6,5 +6,6 @@ namespace TgBot.BotCommands
 {
     public class CommandAttribute : Attribute
     {
+        public string Description { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Telegram.Bot.Types;
 
 namespace TgBot.BotCommands.Commands
 {
+    [Command(Description = "/remove - Удалить слово")]
     public class RemoveCommand : BotCommand
     {
         public override string Name { get; } = "/remove";

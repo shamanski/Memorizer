@@ -44,21 +44,26 @@ namespace ReversoConsole.Controller
             return Words.FirstOrDefault(i => i.ToString() == name);
         }
 
-        public void AddNewWord(LearningWord word)
+        public bool AddNewWord(LearningWord word)
         {
            if (Find(word.ToString()) == null)
             {
                 Words.Add(word);
                 Update(word);
-                 
-            }           
+                return true; 
+            }
+            return false;
         }
 
-        public void AddNewWords(List<Word> words)
+        public int AddNewWords(List<Word> words)
         {
-            foreach (var word in words) AddNewWord(new LearningWord(user, word));
+            int count = 0;
+            foreach (var word in words)
+            {
+                count = AddNewWord(new LearningWord(user, word)) ? count++ : count;
+            }
+            return count;
         }
-
 
         public List<LearningWord> GetCheckedWords()
         {

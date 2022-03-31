@@ -16,7 +16,7 @@ namespace TgBot.BotCommands.Commands
         {
         }
 
-        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message)
+        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)
         {
             allWords = new AllWordsController();
             learningController = new LearningController(user);
@@ -43,12 +43,18 @@ namespace TgBot.BotCommands.Commands
             var newWord = new LearningWord(user, makeWord);
             try
             {
-                learningController.AddNewWord(newWord);
-                message.Text = $"Добавлено {newWord} {newWord.WordToLearn.Translates[0].Text}";
+                if (learningController.AddNewWord(newWord))
+                {
+                    message.Text = $"Добавлено: {newWord} - {newWord.WordToLearn.Translates[0].Text}";
+                }
+                else
+                {
+                    message.Text = $"Уже было: {newWord} - {newWord.WordToLearn.Translates[0].Text}";
+                }
             }
             catch
             {
-                message.Text = $"Уже было добавлено {newWord}";
+                message.Text = $"Ошибка";
             }
             await chat.ReplyMessage(message);
             return false;

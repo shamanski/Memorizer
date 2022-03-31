@@ -10,7 +10,7 @@ namespace TgBot.BotCommands
 
         protected BotCommand(ChatController chatController) => chat = chatController;
 
-        public abstract Task<bool> Execute(ReversoConsole.DbModel.User user, Message message);
+        public abstract Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param);
 
         public abstract Task<bool> Next(ReversoConsole.DbModel.User user, Message message);
     }

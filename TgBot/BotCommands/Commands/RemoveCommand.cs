@@ -13,7 +13,7 @@ namespace TgBot.BotCommands.Commands
         {
         }
 
-        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message)
+        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)
         {
             learningController = new LearningController(user);
             message.Text = $"Введите слово:";

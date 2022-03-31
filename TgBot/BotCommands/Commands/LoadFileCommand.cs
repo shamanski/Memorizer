@@ -17,7 +17,7 @@ namespace TgBot.BotCommands.Commands
 
         }
 
-        public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message)
+        public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
         {
             message.Text = $"Отправьте файл txt";
             message.ReplyMarkup = null;

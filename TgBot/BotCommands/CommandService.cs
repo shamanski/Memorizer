@@ -45,7 +45,7 @@ namespace TgBot.BotCommands
                 if (split.First().StartsWith('/')) // Got a command
                 {
                     states.RemoveUserState(user.Name);  //Stop current command if exists
-                    var res = _commands.FirstOrDefault(i => i.Name == split.First()).Execute(user, message).Result; //Try to execute new command
+                    var res = _commands.FirstOrDefault(i => i.Name == split.First()).Execute(user, message, split[1..]).Result; //Try to execute new command
                     if (res) // Command should continue
                     {
                         states.Add(user.Name, _commands.First(i => i.Name == split.First())); //Save command

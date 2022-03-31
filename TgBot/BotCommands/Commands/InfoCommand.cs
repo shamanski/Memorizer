@@ -16,7 +16,7 @@ namespace TgBot.BotCommands.Commands
 
         public override string Name { get; } = "/info";
 
-        public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message)
+        public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
         {
             var learningController = new LearningController(user);
             var i = learningController

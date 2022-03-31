@@ -22,7 +22,7 @@ namespace TgBot.BotCommands.Commands
         {
         }
 
-        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message)
+        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)
         {
             var learning = new LearningController(user);
             lessonController = new StandardLesson(user);

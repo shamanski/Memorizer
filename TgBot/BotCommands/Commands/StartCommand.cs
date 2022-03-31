@@ -13,14 +13,36 @@ namespace TgBot.BotCommands.Commands
 
         public override string Name { get; } = "/startpack";     
         
-        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message)
+        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)
         {
             LearningController learningController = new LearningController(user);
             AllWordsController allWords = new AllWordsController();
+            int start = default, count = default;
+            switch (param.Length)
+            {
+                case 0:
+                    {
+                        return false;
+                    }
+                case 1:
+                    {
+                        int.TryParse(param[0], out start);
+                        count = 1;
+                        break;
+                    }
+                case 2:
+                    {
+                        int.TryParse(param[0], out start);
+                        int.TryParse(param[1], out count);
+                        break;
+                    }
+                    default: return false;
+            }
             try
             {
-                learningController.AddNewWords(allWords.Words);
-                message.Text = $"Добавлено";
+                var wordsToAdd = allWords.FindWordsById(start, count);
+                
+                message.Text = $"Добавлено {learningController.AddNewWords(wordsToAdd)} слов";
             }
             catch
             {

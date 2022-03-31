@@ -49,10 +49,13 @@ namespace TgBot
             await bot.AnswerCallbackQueryAsync(message.Caption);
         }
 
-        
+        public async Task CallbackAsync(Message message)
+        {
+            await bot.AnswerCallbackQueryAsync(message.Caption);
+        }
 
-        
 
-        
+
+
     }
 }

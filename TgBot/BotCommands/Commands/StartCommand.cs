@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
+using TgBot.Keybords;
 
 namespace TgBot.BotCommands.Commands
 {
@@ -22,18 +23,20 @@ namespace TgBot.BotCommands.Commands
             {
                 case 0:
                     {
+                        message.ReplyMarkup = new AddWordsKeyboard().Keyboard;
+                        await chat.ReplyMessage(message);
                         return false;
                     }
                 case 1:
                     {
-                        int.TryParse(param[0], out start);
+                        if (!int.TryParse(param[0], out start)) return false;
                         count = 1;
                         break;
                     }
                 case 2:
                     {
-                        int.TryParse(param[0], out start);
-                        int.TryParse(param[1], out count);
+                        if (!int.TryParse(param[0], out start)) return false;
+                        if (!int.TryParse(param[1], out count)) return false;
                         break;
                     }
                     default: return false;
@@ -48,13 +51,20 @@ namespace TgBot.BotCommands.Commands
             {
                 message.Text = $"Ошибка";
             }
+            if (message.ReplyMarkup != null)
+            {                
+                await chat.CallbackAsync(message);
+                message.ReplyMarkup = null;
+            }
+            
             await chat.ReplyMessage(message);
             return false;
         }
 
         public async override Task<bool> Next(ReversoConsole.DbModel.User user, Message message)
         {
-            await Task.FromResult(true);
+            message.ReplyMarkup = new AddWordsKeyboard().Keyboard;
+            await chat.ReplyMessage(message);
             return false;
         }
     }

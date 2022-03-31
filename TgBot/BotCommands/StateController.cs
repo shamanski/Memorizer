@@ -8,7 +8,7 @@ namespace TgBot.BotCommands
 
         public StateController() => UserState = new Dictionary<string, BotCommand>();
 
-        public void Add(string user, BotCommand cmd) => UserState.Add(user, cmd);
+        public void Add(string user, BotCommand cmd) => UserState.TryAdd(user, cmd);
 
         public BotCommand GetUserState(string user)
         {

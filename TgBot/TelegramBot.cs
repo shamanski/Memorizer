@@ -21,7 +21,7 @@ namespace TgBot
             }
 
             _botClient = new TelegramBotClient("5065451258:AAF73Y8um3nU30RXEPQ59kVq98XnUTYYfeg");
-            var hook = $"https://145e-92-38-61-28.ngrok.io/api/message";
+            var hook = $"https://e8a7-176-118-153-198.ngrok.io/api/message";
             await _botClient.SetWebhookAsync(hook);
             return _botClient;
         }

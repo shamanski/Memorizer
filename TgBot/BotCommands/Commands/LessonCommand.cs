@@ -31,7 +31,9 @@ namespace TgBot.BotCommands.Commands
                 message.Text = "Добавьте хотя бы 10 слов для изучения. Можно использовать /startpack";
                 await chat.ReplyMessage(message);
                 return false;
-            } 
+            }
+            message.Text = "Урок начат"+ Environment.NewLine;
+            await chat.ReplyMessage(message);
             lesson = lessonController.GetNextLesson();
             await StepAnswer(message);
             return  true;

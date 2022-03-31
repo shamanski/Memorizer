@@ -10,19 +10,23 @@ namespace TgBot
 {
     public class TelegramBot
     {
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration Configuration;
         private TelegramBotClient _botClient;
         
+        public TelegramBot(IConfiguration configuration)
+        {
+            Configuration = configuration;  
+        }
+
         public async Task<TelegramBotClient>  GetBot()
         {
             if (_botClient != null)
             {
                 return _botClient;
             }
-
-            _botClient = new TelegramBotClient("5065451258:AAF73Y8um3nU30RXEPQ59kVq98XnUTYYfeg");
-            var hook = $"https://e8a7-176-118-153-198.ngrok.io/api/message";
-            await _botClient.SetWebhookAsync(hook);
+            
+            _botClient = new TelegramBotClient(Configuration["Bot:Token"]);
+            await _botClient.SetWebhookAsync(Configuration["Bot:Hook"]);
             return _botClient;
         }
     }

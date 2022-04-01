@@ -31,7 +31,6 @@ namespace TgBot.BotCommands
                 { new RemoveCommand(chat) },
                 { new RemoveCommand(chat) },
                 { new HelpCommand(chat) },
-                { new LoadFileCommand(chat) },
                 {new StartCommand(chat) }
             };
         }
@@ -41,13 +40,11 @@ namespace TgBot.BotCommands
         public bool Execute(ReversoConsole.DbModel.User user, Message message)
         {
             var state = states.GetUserState(user.Name);
-            string[] split = { };
+            var split = message.Text.Split(' ');
             try
             {
-                
-                if (message.Text != null && message.Text.StartsWith('/')) // Got a command
+                if (split.First().StartsWith('/')) // Got a command
                 {
-                    split = message.Text?.Split(' ');
                     states.RemoveUserState(user.Name);  //Stop current command if exists
                     var res = _commands.FirstOrDefault(i => i.Name == split.First()).Execute(user, message, split[1..]).Result; //Try to execute new command
                     if (res) // Command should continue
@@ -69,7 +66,7 @@ namespace TgBot.BotCommands
             }            
             catch (KeyNotFoundException) // Command not founded
             {
-                System.Console.WriteLine($"Command doesn't exists");
+                System.Console.WriteLine($"Command {split.First()} doesn't exists");
                 return false;
             }
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReversoApi", "ReversoApi.csproj", "{5C994B2E-E100-4120-9461-AC7ECF5F65F5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReversoBase", "..\ReversoConsole\ReversoBase.csproj", "{835C3D23-C38B-4B4B-A476-8E6BC62A3372}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReversoConsole", "..\ReversoConsole\ReversoConsole.csproj", "{835C3D23-C38B-4B4B-A476-8E6BC62A3372}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgBot", "..\TgBot\TgBot.csproj", "{6E0B4647-D2B7-4C5F-8F0B-32742FA2717D}"
 EndProject

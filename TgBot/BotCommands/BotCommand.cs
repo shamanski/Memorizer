@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
 namespace TgBot.BotCommands
@@ -7,9 +6,9 @@ namespace TgBot.BotCommands
     public abstract class BotCommand
     {
         public abstract string Name { get; }
-        protected readonly ServiceProvider _services;
+        protected readonly ChatController chat;
 
-        protected BotCommand(ServiceProvider services) => _services = services;
+        protected BotCommand(ChatController chatController) => chat = chatController;
 
         public abstract Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param);
 

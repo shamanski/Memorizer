@@ -16,8 +16,11 @@ builder.Services.AddSingleton<TelegramBot>();
 builder.Services.AddSingleton<WebBotController>();
 builder.Services.AddSingleton<UserController>();
 builder.Services.AddSingleton<ChatController>();
-builder.Services.AddTransient<LearningController>();
-builder.Services.AddTransient<AllWordsController>();
+builder.Services.AddTransient<BotCommand, LessonCommand>();
+builder.Services.AddTransient<BotCommand, AddCommand>();
+builder.Services.AddTransient<BotCommand, InfoCommand>();
+builder.Services.AddTransient<BotCommand, RemoveCommand>();
+builder.Services.AddTransient<BotCommand, StartCommand>();
 builder.Services.AddTransient<StateController>();
 builder.Services.AddSingleton<ICommandService, CommandService>();
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ReversoConsole.Controller;
+﻿using ReversoConsole.Controller;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
@@ -10,11 +9,9 @@ namespace TgBot.BotCommands.Commands
     {
         public override string Name { get; } = "/remove";
         private LearningController learningController;
-        private readonly ChatController chat;
 
-        public RemoveCommand(ServiceProvider services) : base(services)
+        public RemoveCommand(ChatController chatController) : base(chatController)
         {
-            chat = services.GetRequiredService<ChatController>();
         }
 
         public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)

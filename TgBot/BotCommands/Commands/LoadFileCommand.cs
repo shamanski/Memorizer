@@ -4,22 +4,21 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
 using System;
+using ReversoApi;
 using System.Net;
 using ReversoConsole.Controller;
 using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace TgBot.BotCommands.Commands
 {
-    [Command(Description = "/load - Загрузка файла со словами")]
     public class LoadFileCommand : BotCommand
     {
-        private readonly ChatController chat;
+        private readonly ChatController chatController;
         public override string Name { get; } = "/load";
 
-        public LoadFileCommand(ServiceProvider services) : base(services)
+        public LoadFileCommand(ChatController chatController) : base(chatController)
         {
-            chat = services.GetRequiredService<ChatController>();
+            this.chatController = chatController;   
         }
 
         public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
@@ -37,7 +36,7 @@ namespace TgBot.BotCommands.Commands
             if (message.Type == MessageType.Document)
             {
                 using var client = new WebClient();
-                var file = chat.GetFile(message);
+                var file = chatController.GetFile(message);
                 var myDataBuffer = client.DownloadString(file);
                 var split = myDataBuffer.Split(Environment.NewLine);
                 var wordsToAdd = new List<Word>();
@@ -50,7 +49,7 @@ namespace TgBot.BotCommands.Commands
                     }
                     catch
                     {
-                        
+
                     }
                     }
 

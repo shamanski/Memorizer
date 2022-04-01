@@ -1,4 +1,5 @@
-﻿using ReversoConsole.Controller;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ReversoConsole.Controller;
 using ReversoConsole.DbModel;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,11 @@ namespace TgBot.BotCommands.Commands
     [Command(Description = "/info - Статистика")]
     public class InfoCommand : BotCommand
     {
-        public InfoCommand(ChatController chatController) : base(chatController)
+        private readonly ChatController chat;
+
+        public InfoCommand(ServiceProvider services) : base(services)
         {
+            chat = services.GetRequiredService<ChatController>();
         }
 
         public override string Name { get; } = "/info";

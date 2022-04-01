@@ -1,4 +1,5 @@
-﻿using ReversoConsole.Controller;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ReversoConsole.Controller;
 using System;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
@@ -10,8 +11,11 @@ namespace TgBot.BotCommands.Commands
     [Command(Description = "/startpack - Добавить набор слов")]
     public class StartCommand : BotCommand
     {
-        public StartCommand(ChatController chatController) : base(chatController)
+        private readonly ChatController chat;
+
+        public StartCommand(ServiceProvider services) : base(services)
         {
+            chat = services.GetRequiredService<ChatController>();
         }
 
         public override string Name { get; } = "/startpack";

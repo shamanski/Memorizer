@@ -6,13 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TgBot.BotCommands.Commands
 {
     public class HelpCommand : BotCommand
     {
-        public HelpCommand(ChatController chatController) : base(chatController)
+        private readonly ChatController chat;
+
+        public HelpCommand(ServiceProvider services) : base(services)
         {
+            chat = services.GetRequiredService<ChatController>();
         }
 
         public override string Name { get; } = "/help";
@@ -20,11 +24,11 @@ namespace TgBot.BotCommands.Commands
         public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
         {
             var str = new StringBuilder();
-            foreach (var attr in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (var typeList in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (attr.GetCustomAttribute<CommandAttribute>() != null)
+                if (typeList.GetCustomAttribute<CommandAttribute>() != null)
                 {
-                    str.AppendLine(attr.GetCustomAttribute<CommandAttribute>().Description);
+                    str.AppendLine(typeList.GetCustomAttribute<CommandAttribute>().Description);
                 }
             }
             message.Text = str.ToString();

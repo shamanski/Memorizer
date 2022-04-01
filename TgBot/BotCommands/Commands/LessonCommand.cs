@@ -1,4 +1,5 @@
-﻿using ReversoConsole.Algorithm;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ReversoConsole.Algorithm;
 using ReversoConsole.Controller;
 using System;
 using System.Globalization;
@@ -16,11 +17,13 @@ namespace TgBot.BotCommands.Commands
         private const string negative = "\u274C";
         public override string Name { get; } = "/lesson";
         private StandardLesson lessonController;
+        private readonly ChatController chat;
         private Lesson lesson;
         int count = 0;
 
-        public LessonCommand(ChatController chatController) : base(chatController)
+        public LessonCommand(ServiceProvider services) : base(services)
         {
+            chat = services.GetRequiredService<ChatController>();
         }
 
         public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)

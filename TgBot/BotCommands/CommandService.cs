@@ -2,6 +2,7 @@
 using ReversoConsole.ConsoleCommands.Commands;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Telegram.Bot.Types;
 using TgBot.BotCommands.Commands;
 
@@ -10,13 +11,15 @@ namespace TgBot.BotCommands
     public class CommandService : ICommandService
     {
         private readonly StateController states;
-        private readonly ChatController chat; 
+        private readonly ChatController chat;
+        private readonly ServiceProvider _services;
         private List<BotCommand> _commands;
 
-        public CommandService(StateController state, ChatController chatController)
+        public CommandService(ServiceProvider services)
         {
-            states = state;
-            chat = chatController;  
+            states = services.GetService<StateController>();
+            chat = services.GetService<ChatController>(); 
+            _services = services;   
             Refresh(); 
         }
 
@@ -24,15 +27,13 @@ namespace TgBot.BotCommands
         {
             _commands = new List<BotCommand>
             {
-                {new LessonCommand(chat) },
-                {new AddCommand(chat) },
-                { new RemoveCommand(chat) },
-                { new InfoCommand(chat) },
-                { new RemoveCommand(chat) },
-                { new RemoveCommand(chat) },
-                { new HelpCommand(chat) },
-                { new LoadFileCommand(chat) },
-                {new StartCommand(chat) }
+                {new LessonCommand(_services) },
+                {new AddCommand(_services) },
+                { new InfoCommand(_services) },
+                { new RemoveCommand(_services) },
+                { new HelpCommand(_services) },
+                { new LoadFileCommand(_services) },
+                { new StartCommand(_services) }
             };
         }
 

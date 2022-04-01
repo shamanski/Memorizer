@@ -52,6 +52,7 @@ namespace WebBot.Controllers
 
                 if (update.Message?.Type == MessageType.Document)
                 {
+                    
                     OnMessage(update.Message);
                 }
 

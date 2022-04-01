@@ -60,7 +60,7 @@ namespace ReversoConsole.Controller
             int count = 0;
             foreach (var word in words)
             {
-                count = AddNewWord(new LearningWord(user, word)) ? count++ : count;
+                if (AddNewWord(new LearningWord(user, word))) count++;
             }
             return count;
         }

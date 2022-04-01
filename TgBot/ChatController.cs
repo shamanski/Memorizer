@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using ReversoConsole.Controller;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,12 @@ namespace TgBot
         
         private delegate bool nextStep(Message message);
         private readonly TelegramBotClient bot;
+        private readonly IConfiguration Configuration;
 
-       
-        public ChatController(TelegramBot tgBot)
+        public ChatController(TelegramBot tgBot, IConfiguration configuration)
         {
             bot = tgBot.GetBot().Result;
+            Configuration = configuration;
         }
        
         public async Task ReplyMessage(Message message)
@@ -54,7 +56,11 @@ namespace TgBot
             await bot.AnswerCallbackQueryAsync(message.Caption);
         }
 
-
+        public string GetFile(Message message)
+        {
+            
+            return @"https://api.telegram.org/file/bot"+Configuration["Bot:Token"]+"/"+bot.GetFileAsync(message.Document.FileId).Result.FilePath;
+        }
 
 
     }

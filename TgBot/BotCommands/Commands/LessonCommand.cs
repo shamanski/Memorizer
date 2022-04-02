@@ -40,27 +40,30 @@ namespace TgBot.BotCommands.Commands
             return  true;
         }
 
+        
+        //Take new word and make keyboard
         private async Task StepAnswer(Message message)
         {
             var currentWord = lesson.WordsList[count].LearningWord.WordToLearn;
-            var translates = String.Join(", ", currentWord.Translates.Take(10));
-            message.Text = translates;
-            var w = lesson.WordsList[count].AdditionalWords;
-            var rnd = new Random(); 
-            w.Insert(rnd.Next(w.Count), lesson.WordsList[count].LearningWord.WordToLearn.Text);
-            message.ReplyMarkup = new LessonKeyboard(w.ToArray(), currentWord.Text).Keyboard;
+            message.Text = String.Join(", ", currentWord.Translates.Take(10));
+            var additianalList = lesson.WordsList[count].AdditionalWords;
+            var rnd = new Random();
+            additianalList.Insert(rnd.Next(additianalList.Count), lesson.WordsList[count].LearningWord.WordToLearn.Text);
+            message.ReplyMarkup = new LessonKeyboard(additianalList, currentWord.Text).Keyboard;
             await chat.ReplyMessage(message);  
         }
         
+        
+        //Compare input or button text with correct answer and mark it
         private async Task CheckBox(Message message, string currWord)
         {
-            if (message.ReplyMarkup != null )
+            if (message.ReplyMarkup != null ) //button pressed
             {
                 foreach (var i in message?.ReplyMarkup?.InlineKeyboard)
                 {
                     foreach (var n in i)
                     {
-                        if (!n.CallbackData.StartsWith('/'))
+                        if (!n.CallbackData.StartsWith('!')) // excluding special buttons
                         {
                             n.Text = n.Text.Remove(0, 1).Insert(0, currWord == n.Text[1..] 
                                 ? positive 
@@ -71,7 +74,7 @@ namespace TgBot.BotCommands.Commands
                 await chat.EditMessageAsync(message);
             }
 
-            else
+            else //answer got as text
             {
                 message.Text = currWord == message.Text ? message.Text.Insert(0, positive) : message.Text.Insert(0, negative);
                 await chat.ReplyMessage(message);
@@ -79,19 +82,19 @@ namespace TgBot.BotCommands.Commands
             
         }
 
+        //Remove special symbols and upper case
         private string Clear(string input)
         {
-            var w = input;
             if (string.IsNullOrWhiteSpace(input)) throw new ArgumentNullException(nameof(input));
-            if (!char.IsLetter(input[0])) w = input[1..];
+            if (!char.IsLetter(input[0])) input = input[1..];
             TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
-            return ti.ToTitleCase(w);
+            return ti.ToTitleCase(input);
         } 
         
         public async override Task<bool> Next(ReversoConsole.DbModel.User user, Message message)
         {
             var currWord = lesson.WordsList[count].ToString();
-            if (message.Text == "!rm")
+            if (message.Text == "!rm") // Button 'already have known' pressed
             {
                 lesson.WordsList[count].IsSuccessful = IsSuccessful.Finished;
             }
@@ -103,7 +106,7 @@ namespace TgBot.BotCommands.Commands
             
             count++;
             await CheckBox(message, currWord); 
-            if (count == lesson.WordsList.Count)
+            if (count == lesson.WordsList.Count) //after last answer
             {
                 await Last(message);
                 return false;
@@ -113,7 +116,7 @@ namespace TgBot.BotCommands.Commands
             return true;
         }
 
-        public async Task Last(Message message)
+        private async Task Last(Message message)
         {           
             lessonController.ReturnFinishedLesson(lesson);
             int successful = (from i in lesson.WordsList

@@ -50,19 +50,11 @@ namespace WebBot.Controllers
                     return;
                 }
 
-                if (update.Message?.Type == MessageType.Document)
-                {
-                    
+                if (update.Message?.Type == MessageType.Document || update.Message?.Type == MessageType.Text)
+                {                   
                     OnMessage(update.Message);
                 }
 
-                if (update.Message?.Type != MessageType.Text)
-                    return;
-
-                if (update.Message?.Type == MessageType.Text)
-                {
-                    OnMessage(update.Message);
-                }
             });
         }
 

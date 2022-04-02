@@ -9,9 +9,14 @@ namespace TgBot.Keybords
     class LessonKeyboard
     {
         public InlineKeyboardMarkup Keyboard { get; set; }
-        public LessonKeyboard(string[] words, string sourceWord) 
+        public LessonKeyboard(List<string> words, string sourceWord) 
         {
-            words = words.Select((x) => x.Insert(0, '\u25A1'.ToString())).ToArray();
+            if (words == null || words.Count != 6)
+            {
+                throw new ArgumentException(nameof(words));
+            }
+
+            words = words.Select((x) => x.Insert(0, '\u25A1'.ToString())).ToList();
             var keyboard = new List<List<InlineKeyboardButton>>
                 {
                     new List<InlineKeyboardButton> {InlineKeyboardButton.WithCallbackData(words[0]), InlineKeyboardButton.WithCallbackData(words[1]) },

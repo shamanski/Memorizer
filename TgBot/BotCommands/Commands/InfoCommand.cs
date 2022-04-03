@@ -19,7 +19,7 @@ namespace TgBot.BotCommands.Commands
 
         public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
         {
-            var learningController = new LearningController(user);
+            var learningController = new LearningController(user, new WebAppContext());
             var i = learningController
                 .GetAll().OrderByDescending(i => i.Level)
                 .ToList();

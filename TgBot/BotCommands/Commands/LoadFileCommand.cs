@@ -11,6 +11,8 @@ using System.Collections.Generic;
 
 namespace TgBot.BotCommands.Commands
 {
+
+    [Command(Description = "/load - Загрузка слов из файла")]
     public class LoadFileCommand : BotCommand
     {
         private readonly ChatController chatController;
@@ -32,7 +34,7 @@ namespace TgBot.BotCommands.Commands
         public async override Task<bool> Next(User user, Telegram.Bot.Types.Message message)
         {
             var allWords = new AllWordsController();
-            var learningController = new LearningController(user);
+            var learningController = new LearningController(user, new WebAppContext());
             if (message.Type == MessageType.Document)
             {
                 using var client = new WebClient();
@@ -41,17 +43,11 @@ namespace TgBot.BotCommands.Commands
                 var split = myDataBuffer.Split(Environment.NewLine);
                 var wordsToAdd = new List<Word>();
 
-                    foreach (var i in split)
-                    {
-                    try
-                    {
-                        wordsToAdd.Add(allWords.FindWordByName(i));
-                    }
-                    catch
-                    {
-
-                    }
-                    }
+                foreach (var i in split)
+                {
+                    var w = allWords.FindWordByName(i);
+                    if (w != null) wordsToAdd.Add(w);
+                }
 
                 message.Text = $"Добавлено {learningController.AddNewWords(wordsToAdd)} слов";
                 await chat.ReplyMessage(message);

@@ -30,12 +30,12 @@ namespace ReversoConsole.Controller
 
         public Word FindWordByName(string name)
         {
-            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));  
+            if (string.IsNullOrEmpty(name)) return null;  
             name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
-            var result = Words.SingleOrDefault(f => f.Text == name);
-            if (result == null)
+            if (!Words.Exists(f => f.Text == name))
             {
                 var res = Do(name).Result;
+                if (res == null) return null;    
                 Words.Add(res);
                 Update(res);
                 return res;
@@ -82,6 +82,8 @@ namespace ReversoConsole.Controller
                 w.Translates = new List<Translate>();                
                 w.Translates.AddRange(items);
                 if (w.Translates.Count > 0) return w;
+                else w.Translates.AddRange(translatedWord.Sources.First().Translations.Where(i => !i.IsRude && !i.IsGrayed).Select(i => new Translate { Text = i.Translation }));
+                return w;
             }
 
             return null;

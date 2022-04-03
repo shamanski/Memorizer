@@ -10,58 +10,25 @@ namespace ReversoConsole.Controller
 {
     public class UserController : BaseController
     {
-        private User _user;
+        private readonly WebAppContext _context;
         public List<User> Users { get; }
-        public User CurrentUser { get { return _user; }  }
-        public List<User> InLesson { get; set; }
-        public bool IsNewUser { get; } = false;
-        private List<User> GetUsersData()
+        public UserController(WebAppContext context)
         {
-            var db = new AppContext();
-            return db.Users
-                .ToList();
-
-        }
-        public UserController()
-        {
-            Users = GetUsersData();
-        }
-
-        public UserController(string userName)
-        {
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                throw new ArgumentNullException(nameof(userName), "User Name is empty");
-            }
-
-            Users = GetUsersData();
-            _user = Users.SingleOrDefault(u => u.Name == userName);
-            if (_user == null)
-            {
-                Users.Add(new User(userName));
-                IsNewUser = true;
-                _user = Users.SingleOrDefault(u => u.Name == userName);
-                
-            }
-            _user = LoadElement<User>(_user, nameof(_user.Words));
+            _context = context;
         }
 
         public User GetUser(string userName)
         {
-            _user = Users.SingleOrDefault(u => u.Name == userName);
+            var _user = _context.Users.SingleOrDefault(u => u.Name == userName);
             if (_user == null)
             {
+                _context.Users.Add(new User(userName));
                 Users.Add(new User(userName));
+                _context.SaveChanges();
                 _user = Users.SingleOrDefault(u => u.Name == userName);
-                Save();
             }
-            _user = LoadElement<User>(_user, nameof(_user.Words));
-            return _user;
-        }
 
-        public void Save()
-        {
-            Update(CurrentUser);
+            return _user;
         }
 
     }

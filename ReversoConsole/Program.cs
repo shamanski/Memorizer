@@ -47,7 +47,8 @@ namespace ReversoApi
     static class Program
     {
 
-        private static readonly string txtfile = "d:\\words.txt";
+        private static readonly string txtfile = "c:\\plot\\3.txt";
+        private static readonly string outputTxtfile = "c:\\plot\\2.txt";
         private static readonly string xmlfile = "d:\\words.xml";
 
         static void Migration()
@@ -73,7 +74,7 @@ namespace ReversoApi
                 }
                 else Console.WriteLine($"{word.Sources[0].DisplaySource }");
             }
-            using var db = new ReversoConsole.Controller.AppContext();
+            using var db = new ReversoConsole.Controller.WebAppContext();
             db.AddRange(dbmodel);
             db.SaveChanges();
             Console.WriteLine("Объекты успешно сохранены");
@@ -82,9 +83,10 @@ namespace ReversoApi
         static async Task Main(string[] args)
         {
 
+            Clear();
             Console.WriteLine("EnterName");
             var name = Console.ReadLine();
-            var userController = new UserController(name);                      
+            //var userController = new UserController();                      
             var command = new CommandService();
             foreach (var c in command.Get())
             {
@@ -94,10 +96,17 @@ namespace ReversoApi
             while (Console.ReadKey(true).Key != ConsoleKey.Escape)
             {
                 Console.Write("Enter command: >");
-                await command.Execute(userController.CurrentUser, Console.ReadLine());
+                //await command.Execute(userController, Console.ReadLine());
             }
         }
 
+        static void Clear()
+        {
+            var res = File.ReadLines(txtfile);
+                res = res.Select(x => x.Split(" ", 10).First()).ToList();
+            File.WriteAllLines(outputTxtfile, res);  
+
+        }
 
         static void Save()
         {

@@ -12,9 +12,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<ReversoConsole.Controller.WebAppContext>();
 builder.Services.AddSingleton<TelegramBot>();
-builder.Services.AddSingleton<WebBotController>();
-builder.Services.AddSingleton<UserController>();
+builder.Services.AddScoped<WebBotController>();
+builder.Services.AddTransient<UserController>();
 builder.Services.AddSingleton<ChatController>();
 builder.Services.AddTransient<StateController>();
 builder.Services.AddSingleton<ICommandService, CommandService>();

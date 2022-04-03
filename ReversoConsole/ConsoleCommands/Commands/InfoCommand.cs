@@ -17,7 +17,7 @@ namespace ReversoConsole.ConsoleCommands.Commands
         }
         public override Task Execute(User user, IEnumerable<string> message)
         {
-            var learningController = new LearningController(user);
+            var learningController = new LearningController(user, new WebAppContext());
 
             foreach (var item in learningController.GetAll())
             {

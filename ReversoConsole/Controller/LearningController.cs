@@ -1,4 +1,5 @@
-﻿using ReversoConsole.Algorithm;
+﻿using Microsoft.EntityFrameworkCore;
+using ReversoConsole.Algorithm;
 using ReversoConsole.DbModel;
 using System;
 using System.Collections.Generic;
@@ -10,46 +11,36 @@ namespace ReversoConsole.Controller
     public class LearningController: BaseController
     {
         private readonly User user;
-        private List<LearningWord> Words { get { return user.Words; } }
+        private readonly WebAppContext _context;
+
         
-        public LearningController(User user)
+        public LearningController(User user, WebAppContext context)
         {
             this.user = user ?? throw new ArgumentNullException(nameof(user), "Username is empty");
-            LoadAll();
-        }
-
-        private void LoadAll()
-        {
-            if (Words?.FirstOrDefault()?.WordToLearn == null)
-            {
-                var result = new List<LearningWord>();
-                foreach (var i in Words)
-                {
-                    var el = LoadElement<LearningWord>(i, nameof(LearningWord.WordToLearn));
-                    el.WordToLearn = LoadElement<Word>(el.WordToLearn, nameof(el.WordToLearn.Translates));
-                    result.Add(el);
-                }
-                user.Words = result;
-            }
+            _context = context;
         }
 
         public List<LearningWord> GetAll()
         {
-            return Words;
+            return _context.LearningWords
+                .Where(i => i.UserId == user.Id)
+                .Include(i => i.WordToLearn)
+                .ThenInclude(i => i.Translates)
+                .ToList();
         }
 
         public LearningWord Find(string name)
         {
             name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
-            return Words.FirstOrDefault(i => i.ToString() == name);
+            return _context.LearningWords.Where(i => i.UserId == user.Id).FirstOrDefault(i => i.ToString() == name);
         }
 
         public bool AddNewWord(LearningWord word)
         {
            if (Find(word.ToString()) == null)
             {
-                Words.Add(word);
-                Update(word);
+                _context.LearningWords.Add(word);
+                _context.SaveChangesAsync();
                 return true; 
             }
             return false;
@@ -65,20 +56,12 @@ namespace ReversoConsole.Controller
             return count;
         }
 
-        public List<LearningWord> GetCheckedWords()
-        {
-            return Words;
-        }
-
         public bool RemoveWord(LearningWord word)
         {
-            if (user.Words.Remove(word))
-            {
-               Words.Remove(word);          
-               return true;
-            }
+            _context.LearningWords.Remove(word);
+            _context.SaveChangesAsync();
 
-            return false;
+            return true;
         }
     }
 }

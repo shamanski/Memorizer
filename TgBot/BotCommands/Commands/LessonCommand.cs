@@ -25,8 +25,8 @@ namespace TgBot.BotCommands.Commands
 
         public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)
         {
-            var learning = new LearningController(user);
-            lessonController = new StandardLesson(user);
+            var learning = new LearningController(user, new WebAppContext());
+            lessonController = new StandardLesson(user, new WebAppContext());
             if (learning.GetAll().Count < 10)
             {
                 message.Text = "Добавьте хотя бы 10 слов для изучения. Можно использовать /startpack";

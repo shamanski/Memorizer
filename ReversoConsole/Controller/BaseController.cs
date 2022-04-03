@@ -7,7 +7,7 @@ namespace ReversoConsole.Controller
 {
     public abstract class BaseController
     {
-        private readonly IDataSaver manager = new DBWork(new AppContext());
+        private readonly IDataSaver manager = new DBWork(new WebAppContext());
 
         protected void Save<T>(List<T> item) where T : class
         {

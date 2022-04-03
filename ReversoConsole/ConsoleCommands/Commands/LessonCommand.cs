@@ -19,7 +19,7 @@ namespace ReversoConsole.ConsoleCommands.Commands
 
         public override Task Execute(User user, IEnumerable<string> arguments)
         {
-            var lessonController = new StandardLesson(user);
+            var lessonController = new StandardLesson(user, new WebAppContext());
             var lesson = lessonController.GetNextLesson();
             foreach (var currWord in lesson.WordsList)
             {

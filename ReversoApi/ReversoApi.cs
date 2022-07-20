@@ -18,9 +18,7 @@ namespace ReversoApi
         {
             var request = new RestRequest(url) {Method = Method.POST};
             request.AddJsonBody(model);
-
             var result = await _client.ExecutePostAsync<T2>(request);
-
             return result;
         }
     }

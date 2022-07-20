@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -12,9 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ReversoApi\ReversoApi.csproj" />
-    <ProjectReference Include="..\ReversoConsole\ReversoBase.csproj" />
-    <ProjectReference Include="..\TgBot\TgBot.csproj" />
+    <ProjectReference Include="..\ReversoApi\EnlishLearn.ReversoDownloader.csproj" />
+    <ProjectReference Include="..\ReversoConsole\EnglishLearn.Model.csproj" />
+    <ProjectReference Include="..\TgBot\EnglishLearn.Telegram.csproj" />
   </ItemGroup>
 
 </Project>

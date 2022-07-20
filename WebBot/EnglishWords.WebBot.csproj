@@ -12,9 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ReversoApi\EnlishLearn.ReversoDownloader.csproj" />
-    <ProjectReference Include="..\ReversoConsole\EnglishLearn.Model.csproj" />
-    <ProjectReference Include="..\TgBot\EnglishLearn.Telegram.csproj" />
+    <ProjectReference Include="..\ReversoApi\EnlishWords.ReversoDownloader.csproj" />
+    <ProjectReference Include="..\ReversoConsole\EnglishWords.Model.csproj" />
+    <ProjectReference Include="..\TgBot\EnglishWords.Telegram.csproj" />
   </ItemGroup>
 
 </Project>

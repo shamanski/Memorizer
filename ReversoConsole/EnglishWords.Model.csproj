@@ -18,7 +18,7 @@
   
 
   <ItemGroup>
-    <ProjectReference Include="..\ReversoApi\EnlishLearn.ReversoDownloader.csproj" />
+    <ProjectReference Include="..\ReversoApi\EnlishWords.ReversoDownloader.csproj" />
   </ItemGroup>
 
 </Project>

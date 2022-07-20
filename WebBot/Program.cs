@@ -16,9 +16,10 @@ builder.Services.AddDbContext<ReversoConsole.Controller.WebAppContext>();
 builder.Services.AddSingleton<TelegramBot>();
 builder.Services.AddScoped<WebBotController>();
 builder.Services.AddTransient<UserController>();
-builder.Services.AddSingleton<ChatController>();
-builder.Services.AddTransient<StateController>();
-builder.Services.AddSingleton<ICommandService, CommandService>();
+builder.Services.AddScoped<ChatController>();
+builder.Services.AddScoped<AllWordsController>();
+builder.Services.AddSingleton<StateController>();
+builder.Services.AddScoped<ICommandService, CommandService>();
 
 var app = builder.Build();
 app.Services.GetService<TelegramBot>()!.GetBot().Wait();
@@ -28,7 +29,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 
 app.UseHttpsRedirection();

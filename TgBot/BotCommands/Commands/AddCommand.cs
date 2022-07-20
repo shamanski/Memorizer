@@ -18,7 +18,7 @@ namespace TgBot.BotCommands.Commands
 
         public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)
         {
-            allWords = new AllWordsController();
+            allWords = new AllWordsController(new WebAppContext());
             learningController = new LearningController(user, new WebAppContext());
             message.Text = $"Введите слово:";
             message.ReplyMarkup = null;

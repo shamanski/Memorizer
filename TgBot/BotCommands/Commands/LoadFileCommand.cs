@@ -16,11 +16,14 @@ namespace TgBot.BotCommands.Commands
     public class LoadFileCommand : BotCommand
     {
         private readonly ChatController chatController;
+        private readonly AllWordsController allWords;
+        private readonly WebAppContext context;
         public override string Name { get; } = "/load";
 
-        public LoadFileCommand(ChatController chatController) : base(chatController)
+        public LoadFileCommand(ChatController chatController, AllWordsController allWords) : base(chatController)
         {
-            this.chatController = chatController;   
+            this.chatController = chatController;
+            this.allWords = allWords;
         }
 
         public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
@@ -33,7 +36,6 @@ namespace TgBot.BotCommands.Commands
 
         public async override Task<bool> Next(User user, Telegram.Bot.Types.Message message)
         {
-            var allWords = new AllWordsController();
             var learningController = new LearningController(user, new WebAppContext());
             if (message.Type == MessageType.Document)
             {

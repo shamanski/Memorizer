@@ -7,57 +7,51 @@ using ReversoApi.Models;
 using System.Threading.Tasks;
 using ReversoApi;
 using ReversoApi.Models.Word;
+using Microsoft.EntityFrameworkCore;
 
 namespace ReversoConsole.Controller
 {
     public class AllWordsController: BaseController
     {
-        public List<Word> Words { get; }
-        public AllWordsController()
+        private readonly WebAppContext _context;
+        public AllWordsController(WebAppContext context)
         {
-            Words = GetAllWords();
+            this._context = context;
         }
 
-        private List<Word> GetAllWords()
+        public List<Word> GetAllWords()
         {
-            return Load<Word>() ?? new List<Word>();
-        }
-
-        private Word LoadWord( Word inp)
-        {
-            return LoadElement<Word>(inp, nameof(inp.Translates));
+            return _context.Words.ToList();
         }
 
         public Word FindWordByName(string name)
         {
             if (string.IsNullOrEmpty(name)) return null;  
             name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
-            if (!Words.Exists(f => f.Text == name))
+            if (_context.Words.Where(f => f.Text == name).Any())
             {
-                var res = Do(name).Result;
-                if (res == null) return null;    
-                Words.Add(res);
-                Update(res);
-                return res;
+                return _context.Words
+                    .Where(i => i.Text == name)
+                    .Include(i => i.Translates)
+                    .First();
             }
 
             else
             {
-                var update = this.Words.Find(i => i.Text == name);                
-                return LoadWord(update);
+                var res = Do(name).Result;
+                if (res == null) return null;
+                _context.Words.Add(res);
+                _context.SaveChanges();
+                return res;
             }
         }
 
         public List<Word> FindWordsById(int start, int count) => 
-            Words
+            _context.Words
                 .Skip(start)
                 .Take(count)
-                .Select((x) => LoadWord(x))
+                .Include(i => i.Translates)
                 .ToList();
-
-
-        public void Save() => Save(Words);
-
 
         private static async Task<Word> Do(string wordName)
         {

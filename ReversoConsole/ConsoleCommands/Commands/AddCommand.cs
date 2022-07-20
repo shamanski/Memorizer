@@ -19,7 +19,7 @@ namespace ReversoConsole.ConsoleCommands.Commands
 
         public override Task Execute(User user, IEnumerable<string> message)
         {
-            var allWords = new AllWordsController();
+            var allWords = new AllWordsController(new WebAppContext());
             var learningController = new LearningController(user, new WebAppContext());
             if ((message.Any() == false) || (message == null))
             {

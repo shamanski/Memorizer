@@ -11,7 +11,7 @@ namespace ReversoConsole.Controller
     public class UserController : BaseController
     {
         private readonly WebAppContext _context;
-        public List<User> Users { get; }
+        public List<User> Users { get => _context.Users.ToList(); }
         public UserController(WebAppContext context)
         {
             _context = context;
@@ -23,7 +23,6 @@ namespace ReversoConsole.Controller
             if (_user == null)
             {
                 _context.Users.Add(new User(userName));
-                Users.Add(new User(userName));
                 _context.SaveChanges();
                 _user = Users.SingleOrDefault(u => u.Name == userName);
             }

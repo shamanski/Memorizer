@@ -29,10 +29,13 @@ namespace ReversoConsole.Controller
                 .ToList();
         }
 
-        public LearningWord Find(string name)
+        public LearningWord Find(string text)
         {
-            name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
-            return _context.LearningWords.Where(i => i.UserId == user.Id).FirstOrDefault(i => i.ToString() == name);
+            text = string.Concat(text[0].ToString().ToUpper(), text.AsSpan(1));
+            return _context.LearningWords
+                .Where(i => i.UserId == user.Id)
+                .DefaultIfEmpty()
+                .FirstOrDefault(i => i.WordToLearn.Text == text);
         }
 
         public bool AddNewWord(LearningWord word)

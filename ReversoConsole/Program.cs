@@ -15,6 +15,7 @@ namespace ReversoApi
     [Serializable]
     public class WordDescription
     {
+        //start
         public string ID { get; }
         public string Word { get; }
         public WordDescription(string id, string word)

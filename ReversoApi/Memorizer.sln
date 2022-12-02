@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31911.196
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReversoApi", "ReversoApi.csproj", "{5C994B2E-E100-4120-9461-AC7ECF5F65F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "..\ReversoConsole\Model.csproj", "{835C3D23-C38B-4B4B-A476-8E6BC62A3372}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgBot", "..\TgBot\TgBot.csproj", "{6E0B4647-D2B7-4C5F-8F0B-32742FA2717D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebBot", "..\WebBot\WebBot.csproj", "{426BFD8A-FA76-47ED-8A17-9F092085988E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "..\..\..\..\..\..\Base\Model.csproj", "{97D9D6DC-6AAF-4E1B-B204-7B31DA4D1938}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +21,10 @@ Global
 		{5C994B2E-E100-4120-9461-AC7ECF5F65F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C994B2E-E100-4120-9461-AC7ECF5F65F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C994B2E-E100-4120-9461-AC7ECF5F65F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{835C3D23-C38B-4B4B-A476-8E6BC62A3372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{835C3D23-C38B-4B4B-A476-8E6BC62A3372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{835C3D23-C38B-4B4B-A476-8E6BC62A3372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{835C3D23-C38B-4B4B-A476-8E6BC62A3372}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6E0B4647-D2B7-4C5F-8F0B-32742FA2717D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6E0B4647-D2B7-4C5F-8F0B-32742FA2717D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E0B4647-D2B7-4C5F-8F0B-32742FA2717D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,10 +33,6 @@ Global
 		{426BFD8A-FA76-47ED-8A17-9F092085988E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{426BFD8A-FA76-47ED-8A17-9F092085988E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{426BFD8A-FA76-47ED-8A17-9F092085988E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97D9D6DC-6AAF-4E1B-B204-7B31DA4D1938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97D9D6DC-6AAF-4E1B-B204-7B31DA4D1938}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97D9D6DC-6AAF-4E1B-B204-7B31DA4D1938}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97D9D6DC-6AAF-4E1B-B204-7B31DA4D1938}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

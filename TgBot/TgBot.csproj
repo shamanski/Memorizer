@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ReversoConsole\Model.csproj" />
+    <ProjectReference Include="..\ReversoConsole\AppModel.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ReversoApi\ReversoApi.csproj" />
-    <ProjectReference Include="..\ReversoConsole\Model.csproj" />
+    <ProjectReference Include="..\ReversoConsole\AppModel.csproj" />
     <ProjectReference Include="..\TgBot\TgBot.csproj" />
   </ItemGroup>
 

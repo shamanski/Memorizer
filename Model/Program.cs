@@ -81,6 +81,8 @@ namespace ReversoApi
             Console.WriteLine("Объекты успешно сохранены");
 
         }
+
+        //Run this if you want console application instead of webserver
         static async Task Main(string[] args)
         {
 

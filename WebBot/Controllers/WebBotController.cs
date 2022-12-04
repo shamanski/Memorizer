@@ -1,14 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using ReversoConsole.Controller;
-using Telegram.Bot;
-using Telegram.Bot.Exceptions;
-using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
-using TgBot;
-using TgBot.BotCommands;
-
+﻿
 namespace WebBot.Controllers
 {
     [Route("api/message")]

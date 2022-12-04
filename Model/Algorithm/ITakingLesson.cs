@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ReversoConsole.Algorithm
+﻿namespace ReversoConsole.Algorithm
 {
     public interface ITakingLesson
     {

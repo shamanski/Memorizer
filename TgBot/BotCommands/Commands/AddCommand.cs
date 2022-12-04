@@ -16,7 +16,7 @@ namespace TgBot.BotCommands.Commands
         {
         }
 
-        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)
+        public async override Task<bool> Execute(ReversoConsole.DbModel.IUser user, Message message, params string[] param)
         {
             allWords = new AllWordsController(new WebAppContext());
             learningController = new LearningController(user, new WebAppContext());
@@ -26,7 +26,7 @@ namespace TgBot.BotCommands.Commands
             return true;
         }
 
-        public async override Task<bool> Next(ReversoConsole.DbModel.User user, Message message)
+        public async override Task<bool> Next(ReversoConsole.DbModel.IUser user, Message message)
         {
             Word makeWord;
 

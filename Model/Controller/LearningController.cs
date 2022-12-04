@@ -10,11 +10,11 @@ namespace ReversoConsole.Controller
 {
     public class LearningController: BaseController
     {
-        private readonly User user;
+        private readonly IUser user;
         private readonly WebAppContext _context;
 
         
-        public LearningController(User user, WebAppContext context)
+        public LearningController(IUser user, WebAppContext context)
         {
             this.user = user ?? throw new ArgumentNullException(nameof(user), "Username is empty");
             _context = context;

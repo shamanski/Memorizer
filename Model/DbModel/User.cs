@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ReversoConsole.DbModel
 {
-    public class User : LearningModelBase
+    public class User : LearningModelBase, IUser
     {
         public override int Id { get; set; }
         public string Name { get; set; }
-        public virtual List<LearningWord> Words { get; set; }
         public User() { }
         public User(string name)
         {
@@ -18,8 +16,6 @@ namespace ReversoConsole.DbModel
             }
 
             Name = name;
-            Words = new List<LearningWord>();
         }
-
     }
 }

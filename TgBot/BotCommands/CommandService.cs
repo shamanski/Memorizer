@@ -1,6 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ReversoConsole.ConsoleCommands.Commands;
-using ReversoConsole.Controller;
+﻿using ReversoConsole.Controller;
+using ReversoConsole.DbModel;
 using System.Collections.Generic;
 using System.Linq;
 using Telegram.Bot.Types;
@@ -41,7 +40,7 @@ namespace TgBot.BotCommands
 
         public List<BotCommand> Get() => _commands;
 
-        public bool Execute(ReversoConsole.DbModel.User user, Message message)
+        public bool Execute(IUser user, Message message)
         {
             var state = states.GetUserState(user.Name);
             string[] split = { };

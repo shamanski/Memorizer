@@ -6,9 +6,9 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using ReversoConsole.DbModel;
-using ReversoConsole.Controller;
-using ReversoConsole.ConsoleCommands;
+using Memorizer.DbModel;
+using Memorizer.Controller;
+using Memorizer.ConsoleCommands;
 
 namespace ReversoApi
 {

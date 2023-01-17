@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Telegram.Bot.Types;
-using ReversoConsole.DbModel;
+using Memorizer.DbModel;
+using User = Memorizer.DbModel.User;
 
 namespace TgBot.BotCommands
 {
@@ -11,7 +12,7 @@ namespace TgBot.BotCommands
 
         protected BotCommand(ChatController chatController) => chat = chatController;
 
-        public abstract Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param);
+        public abstract Task<bool> Execute(User user, Message message, params string[] param);
 
         public abstract Task<bool> Next(User user, Message message);
     }

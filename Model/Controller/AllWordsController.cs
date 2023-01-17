@@ -1,4 +1,4 @@
-﻿using ReversoConsole.DbModel;
+﻿using Memorizer.DbModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using ReversoApi;
 using ReversoApi.Models.Word;
 using Microsoft.EntityFrameworkCore;
 
-namespace ReversoConsole.Controller
+namespace Memorizer.Controller
 {
     public class AllWordsController: BaseController
     {

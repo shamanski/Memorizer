@@ -1,5 +1,5 @@
 ﻿
-namespace ReversoConsole.DbModel
+namespace Memorizer.DbModel
 {
    public abstract class LearningModelBase
     {

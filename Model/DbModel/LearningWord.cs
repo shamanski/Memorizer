@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ReversoConsole.DbModel
+namespace Memorizer.DbModel
 {
     public class LearningWord : LearningModelBase
     {

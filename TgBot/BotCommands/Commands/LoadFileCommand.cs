@@ -1,4 +1,4 @@
-﻿using ReversoConsole.DbModel;
+﻿using Memorizer.DbModel;
 using Telegram.Bot.Types.Enums;
 using System.Threading.Tasks;
 using System.IO;
@@ -6,7 +6,8 @@ using System.Linq;
 using System;
 using ReversoApi;
 using System.Net;
-using ReversoConsole.Controller;
+using Memorizer.Controller;
+using Memorizer.DbModel;
 using System.Collections.Generic;
 
 namespace TgBot.BotCommands.Commands

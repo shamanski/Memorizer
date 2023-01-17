@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ReversoConsole.DbModel
+namespace Memorizer.DbModel
 {
     public class Word : LearningModelBase
     {

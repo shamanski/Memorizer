@@ -4,9 +4,9 @@ using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using ReversoConsole.DbModel;
+using Memorizer.DbModel;
 
-namespace ReversoConsole.Controller
+namespace Memorizer.Controller
 {
    public class DBWork : IDataSaver        
     {

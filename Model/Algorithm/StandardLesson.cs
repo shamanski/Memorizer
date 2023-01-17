@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using ReversoConsole.Controller;
-using ReversoConsole.DbModel;
+using Memorizer.Controller;
+using Memorizer.DbModel;
 
-namespace ReversoConsole.Algorithm
+namespace Memorizer.Algorithm
 {
     public class StandardLesson : BaseController, ITakingLesson
     {

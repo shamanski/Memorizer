@@ -1,4 +1,4 @@
-﻿namespace ReversoConsole.DbModel
+﻿namespace Memorizer.DbModel
 {
     public class Phrase : LearningModelBase
     {

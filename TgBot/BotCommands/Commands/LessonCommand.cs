@@ -1,11 +1,13 @@
-﻿using ReversoConsole.Algorithm;
-using ReversoConsole.Controller;
+﻿using Memorizer.Algorithm;
+using Memorizer.Controller;
+using Memorizer.DbModel;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using TgBot.Keybords;
+using User = Memorizer.DbModel.User;
 
 namespace TgBot.BotCommands.Commands
 {
@@ -23,7 +25,7 @@ namespace TgBot.BotCommands.Commands
         {
         }
 
-        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)
+        public async override Task<bool> Execute(User user, Message message, params string[] param)
         {
             var learning = new LearningController(user, new WebAppContext());
             lessonController = new StandardLesson(user, new WebAppContext());
@@ -91,7 +93,7 @@ namespace TgBot.BotCommands.Commands
             return ti.ToTitleCase(input);
         } 
         
-        public async override Task<bool> Next(ReversoConsole.DbModel.User user, Message message)
+        public async override Task<bool> Next(Memorizer.DbModel.User user, Message message)
         {
             var currWord = lesson.WordsList[count].ToString();
             if (message.Text == "!rm") // Button 'already have known' pressed

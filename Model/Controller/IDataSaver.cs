@@ -1,9 +1,9 @@
-﻿using ReversoConsole.DbModel;
+﻿using Memorizer.DbModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ReversoConsole.Controller
+namespace Memorizer.Controller
 {
     public interface IDataSaver
     {

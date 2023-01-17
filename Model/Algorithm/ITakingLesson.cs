@@ -1,4 +1,4 @@
-﻿namespace ReversoConsole.Algorithm
+﻿namespace Memorizer.Algorithm
 {
     public interface ITakingLesson
     {

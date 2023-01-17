@@ -1,6 +1,6 @@
-﻿namespace ReversoConsole.DbModel
+﻿namespace Memorizer.DbModel
 {
-    public interface User
+    public interface IUser
     {
         int Id { get; set; }
         string Name { get; set; }

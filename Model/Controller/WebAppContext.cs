@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReversoConsole.DbModel;
+using Memorizer.DbModel;
 
 
-namespace ReversoConsole.Controller
+namespace Memorizer.Controller
 {
     public class WebAppContext: DbContext
     {

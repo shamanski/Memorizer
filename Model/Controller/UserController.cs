@@ -1,4 +1,4 @@
-﻿using ReversoConsole.DbModel;
+﻿using Memorizer.DbModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 
 
-namespace ReversoConsole.Controller
+namespace Memorizer.Controller
 {
     public class UserController : BaseController
     {

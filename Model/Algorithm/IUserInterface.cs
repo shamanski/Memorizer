@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using ReversoConsole.DbModel;
+using Memorizer.DbModel;
 
-namespace ReversoConsole.Algorithm
+namespace Memorizer.Algorithm
 {
     public interface IUserInterface
     {

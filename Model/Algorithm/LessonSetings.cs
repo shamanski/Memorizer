@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ReversoConsole.Algorithm
+namespace Memorizer.Algorithm
 {
     
     public class LessonSetings

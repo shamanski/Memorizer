@@ -1,4 +1,4 @@
-using ReversoConsole.Controller;
+using Memorizer.Controller;
 using TgBot;
 using TgBot.BotCommands;
 using TgBot.BotCommands.Commands;
@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<ReversoConsole.Controller.WebAppContext>();
+builder.Services.AddDbContext<Memorizer.Controller.WebAppContext>();
 builder.Services.AddSingleton<TelegramBot>();
 builder.Services.AddScoped<WebBotController>();
 builder.Services.AddTransient<UserController>();

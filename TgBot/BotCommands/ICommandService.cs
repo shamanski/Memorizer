@@ -1,4 +1,4 @@
-﻿using ReversoConsole.DbModel;
+﻿using Memorizer.DbModel;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

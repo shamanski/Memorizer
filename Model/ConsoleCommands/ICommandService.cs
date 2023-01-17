@@ -1,10 +1,10 @@
-﻿using ReversoConsole.DbModel;
+﻿using Memorizer.DbModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReversoConsole.ConsoleCommands
+namespace Memorizer.ConsoleCommands
 {
     interface ICommandService
     {

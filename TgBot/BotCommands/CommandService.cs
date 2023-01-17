@@ -1,10 +1,11 @@
-﻿using ReversoConsole.Controller;
-using ReversoConsole.DbModel;
+﻿using Memorizer.Controller;
+using Memorizer.DbModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using TgBot.BotCommands.Commands;
+using User = Memorizer.DbModel.User;
 
 namespace TgBot.BotCommands
 {

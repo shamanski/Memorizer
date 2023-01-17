@@ -1,5 +1,5 @@
 ﻿using ReversoApi.Models;
-using ReversoConsole.DbModel;
+using Memorizer.DbModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,7 +37,7 @@ namespace ReversoApi
                 }
                 else Console.WriteLine($"{word.Sources[0].DisplaySource }");
             }
-            using var db = new ReversoConsole.Controller.WebAppContext();
+            using var db = new Memorizer.Controller.WebAppContext();
             db.AddRange(dbmodel);
             db.SaveChanges();
             Console.WriteLine("Объекты успешно сохранены");

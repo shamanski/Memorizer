@@ -1,5 +1,5 @@
-using ReversoConsole.Controller;
-using ReversoConsole.DbModel;
+using Memorizer.Controller;
+using Memorizer.DbModel;
 
 namespace MemorizerTests
 {

@@ -1,12 +1,12 @@
-﻿using ReversoConsole.Algorithm;
-using ReversoConsole.Controller;
-using ReversoConsole.DbModel;
+﻿using Memorizer.Algorithm;
+using Memorizer.Controller;
+using Memorizer.DbModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReversoConsole.ConsoleCommands.Commands
+namespace Memorizer.ConsoleCommands.Commands
 {
     class LessonCommand : ConsoleCommand
     {

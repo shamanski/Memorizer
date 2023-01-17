@@ -1,7 +1,7 @@
-﻿using ReversoConsole.DbModel;
+﻿using Memorizer.DbModel;
 using System.Collections.Generic;
 
-namespace ReversoConsole.Controller
+namespace Memorizer.Controller
 {
     public abstract class BaseController
     {

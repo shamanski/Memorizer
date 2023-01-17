@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ReversoConsole.DbModel;
+using Memorizer.DbModel;
 
-namespace ReversoConsole.Algorithm
+namespace Memorizer.Algorithm
 {
     public enum IsSuccessful
     {

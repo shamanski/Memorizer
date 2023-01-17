@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ReversoConsole.DbModel
+namespace Memorizer.DbModel
 {
-    public class User : LearningModelBase, User
+    public class User : LearningModelBase
     {
         public override int Id { get; set; }
         public string Name { get; set; }

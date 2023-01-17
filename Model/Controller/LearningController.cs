@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReversoConsole.Algorithm;
-using ReversoConsole.DbModel;
+using Memorizer.Algorithm;
+using Memorizer.DbModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ReversoConsole.Controller
+namespace Memorizer.Controller
 {
     public class LearningController: BaseController
     {

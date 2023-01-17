@@ -1,8 +1,10 @@
-﻿using ReversoConsole.Controller;
+﻿using Memorizer.Controller;
+using Memorizer.DbModel;
 using System;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using TgBot.Keybords;
+using User = Memorizer.DbModel.User;
 
 namespace TgBot.BotCommands.Commands
 {
@@ -16,7 +18,7 @@ namespace TgBot.BotCommands.Commands
 
         public override string Name { get; } = "/startpack";
 
-        public async override Task<bool> Execute(ReversoConsole.DbModel.User user, Message message, params string[] param)
+        public async override Task<bool> Execute(User user, Message message, params string[] param)
         {
             LearningController learningController = new LearningController(user, new WebAppContext());
             AllWordsController allWords = new AllWordsController(new WebAppContext());
@@ -64,7 +66,7 @@ namespace TgBot.BotCommands.Commands
             return false;
         }
 
-        public async override Task<bool> Next(ReversoConsole.DbModel.User user, Message message)
+        public async override Task<bool> Next(Memorizer.DbModel.User user, Message message)
         {
             message.ReplyMarkup = new AddWordsKeyboard().Keyboard;
             await chat.ReplyMessage(message);

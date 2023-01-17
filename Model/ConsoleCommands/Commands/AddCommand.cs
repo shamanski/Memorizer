@@ -33,7 +33,7 @@ namespace ReversoConsole.ConsoleCommands.Commands
                 learningController.AddNewWord(newWord);
             }
 
-            foreach (var item in learningController.GetAll())
+            foreach (var item in user.Words)
             {
                 Console.WriteLine($"\t{item.WordToLearn.Text} - {item.WordToLearn.Translates[0].Text}");
             }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReversoConsole.DbModel;
 
+
 namespace ReversoConsole.Controller
 {
     public class WebAppContext: DbContext
@@ -17,7 +18,7 @@ namespace ReversoConsole.Controller
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Test;Trusted_Connection=True") ;
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Test;Trusted_Connection=True");
         }
     }
 }

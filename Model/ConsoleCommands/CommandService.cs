@@ -27,24 +27,25 @@ namespace ReversoConsole.ConsoleCommands
         }
 
         public Dictionary<string, ConsoleCommand> Get() => _commands;
-        public Task Execute(User user, string message)
+
+        public async Task<bool> Execute(IUser user, string message)
         {
             var split = Regex.Split(message, @"\s+").Where(s => s != string.Empty);
             try
             {
-                return _commands[split.First()].Execute(user, split.Skip(1));
+                return await _commands[split.First()].Execute(user, split.Skip(1));
             }
 
             catch (KeyNotFoundException)
             {
                 System.Console.WriteLine("Command doesn't exists");
-                return Task.CompletedTask;
+                return true;
             }
 
             catch (Exception ex)
             {
                 System.Console.WriteLine(ex.Message);
-                return Task.CompletedTask;
+                return true;
             }
         }
     }

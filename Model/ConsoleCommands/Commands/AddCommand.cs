@@ -17,7 +17,7 @@ namespace ReversoConsole.ConsoleCommands.Commands
             throw new NotImplementedException();
         }
 
-        public override Task Execute(User user, IEnumerable<string> message)
+        public async override Task<bool> Execute(IUser user, IEnumerable<string> message)
         {
             var allWords = new AllWordsController(new WebAppContext());
             var learningController = new LearningController(user, new WebAppContext());
@@ -33,12 +33,12 @@ namespace ReversoConsole.ConsoleCommands.Commands
                 learningController.AddNewWord(newWord);
             }
 
-            foreach (var item in user.Words)
+            foreach (var item in learningController.GetAll())
             {
                 Console.WriteLine($"\t{item.WordToLearn.Text} - {item.WordToLearn.Translates[0].Text}");
             }
 
-            return Task.CompletedTask;
+            return true;
         }
     }
 }

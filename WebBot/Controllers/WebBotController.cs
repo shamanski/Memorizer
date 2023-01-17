@@ -1,4 +1,13 @@
 ﻿
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using ReversoConsole.Controller;
+using Telegram.Bot;
+using Telegram.Bot.Exceptions;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
+using TgBot.BotCommands;
+
 namespace WebBot.Controllers
 {
     [Route("api/message")]
@@ -62,7 +71,7 @@ namespace WebBot.Controllers
             var messageText = message.Text;
             var user = users.GetUser(message?.From?.Id.ToString());
             Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
-            await Task.Run(() => command.Execute(user, message));
+            await command.Execute(user, message);
 
         }
 

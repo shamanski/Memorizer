@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31911.196
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32708.82
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReversoApi", "ReversoApi.csproj", "{5C994B2E-E100-4120-9461-AC7ECF5F65F5}"
 EndProject
@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TgBot", "..\TgBot\TgBot.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebBot", "..\WebBot\WebBot.csproj", "{426BFD8A-FA76-47ED-8A17-9F092085988E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "..\Model\Model.csproj", "{ADF39B3C-8549-4C8F-9846-7E315EB7D278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "..\Model\Model.csproj", "{ADF39B3C-8549-4C8F-9846-7E315EB7D278}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemorizerTests", "..\MemorizerTests\MemorizerTests.csproj", "{ED43E920-3CBE-427B-98ED-82DAABCC27AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{ADF39B3C-8549-4C8F-9846-7E315EB7D278}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADF39B3C-8549-4C8F-9846-7E315EB7D278}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADF39B3C-8549-4C8F-9846-7E315EB7D278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED43E920-3CBE-427B-98ED-82DAABCC27AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED43E920-3CBE-427B-98ED-82DAABCC27AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED43E920-3CBE-427B-98ED-82DAABCC27AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED43E920-3CBE-427B-98ED-82DAABCC27AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

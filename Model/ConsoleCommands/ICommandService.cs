@@ -9,6 +9,6 @@ namespace ReversoConsole.ConsoleCommands
     interface ICommandService
     {
         Dictionary<string, ConsoleCommand> Get();
-        Task Execute(IUser user, string message);
+        Task Execute(User user, string message);
     }
 }

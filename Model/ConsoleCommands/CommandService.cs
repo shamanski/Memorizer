@@ -28,7 +28,7 @@ namespace ReversoConsole.ConsoleCommands
 
         public Dictionary<string, ConsoleCommand> Get() => _commands;
 
-        public Task Execute(IUser user, string message)
+        public Task Execute(User user, string message)
         {
             var split = Regex.Split(message, @"\s+").Where(s => s != string.Empty);
             try

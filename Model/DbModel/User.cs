@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ReversoConsole.DbModel
 {
-    public class User : LearningModelBase, IUser
+    public class User : LearningModelBase, User
     {
         public override int Id { get; set; }
         public string Name { get; set; }

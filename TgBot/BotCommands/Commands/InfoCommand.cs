@@ -17,7 +17,7 @@ namespace TgBot.BotCommands.Commands
 
         public override string Name { get; } = "/info";
 
-        public async override Task<bool> Execute(IUser user, Telegram.Bot.Types.Message message, params string[] param)
+        public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
         {
             var learningController = new LearningController(user, new WebAppContext());
             var i = learningController
@@ -48,7 +48,7 @@ namespace TgBot.BotCommands.Commands
             return false;
         }
 
-        public override Task<bool> Next(IUser user, Telegram.Bot.Types.Message message)
+        public override Task<bool> Next(User user, Telegram.Bot.Types.Message message)
         {
             throw new NotImplementedException();
         }

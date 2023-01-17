@@ -11,11 +11,11 @@ namespace ReversoConsole.Algorithm
     {
         public readonly LessonSetings settings; 
         private readonly WebAppContext _context;
-        private readonly IUser user;
+        private readonly User user;
         private readonly List<LearningWord> words;
 
        
-        public StandardLesson(IUser user, WebAppContext context)
+        public StandardLesson(User user, WebAppContext context)
         {
             this.user = user;
             _context = context;

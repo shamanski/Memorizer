@@ -41,7 +41,7 @@ namespace TgBot.BotCommands
 
         public List<BotCommand> Get() => _commands;
 
-        public async Task<bool> Execute(IUser user, Message message)
+        public async Task<bool> Execute(User user, Message message)
         {
             var state = states.GetUserState(user.Name);
             string[] split = { };

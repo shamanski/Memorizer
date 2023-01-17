@@ -26,7 +26,7 @@ namespace TgBot.BotCommands.Commands
             this.allWords = allWords;
         }
 
-        public async override Task<bool> Execute(IUser user, Telegram.Bot.Types.Message message, params string[] param)
+        public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
         {
             message.Text = $"Отправьте файл txt";
             message.ReplyMarkup = null;
@@ -34,7 +34,7 @@ namespace TgBot.BotCommands.Commands
             return true;
         }
 
-        public async override Task<bool> Next(IUser user, Telegram.Bot.Types.Message message)
+        public async override Task<bool> Next(User user, Telegram.Bot.Types.Message message)
         {
             var learningController = new LearningController(user, new WebAppContext());
             if (message.Type == MessageType.Document)

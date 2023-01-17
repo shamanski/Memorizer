@@ -11,7 +11,7 @@ namespace ReversoConsole.ConsoleCommands
     {
         public abstract string Name { get; }
 
-        public abstract Task Execute(IUser user, IEnumerable<string> arguments);
+        public abstract Task Execute(User user, IEnumerable<string> arguments);
 
         public abstract bool Contains(string message);
     }

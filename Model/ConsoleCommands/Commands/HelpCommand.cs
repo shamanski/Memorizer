@@ -15,7 +15,7 @@ namespace ReversoConsole.ConsoleCommands
             return message.Contains(Name);
         }
 
-        public override Task Execute(User user, IEnumerable<string> arguments)
+        public override Task Execute(IUser user, IEnumerable<string> arguments)
         {
             Console.WriteLine("Что вы хотите сделать?");
             Console.WriteLine("E - ввести слово");

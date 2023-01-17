@@ -17,7 +17,7 @@ namespace ReversoConsole.ConsoleCommands.Commands
             throw new NotImplementedException();
         }
 
-        public override Task Execute(User user, IEnumerable<string> message)
+        public override Task Execute(IUser user, IEnumerable<string> message)
         {
             var allWords = new AllWordsController(new WebAppContext());
             var learningController = new LearningController(user, new WebAppContext());

@@ -62,7 +62,7 @@ namespace WebBot.Controllers
             var user = users.GetUser(data.From.Id.ToString());
             data.Message!.Text = data.Data;
             data.Message!.Caption = data.Id;
-            await Task.Run(() => command.Execute(user, data.Message));
+            await command.Execute(user, data.Message);
         }
 
         protected async void OnMessage(Message message)

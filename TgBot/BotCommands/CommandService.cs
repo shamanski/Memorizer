@@ -13,13 +13,15 @@ namespace TgBot.BotCommands
     {
         private readonly StateController states;
         private readonly ChatController chat;
+        private readonly WebAppContext _context;
         private readonly AllWordsController _allWords;
         private List<BotCommand> _commands;
 
-        public CommandService(StateController state, ChatController chatController, AllWordsController allWords)
+        public CommandService(StateController state, ChatController chatController, AllWordsController allWords, WebAppContext context)
         {
             _allWords = allWords;
             states = state;
+            _context = context;
             chat = chatController;  
             Refresh(); 
         }
@@ -53,7 +55,7 @@ namespace TgBot.BotCommands
                 {
                     split = message.Text?.Split(' ');
                     states.RemoveUserState(user.Name);  //Stop current command if exists
-                    var res = _commands.FirstOrDefault(i => i.Name == split.First()).Execute(user, message, split[1..]).Result; //Try to execute new command
+                    var res = await _commands.FirstOrDefault(i => i.Name == split.First()).Execute(user, _context, message, split[1..]); //Try to execute new command
                     if (res) // Command should continue
                     {
                         states.Add(user.Name, _commands.First(i => i.Name == split.First())); //Save command

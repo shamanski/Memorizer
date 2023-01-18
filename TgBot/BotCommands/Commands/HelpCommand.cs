@@ -17,7 +17,7 @@ namespace TgBot.BotCommands.Commands
 
         public override string Name { get; } = "/help";
 
-        public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
+        public async override Task<bool> Execute(User user, WebAppContext context, Telegram.Bot.Types.Message message, params string[] param)
         {
             var str = new StringBuilder();
             foreach (var attr in Assembly.GetExecutingAssembly().GetTypes())

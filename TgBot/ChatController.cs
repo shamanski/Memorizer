@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Memorizer.Controller;
+using Microsoft.Extensions.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -8,15 +9,18 @@ namespace TgBot
 {
     public class ChatController
     {
-        
+
         private delegate bool nextStep(Message message);
         private readonly TelegramBotClient bot;
         private readonly IConfiguration Configuration;
+        private WebAppContext _context;
+        public WebAppContext GetContext {get => _context;}
 
-        public ChatController(TelegramBot tgBot, IConfiguration configuration)
+        public ChatController(TelegramBot tgBot, IConfiguration configuration, WebAppContext context)
         {
             bot = tgBot.GetBot().Result;
             Configuration = configuration;
+            _context = context;
         }
        
         public async Task ReplyMessage(Message message)

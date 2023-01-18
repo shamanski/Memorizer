@@ -17,7 +17,8 @@ namespace Memorizer.Controller
         }
 
         public WebAppContext(DbContextOptions<WebAppContext> options) : base(options)
-        { 
+        {
+            Database.EnsureCreated();
         }
 
 

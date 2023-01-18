@@ -1,5 +1,6 @@
 ﻿using Memorizer.Controller;
 using Memorizer.DbModel;
+using ReversoApi.Models;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using User = Memorizer.DbModel.User;
@@ -15,12 +16,13 @@ namespace TgBot.BotCommands.Commands
 
         public AddCommand(ChatController chatController) : base(chatController)
         {
+ 
         }
 
-        public async override Task<bool> Execute(User user, Message message, params string[] param)
+        public async override Task<bool> Execute(User user, WebAppContext context, Message message, params string[] param)
         {
-            allWords = new AllWordsController(new WebAppContext());
-            learningController = new LearningController(user, new WebAppContext());
+            allWords = new AllWordsController(context);
+            learningController = new LearningController(user, context);
             message.Text = $"Введите слово:";
             message.ReplyMarkup = null;
             await chat.ReplyMessage(message);       

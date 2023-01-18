@@ -18,10 +18,10 @@ namespace TgBot.BotCommands.Commands
 
         public override string Name { get; } = "/startpack";
 
-        public async override Task<bool> Execute(User user, Message message, params string[] param)
+        public async override Task<bool> Execute(User user, WebAppContext context, Message message, params string[] param)
         {
-            LearningController learningController = new LearningController(user, new WebAppContext());
-            AllWordsController allWords = new AllWordsController(new WebAppContext());
+            LearningController learningController = new LearningController(user, context);
+            AllWordsController allWords = new AllWordsController(context);
             int start = default, count = default;
             switch (param.Length)
             {

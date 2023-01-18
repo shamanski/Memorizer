@@ -25,10 +25,10 @@ namespace TgBot.BotCommands.Commands
         {
         }
 
-        public async override Task<bool> Execute(User user, Message message, params string[] param)
+        public async override Task<bool> Execute(User user, WebAppContext context, Message message, params string[] param)
         {
-            var learning = new LearningController(user, new WebAppContext());
-            lessonController = new StandardLesson(user, new WebAppContext());
+            var learning = new LearningController(user, context);
+            lessonController = new StandardLesson(user, context);
             if (learning.GetAll().Count < 10)
             {
                 message.Text = "Добавьте хотя бы 10 слов для изучения. Можно использовать /startpack";

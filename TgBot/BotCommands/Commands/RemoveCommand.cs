@@ -14,9 +14,9 @@ namespace TgBot.BotCommands.Commands
         {
         }
 
-        public async override Task<bool> Execute(Memorizer.DbModel.User user, Message message, params string[] param)
+        public async override Task<bool> Execute(Memorizer.DbModel.User user, WebAppContext context, Message message, params string[] param)
         {
-            learningController = new LearningController(user, new WebAppContext());
+            learningController = new LearningController(user, context);
             message.Text = $"Введите слово:";
             message.ReplyMarkup = null;
             await chat.ReplyMessage(message);

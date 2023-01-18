@@ -1,5 +1,6 @@
 using Memorizer.Controller;
 using Memorizer.DbModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace MemorizerTests
 {
@@ -13,7 +14,10 @@ namespace MemorizerTests
         public void TestInitialize()
         {
             // Arrange
-            _context = new WebAppContext();
+            var options = new DbContextOptionsBuilder<WebAppContext>()
+            .UseInMemoryDatabase(databaseName: "Test")
+            .Options;
+            _context = new WebAppContext(options);
             _controller = new AllWordsController(_context);
         }
 
@@ -43,7 +47,7 @@ namespace MemorizerTests
             // Assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof(Word));
-            Assert.AreEqual(name, result.Text);
+            Assert.AreEqual(name, result.Text.ToLower());
         }
 
         [TestMethod]

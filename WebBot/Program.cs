@@ -1,8 +1,10 @@
 using Memorizer.Controller;
+using Microsoft.EntityFrameworkCore;
 using TgBot;
 using TgBot.BotCommands;
 using TgBot.BotCommands.Commands;
 using WebBot.Controllers;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +14,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<Memorizer.Controller.WebAppContext>();
+builder.Services.AddDbContext<Memorizer.Controller.WebAppContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetValue<string>("ConnectionStrings:DefaultConnection"));
+}
+);
 builder.Services.AddSingleton<TelegramBot>();
 builder.Services.AddScoped<WebBotController>();
 builder.Services.AddTransient<UserController>();

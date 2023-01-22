@@ -56,6 +56,7 @@ namespace Memorizer.Controller
                 .Select(x => new LearningWord(user, x))
                 .ToList();
             _context.LearningWords.AddRange(lwords);
+            _context.SaveChangesAsync();
             return lwords.Count;
         }
 

@@ -1,6 +1,7 @@
 ﻿using Memorizer.Algorithm;
 using Memorizer.Controller;
 using Memorizer.DbModel;
+using ReversoApi.Models;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -110,7 +111,7 @@ namespace TgBot.BotCommands.Commands
             await CheckBox(message, currWord); 
             if (count == lesson.WordsList.Count) //after last answer
             {
-                await Last(message);
+                await Last(user, context, message);
                 return false;
             }
 
@@ -118,8 +119,9 @@ namespace TgBot.BotCommands.Commands
             return true;
         }
 
-        private async Task Last(Message message)
-        {           
+        private async Task Last(Memorizer.DbModel.User user, WebAppContext context, Message message)
+        {
+            lessonController = new StandardLesson(user, context);
             lessonController.ReturnFinishedLesson(lesson);
             int successful = (from i in lesson.WordsList
                               where i.IsSuccessful == IsSuccessful.True || i.IsSuccessful == IsSuccessful.Finished

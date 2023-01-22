@@ -50,13 +50,13 @@ namespace Memorizer.Controller
         }
 
         public int AddNewWords(List<Word> words)
-        {
-            int count = 0;
-            foreach (var word in words)
-            {
-                if (AddNewWord(new LearningWord(user, word))) count++;
-            }
-            return count;
+        {         
+                var lwords = words
+                .Where(x => Find(x.Text) == null)
+                .Select(x => new LearningWord(user, x))
+                .ToList();
+            _context.LearningWords.AddRange(lwords);
+            return lwords.Count;
         }
 
         public bool RemoveWord(LearningWord word)

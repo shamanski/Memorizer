@@ -23,7 +23,7 @@ namespace Memorizer.Controller
             return _context.Words.ToList();
         }
 
-        public Word FindWordByName(string name)
+        public async Task<Word> FindWordByName(string name)
         {
             if (string.IsNullOrEmpty(name)) return null;  
             name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
@@ -37,7 +37,7 @@ namespace Memorizer.Controller
 
             else
             {
-                var res = Do(name).Result;
+                var res = await Do(name);
                 if (res == null) return null;
                 _context.Words.Add(res);
                 _context.SaveChanges();

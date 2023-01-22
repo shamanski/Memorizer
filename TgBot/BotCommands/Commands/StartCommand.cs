@@ -66,7 +66,7 @@ namespace TgBot.BotCommands.Commands
             return false;
         }
 
-        public async override Task<bool> Next(Memorizer.DbModel.User user, Message message)
+        public async override Task<bool> Next(Memorizer.DbModel.User user, WebAppContext context, Message message)
         {
             message.ReplyMarkup = new AddWordsKeyboard().Keyboard;
             await chat.ReplyMessage(message);

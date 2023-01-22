@@ -20,20 +20,20 @@ namespace TgBot.BotCommands.Commands
         }
 
         public async override Task<bool> Execute(User user, WebAppContext context, Message message, params string[] param)
-        {
-            allWords = new AllWordsController(context);
-            learningController = new LearningController(user, context);
+        {           
             message.Text = $"Введите слово:";
             message.ReplyMarkup = null;
             await chat.ReplyMessage(message);       
             return true;
         }
 
-        public async override Task<bool> Next(User user, Message message)
+        public async override Task<bool> Next(User user, WebAppContext context, Message message)
         {
+            allWords = new AllWordsController(context);
+            learningController = new LearningController(user, context);
             Word makeWord;
 
-                makeWord = allWords.FindWordByName(message.Text);               
+                makeWord = await allWords.FindWordByName(message.Text);               
             if (makeWord == null)
             {
                 message.Text = $"Не удалось добавить";

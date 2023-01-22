@@ -93,7 +93,7 @@ namespace TgBot.BotCommands.Commands
             return ti.ToTitleCase(input);
         } 
         
-        public async override Task<bool> Next(Memorizer.DbModel.User user, Message message)
+        public async override Task<bool> Next(Memorizer.DbModel.User user, WebAppContext context, Message message)
         {
             var currWord = lesson.WordsList[count].ToString();
             if (message.Text == "!rm") // Button 'already have known' pressed

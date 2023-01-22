@@ -15,6 +15,6 @@ namespace TgBot.BotCommands
 
         public abstract Task<bool> Execute(User user, WebAppContext context, Message message, params string[] param);
 
-        public abstract Task<bool> Next(User user, Message message);
+        public abstract Task<bool> Next(User user, WebAppContext context, Message message);
     }
 }

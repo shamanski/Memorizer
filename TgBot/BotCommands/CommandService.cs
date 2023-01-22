@@ -65,7 +65,7 @@ namespace TgBot.BotCommands
 
                 else if (state != null) // If request is not a command and saved command exists
                 {
-                    if (!state.Next(user, message).Result) //Execute saved command and check if it should continue
+                    if ( !await state.Next(user, _context, message)) //Execute saved command and check if it should continue
                     {
                         states.RemoveUserState(user.Name);
                         Refresh();

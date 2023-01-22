@@ -17,7 +17,7 @@ namespace Memorizer.ConsoleCommands.Commands
             throw new NotImplementedException();
         }
 
-        public override Task Execute(User user, IEnumerable<string> message)
+        public async override Task Execute(User user, IEnumerable<string> message)
         {
             var allWords = new AllWordsController(new WebAppContext());
             var learningController = new LearningController(user, new WebAppContext());
@@ -28,7 +28,7 @@ namespace Memorizer.ConsoleCommands.Commands
             }
             foreach (var word in message )
             {
-                var makeWord = allWords.FindWordByName(word);
+                var makeWord = await allWords.FindWordByName(word);
                 var newWord = new LearningWord(user, makeWord);
                 learningController.AddNewWord(newWord);
             }
@@ -37,8 +37,6 @@ namespace Memorizer.ConsoleCommands.Commands
             {
                 Console.WriteLine($"\t{item.WordToLearn.Text} - {item.WordToLearn.Translates[0].Text}");
             }
-
-            return Task.CompletedTask;
         }
     }
 }

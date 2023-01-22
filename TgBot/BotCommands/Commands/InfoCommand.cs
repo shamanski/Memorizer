@@ -48,7 +48,7 @@ namespace TgBot.BotCommands.Commands
             return false;
         }
 
-        public override Task<bool> Next(User user, Telegram.Bot.Types.Message message)
+        public override Task<bool> Next(User user, WebAppContext context, Telegram.Bot.Types.Message message)
         {
             throw new NotImplementedException();
         }

@@ -23,7 +23,7 @@ namespace TgBot.BotCommands.Commands
             return true;
         }
 
-        public async override Task<bool> Next(Memorizer.DbModel.User user, Message message)
+        public async override Task<bool> Next(Memorizer.DbModel.User user, WebAppContext context, Message message)
         {
             try
             {

@@ -34,7 +34,7 @@ namespace TgBot.BotCommands.Commands
             return true;
         }
 
-        public async override Task<bool> Next(User user, Telegram.Bot.Types.Message message)
+        public async override Task<bool> Next(User user, WebAppContext context, Telegram.Bot.Types.Message message)
         {
             var learningController = new LearningController(user, chat.GetContext);
             if (message.Type == MessageType.Document)
@@ -47,7 +47,7 @@ namespace TgBot.BotCommands.Commands
 
                 foreach (var i in split)
                 {
-                    var w = allWords.FindWordByName(i);
+                    var w = await allWords.FindWordByName(i);
                     if (w != null) wordsToAdd.Add(w);
                 }
 

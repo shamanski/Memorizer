@@ -109,15 +109,13 @@ namespace TgBot.BotCommands.Commands
             }
             
             count++;
-                       
+            await CheckBox(message, currWord);
             if (count == lesson.WordsList.Count) //after last answer
-            {
-                await Last(user, context, message);
-                await CheckBox(message, currWord);
+            {                
+                await Last(user, context, message);                
                 return false;
             }
 
-            await CheckBox(message, currWord);
             await StepAnswer(message);
             return true;
         }

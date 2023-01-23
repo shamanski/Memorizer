@@ -41,23 +41,20 @@ namespace WebBot.Controllers
 
         protected async Task HandleUpdateAsync(Update update)
         {
-            await Task.Run(() =>
-            {
+
                 if (update.Type == UpdateType.CallbackQuery)
                 {
-                    OnCallBack(update.CallbackQuery!); 
+                    await OnCallBack(update.CallbackQuery!); 
                     return;
                 }
 
                 if (update.Message?.Type == MessageType.Document || update.Message?.Type == MessageType.Text)
                 {                   
-                    OnMessage(update.Message);
+                    await OnMessage(update.Message);
                 }
-
-            });
         }
 
-        protected async void OnCallBack(CallbackQuery data)
+        protected async Task OnCallBack(CallbackQuery data)
         {
             var user = users.GetUser(data.From.Id.ToString());
             data.Message!.Text = data.Data;
@@ -65,7 +62,7 @@ namespace WebBot.Controllers
             await command.Execute(user, data.Message);
         }
 
-        protected async void OnMessage(Message message)
+        protected async Task OnMessage(Message message)
         {
             var chatId = message.Chat.Id;
             var messageText = message.Text;

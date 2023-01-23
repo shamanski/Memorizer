@@ -1,8 +1,12 @@
-﻿namespace Memorizer.Algorithm
+﻿using Memorizer.Controller;
+using ReversoApi.Models;
+using System.Threading.Tasks;
+
+namespace Memorizer.Algorithm
 {
     public interface ITakingLesson
     {
-        public Lesson GetNextLesson();
-        public void ReturnFinishedLesson(Lesson lesson);
+        public Lesson GetNextLesson(WebAppContext context);
+        public Task ReturnFinishedLesson(Lesson lesson, WebAppContext context);
     }
 }

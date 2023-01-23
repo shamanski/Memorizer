@@ -36,9 +36,10 @@ namespace TgBot.BotCommands.Commands
                 await chat.ReplyMessage(message);
                 return false;
             }
-            message.Text = "Урок начат"+ Environment.NewLine;
-            await chat.ReplyMessage(message);
-            lesson = lessonController.GetNextLesson();
+
+            lesson = lessonController.GetNextLesson(context);
+            message.Text = "Урок начат"+ Environment.NewLine;            
+            await chat.ReplyMessage(message);            
             await StepAnswer(message);
             return  true;
         }
@@ -108,21 +109,22 @@ namespace TgBot.BotCommands.Commands
             }
             
             count++;
-            await CheckBox(message, currWord); 
+                       
             if (count == lesson.WordsList.Count) //after last answer
             {
                 await Last(user, context, message);
+                await CheckBox(message, currWord);
                 return false;
             }
 
+            await CheckBox(message, currWord);
             await StepAnswer(message);
             return true;
         }
 
         private async Task Last(Memorizer.DbModel.User user, WebAppContext context, Message message)
         {
-            lessonController = new StandardLesson(user, context);
-            lessonController.ReturnFinishedLesson(lesson);
+            await lessonController.ReturnFinishedLesson(lesson, context);
             int successful = (from i in lesson.WordsList
                               where i.IsSuccessful == IsSuccessful.True || i.IsSuccessful == IsSuccessful.Finished
                               select i).Count();

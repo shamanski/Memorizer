@@ -20,7 +20,7 @@ namespace Memorizer.ConsoleCommands.Commands
         public override Task Execute(User user, IEnumerable<string> arguments)
         {
             var lessonController = new StandardLesson(user, new WebAppContext());
-            var lesson = lessonController.GetNextLesson();
+            var lesson = lessonController.GetNextLesson(new WebAppContext());
             foreach (var currWord in lesson.WordsList)
             {
                 Console.WriteLine(currWord.LearningWord.WordToLearn.Translates[0].Text);
@@ -36,7 +36,7 @@ namespace Memorizer.ConsoleCommands.Commands
                 }
 
             }
-            lessonController.ReturnFinishedLesson(lesson);
+            lessonController.ReturnFinishedLesson(lesson, new WebAppContext());
             return Task.CompletedTask;
         }
     }

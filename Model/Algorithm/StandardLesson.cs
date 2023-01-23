@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Memorizer.Controller;
 using Memorizer.DbModel;
+using System.Threading.Tasks;
 
 namespace Memorizer.Algorithm
 {
@@ -53,9 +54,9 @@ namespace Memorizer.Algorithm
             };
         }
 
-        public Lesson GetNextLesson()
+        public Lesson GetNextLesson(WebAppContext _context)
         {
-            if (!(_context.LearningWords.Where(i => i.UserId == user.Id)?.Any() ?? false)) throw new ArgumentException("Nothing to learn");
+            if (!( _context.LearningWords.Where(i => i.UserId == user.Id)?.Any() ?? false)) throw new ArgumentException("Nothing to learn");
             var lesson = new Lesson();
             var newWords = words
                 .Where(i => i.Level == 0 )
@@ -74,21 +75,25 @@ namespace Memorizer.Algorithm
             return lesson;
         }
 
-        public void ReturnFinishedLesson(Lesson lesson)
+        public async Task ReturnFinishedLesson(Lesson lesson, WebAppContext context)
         {
+            
             foreach (var i in lesson.WordsList)
             {
-                i.LearningWord.LastTime = DateTime.Now;
-                i.LearningWord.Level = i.IsSuccessful switch
+                var entry = context.LearningWords.Where(x => x.WordToLearnId == i.LearningWord.WordToLearnId).FirstOrDefault();
+                entry.LastTime = DateTime.Now;
+                entry.Level = i.IsSuccessful switch
                 {
                     IsSuccessful.True when (i.LearningWord.Level < settings.maxLevel) => i.LearningWord.Level + 1,
                     IsSuccessful.False => 1,
                     IsSuccessful.Finished => -1,
                     _ => i.LearningWord.Level
                 };
-                _context.LearningWords.Update(i.LearningWord);                
+
+                context.Update(entry);  
             }
-            _context.SaveChangesAsync();
+
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -9,6 +9,7 @@ namespace MemorizerTests
     {
         private WebAppContext _context;
         private LearningController _controller;
+        private User _user;
 
         [TestInitialize]
         public void TestInitialize()
@@ -18,74 +19,86 @@ namespace MemorizerTests
             .UseInMemoryDatabase(databaseName: "Test")
             .Options;
             _context = new WebAppContext(options);
-            var user = new User() { Id = 1, Name = "Vasya" }; 
-            _controller = new LearningController(user, _context);
+            _user = new User() { Id = 1, Name = "Vasya" };
+            _controller = new LearningController(_user, _context);
         }
 
         [TestMethod]
-        public void GetAllWords_ShouldReturnAllWordsInContext()
+        public void GetAll_Returns_List_Of_LearningWords()
         {
+            // Arrange
+            TestInitialize();
+
             // Act
-            var result = _controller.;
+            var result = _controller.GetAll();
 
             // Assert
-            Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof(List<LearningWord>));
-            Assert.AreEqual(_context.Words.Count(), result.Count);
         }
 
         [TestMethod]
-        public void FindWordByName_ShouldReturnWordWithName()
+        public void Find_Returns_LearningWord_With_Matching_Text()
         {
             // Arrange
-            var name = "example";
-            _context.Words.Add(new Word { Text = name });
-            _context.SaveChanges();
-
+            TestInitialize();
+            var word = new LearningWord(_user, new Word { Text = "TestCase", Id = 888 }) { Id=999};
+            _context.LearningWords.Add(word);
             // Act
-            var result = _controller.FindWordByName(name);
+            var result = _controller.Find("TestCase");
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(Word));
-            Assert.AreEqual(name, result.Text.ToLower());
+            Assert.IsInstanceOfType(result, typeof(LearningWord));
+            Assert.AreEqual(result.WordToLearn.Text, "TestCase");
         }
 
         [TestMethod]
-        public void FindWordByName_ShouldReturnNullForInvalidName()
+        public void AddNewWord_Adds_New_Word_To_LearningWords()
         {
             // Arrange
-            var name = "";
+            TestInitialize();
+            var word = new LearningWord(_user, new Word { Text = "test" });
 
             // Act
-            var result = _controller.FindWordByName(name);
+            var result = _controller.AddNewWord(word);
 
             // Assert
-            Assert.IsNull(result);
+            Assert.IsTrue(result);
+            Assert.AreEqual(_context.LearningWords.Count(), 1);
+            Assert.AreEqual(_context.LearningWords.First().WordToLearn.Text, "test");
         }
 
         [TestMethod]
-        public void FindWordsById_ShouldReturnListOfWords()
+        public void AddNewWords_Adds_Multiple_Words_To_LearningWords()
         {
             // Arrange
+            TestInitialize();
             var words = new List<Word> {
-            new Word { Text = "word1" },
-            new Word { Text = "word2" },
-            new Word { Text = "word3" }
+            new Word { Text = "test1" },
+            new Word { Text = "test2" }
         };
-            _context.Words.AddRange(words);
-            _context.SaveChanges();
 
             // Act
-            var result = _controller.FindWordsById(1, 2);
+            var result = _controller.AddNewWords(words);
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(List<Word>));
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("word2", result[0].Text);
-            Assert.AreEqual("word3", result[1].Text);
+            Assert.AreEqual(result, 2);
+            Assert.AreEqual(_context.LearningWords.Count(), 2);
+        }
+
+        [TestMethod]
+        public void RemoveWord_Removes_Word_From_LearningWords()
+        {
+            // Arrange
+            TestInitialize();
+            var word = new LearningWord(_user, new Word { Text = "test" });
+            _context.LearningWords.Add(word);
+
+            // Act
+            var result = _controller.RemoveWord(word);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual(_context.LearningWords.Count(), 2);
         }
     }
-
 }

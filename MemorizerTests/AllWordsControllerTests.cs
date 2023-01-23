@@ -34,30 +34,30 @@ namespace MemorizerTests
         }
 
         [TestMethod]
-        public void FindWordByName_ShouldReturnWordWithName()
+        public async Task FindWordByName_ShouldReturnWordWithName()
         {
             // Arrange
-            var name = "example";
+            var name = "Example";
             _context.Words.Add(new Word { Text = name });
             _context.SaveChanges();
 
             // Act
-            var result = _controller.FindWordByName(name);
+            var result =  await _controller.FindWordByName(name);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof(Word));
-            Assert.AreEqual(name, result.Text.ToLower());
+            Assert.AreEqual(name, result.Text);
         }
 
         [TestMethod]
-        public void FindWordByName_ShouldReturnNullForInvalidName()
+        public async Task FindWordByName_ShouldReturnNullForInvalidName()
         {
             // Arrange
             var name = "";
 
             // Act
-            var result = _controller.FindWordByName(name);
+            var result = await _controller.FindWordByName(name);
 
             // Assert
             Assert.IsNull(result);
@@ -76,7 +76,7 @@ namespace MemorizerTests
             _context.SaveChanges();
 
             // Act
-            var result = _controller.FindWordsById(1, 2);
+            var result = _controller.FindWordsById(2, 2);
 
             // Assert
             Assert.IsNotNull(result);

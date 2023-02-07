@@ -1,5 +1,5 @@
-﻿using Memorizer.Controller;
-using Memorizer.DbModel;
+﻿using Memorizer.DbModel;
+using Model.Services;
 using ReversoApi.Models;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
@@ -11,8 +11,8 @@ namespace TgBot.BotCommands.Commands
     public class AddCommand : BotCommand
     {
         public override string Name { get; } = "/add";
-        private LearningController learningController;
-        private AllWordsController allWords;
+        private LearningService learningService;
+        private AllWordsService allWords;
 
         public AddCommand(ChatController chatController) : base(chatController)
         {
@@ -29,8 +29,8 @@ namespace TgBot.BotCommands.Commands
 
         public async override Task<bool> Next(User user, WebAppContext context, Message message)
         {
-            allWords = new AllWordsController(context);
-            learningController = new LearningController(user, context);
+            allWords = new AllWordsService(context);
+            learningService = new LearningService(user, context);
             Word makeWord;
 
                 makeWord = await allWords.FindWordByName(message.Text);               
@@ -44,7 +44,7 @@ namespace TgBot.BotCommands.Commands
             var newWord = new LearningWord(user, makeWord);
             try
             {
-                if (learningController.AddNewWord(newWord))
+                if (learningService.AddNewWord(newWord))
                 {
                     message.Text = $"Добавлено: {newWord} - {newWord.WordToLearn.Translates[0].Text}";
                 }

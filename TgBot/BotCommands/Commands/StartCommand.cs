@@ -1,5 +1,5 @@
-﻿using Memorizer.Controller;
-using Memorizer.DbModel;
+﻿using Memorizer.DbModel;
+using Model.Services;
 using System;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
@@ -20,8 +20,8 @@ namespace TgBot.BotCommands.Commands
 
         public async override Task<bool> Execute(User user, WebAppContext context, Message message, params string[] param)
         {
-            LearningController learningController = new LearningController(user, context);
-            AllWordsController allWords = new AllWordsController(context);
+            LearningService learningController = new LearningService(user, context);
+            AllWordsService allWords = new AllWordsService(context);
             int start = default, count = default;
             switch (param.Length)
             {

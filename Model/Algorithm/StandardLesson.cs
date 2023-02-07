@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Memorizer.Controller;
 using Memorizer.DbModel;
 using System.Threading.Tasks;
+using Model.Services;
 
 namespace Memorizer.Algorithm
 {
-    public class StandardLesson : BaseController, ITakingLesson
+    public class StandardLesson : BaseController, ILessonService<Lesson>
     {
         public readonly LessonSetings settings; 
         private readonly WebAppContext _context;

@@ -1,4 +1,4 @@
-﻿using Memorizer.Controller;
+﻿using Model.Services;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
@@ -8,7 +8,7 @@ namespace TgBot.BotCommands.Commands
     public class RemoveCommand : BotCommand
     {
         public override string Name { get; } = "/remove";
-        private LearningController learningController;
+        private LearningService learningService;
 
         public RemoveCommand(ChatController chatController) : base(chatController)
         {
@@ -16,7 +16,7 @@ namespace TgBot.BotCommands.Commands
 
         public async override Task<bool> Execute(Memorizer.DbModel.User user, WebAppContext context, Message message, params string[] param)
         {
-            learningController = new LearningController(user, context);
+            learningService = new LearningService(user, context);
             message.Text = $"Введите слово:";
             message.ReplyMarkup = null;
             await chat.ReplyMessage(message);
@@ -27,8 +27,8 @@ namespace TgBot.BotCommands.Commands
         {
             try
             {
-                var word = learningController.Find(message.Text);
-                if (learningController.RemoveWord(word) )
+                var word = learningService.Find(message.Text);
+                if (learningService.RemoveWord(word) )
                      message.Text = $"Удалено {word}";
                 else
                 {

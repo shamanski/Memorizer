@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Memorizer.Controller;
+using Model.Services;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
@@ -14,12 +14,12 @@ namespace WebBot.Controllers
     [ApiController]
     public class WebBotController : ControllerBase
     {
-        private readonly UserController users;
+        private readonly UserService users;
         private readonly ICommandService command;
 
-        public WebBotController(UserController usersController, ICommandService commandService)
+        public WebBotController(UserService usersService, ICommandService commandService)
         {
-            users = usersController;    
+            users = usersService;    
             command = commandService;   
         }
 

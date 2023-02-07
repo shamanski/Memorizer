@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebBot", "..\WebBot\WebBot.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "..\Model\Model.csproj", "{ADF39B3C-8549-4C8F-9846-7E315EB7D278}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemorizerTests", "..\MemorizerTests\MemorizerTests.csproj", "{ED43E920-3CBE-427B-98ED-82DAABCC27AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemorizerTests", "..\MemorizerTests\MemorizerTests.csproj", "{ED43E920-3CBE-427B-98ED-82DAABCC27AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

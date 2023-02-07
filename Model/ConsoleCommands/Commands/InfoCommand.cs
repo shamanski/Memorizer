@@ -17,7 +17,7 @@ namespace Memorizer.ConsoleCommands.Commands
         }
         public override Task Execute(User user, IEnumerable<string> message)
         {
-            var learningController = new LearningController(user, new WebAppContext());
+            var learningController = new LearningService(user, new WebAppContext());
 
             foreach (var item in learningController.GetAll())
             {

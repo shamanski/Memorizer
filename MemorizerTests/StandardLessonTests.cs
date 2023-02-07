@@ -27,6 +27,7 @@ namespace MemorizerTests
             context.LearningWords.Add(new LearningWord { UserId = 1, WordToLearnId = 1, Level = 0 });
             context.LearningWords.Add(new LearningWord { UserId = 1, WordToLearnId = 2, Level = 1 });
             context.LearningWords.Add(new LearningWord { UserId = 1, WordToLearnId = 3, Level = 2 });
+            context.SaveChangesAsync();
         }
 
         [TestMethod]

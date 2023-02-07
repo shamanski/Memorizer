@@ -1,4 +1,4 @@
-﻿using Memorizer.Controller;
+﻿using Model.Services;
 using Memorizer.DbModel;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace TgBot.BotCommands.Commands
 
         public async override Task<bool> Execute(User user, WebAppContext context, Telegram.Bot.Types.Message message, params string[] param)
         {
-            var learningController = new LearningController(user, context);
+            var learningController = new LearningService(user, context);
             var i = learningController
                 .GetAll().OrderByDescending(i => i.Level)
                 .ToList();

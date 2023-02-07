@@ -1,6 +1,6 @@
-using Memorizer.Controller;
 using Memorizer.DbModel;
 using Microsoft.EntityFrameworkCore;
+using Model.Services;
 
 namespace MemorizerTests
 {
@@ -8,7 +8,7 @@ namespace MemorizerTests
     public class AllWordsControllerTests
     {
         private WebAppContext _context;
-        private AllWordsController _controller;
+        private AllWordsService _controller;
 
         [TestInitialize]
         public void TestInitialize()
@@ -18,7 +18,7 @@ namespace MemorizerTests
             .UseInMemoryDatabase(databaseName: "Test")
             .Options;
             _context = new WebAppContext(options);
-            _controller = new AllWordsController(_context);
+            _controller = new AllWordsService(_context);
         }
 
         [TestMethod]

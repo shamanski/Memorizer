@@ -1,5 +1,4 @@
-﻿using Memorizer.Controller;
-using Memorizer.DbModel;
+﻿using Model.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,10 +13,10 @@ namespace TgBot.BotCommands
         private readonly StateController states;
         private readonly ChatController chat;
         private readonly WebAppContext _context;
-        private readonly AllWordsController _allWords;
+        private readonly AllWordsService _allWords;
         private List<BotCommand> _commands;
 
-        public CommandService(StateController state, ChatController chatController, AllWordsController allWords, WebAppContext context)
+        public CommandService(StateController state, ChatController chatController, AllWordsService allWords, WebAppContext context)
         {
             _allWords = allWords;
             states = state;

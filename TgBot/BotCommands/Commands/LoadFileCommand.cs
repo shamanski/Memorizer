@@ -1,13 +1,9 @@
 ﻿using Memorizer.DbModel;
 using Telegram.Bot.Types.Enums;
 using System.Threading.Tasks;
-using System.IO;
-using System.Linq;
 using System;
-using ReversoApi;
 using System.Net;
-using Memorizer.Controller;
-using Memorizer.DbModel;
+using Model.Services;
 using System.Collections.Generic;
 
 namespace TgBot.BotCommands.Commands
@@ -17,10 +13,10 @@ namespace TgBot.BotCommands.Commands
     public class LoadFileCommand : BotCommand
     {
         private readonly ChatController chatController;
-        private readonly AllWordsController allWords;
+        private readonly AllWordsService allWords;
         public override string Name { get; } = "/load";
 
-        public LoadFileCommand(ChatController chatController, AllWordsController allWords) : base(chatController)
+        public LoadFileCommand(ChatController chatController, AllWordsService allWords) : base(chatController)
         {
             this.chatController = chatController;
             this.allWords = allWords;
@@ -36,7 +32,7 @@ namespace TgBot.BotCommands.Commands
 
         public async override Task<bool> Next(User user, WebAppContext context, Telegram.Bot.Types.Message message)
         {
-            var learningController = new LearningController(user, chat.GetContext);
+            var learningController = new LearningService(user, chat.GetContext);
             if (message.Type == MessageType.Document)
             {
                 using var client = new WebClient();

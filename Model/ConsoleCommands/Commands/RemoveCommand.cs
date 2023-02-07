@@ -19,8 +19,8 @@ namespace Memorizer.ConsoleCommands.Commands
 
         public override Task Execute(User user, IEnumerable<string> message)
         {
-            var allWords = new AllWordsController(new WebAppContext());
-            var learningController = new LearningController(user, new WebAppContext());
+            var allWords = new AllWordsService(new WebAppContext());
+            var learningController = new LearningService(user, new WebAppContext());
             if ((message.Any() == false) || (message == null))
             {
                 Console.Write("Type the word:");

@@ -8,14 +8,14 @@ using ReversoApi;
 using ReversoApi.Models.Word;
 using Microsoft.EntityFrameworkCore;
 
-namespace Memorizer.Controller
+namespace Model.Services
 {
-    public class AllWordsController: BaseController
+    public class AllWordsService : BaseController
     {
         private readonly WebAppContext _context;
-        public AllWordsController(WebAppContext context)
+        public AllWordsService(WebAppContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public List<Word> GetAllWords()
@@ -25,7 +25,7 @@ namespace Memorizer.Controller
 
         public async Task<Word> FindWordByName(string name)
         {
-            if (string.IsNullOrEmpty(name)) return null;  
+            if (string.IsNullOrEmpty(name)) return null;
             name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
             if (_context.Words.Where(f => f.Text == name).Any())
             {
@@ -45,7 +45,7 @@ namespace Memorizer.Controller
             }
         }
 
-        public List<Word> FindWordsById(int start, int count) => 
+        public List<Word> FindWordsById(int start, int count) =>
             _context.Words
                 .Skip(start)
                 .Take(count)
@@ -59,7 +59,7 @@ namespace Memorizer.Controller
             {
                 Word = wordName
             });
-            
+
             if (!translatedWord.Error && translatedWord.Success)
             {
                 Word w = new Word
@@ -67,12 +67,12 @@ namespace Memorizer.Controller
                     Text = translatedWord.Sources.First().DisplaySource
                 };
                 var items = (from translate in translatedWord.Sources.First().Translations
-                             where (!translate.IsRude && translate.IsFromDict)
+                             where !translate.IsRude && translate.IsFromDict
                              select new Translate
                              {
                                  Text = translate.Translation
                              }).ToList();
-                w.Translates = new List<Translate>();                
+                w.Translates = new List<Translate>();
                 w.Translates.AddRange(items);
                 if (w.Translates.Count > 0) return w;
                 else w.Translates.AddRange(translatedWord.Sources.First().Translations.Where(i => !i.IsRude && !i.IsGrayed).Select(i => new Translate { Text = i.Translation }));
@@ -82,6 +82,6 @@ namespace Memorizer.Controller
             return null;
         }
 
-        
+
     }
 }

@@ -6,15 +6,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Memorizer.Controller
+namespace Model.Services
 {
-    public class LearningController: BaseController
+    public class LearningService : BaseController
     {
         private readonly User user;
         private readonly WebAppContext _context;
 
-        
-        public LearningController(User user, WebAppContext context)
+
+        public LearningService(User user, WebAppContext context)
         {
             this.user = user ?? throw new ArgumentNullException(nameof(user), "Username is empty");
             _context = context;
@@ -40,21 +40,21 @@ namespace Memorizer.Controller
 
         public bool AddNewWord(LearningWord word)
         {
-           if (Find(word.ToString()) == null)
+            if (Find(word.ToString()) == null)
             {
                 _context.LearningWords.Add(word);
                 _context.SaveChangesAsync();
-                return true; 
+                return true;
             }
             return false;
         }
 
         public int AddNewWords(List<Word> words)
-        {         
-                var lwords = words
-                .Where(x => Find(x.Text) == null)
-                .Select(x => new LearningWord(user, x))
-                .ToList();
+        {
+            var lwords = words
+            .Where(x => Find(x.Text) == null)
+            .Select(x => new LearningWord(user, x))
+            .ToList();
             _context.LearningWords.AddRange(lwords);
             _context.SaveChangesAsync();
             return lwords.Count;

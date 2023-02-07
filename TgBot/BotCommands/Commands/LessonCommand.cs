@@ -1,7 +1,5 @@
 ﻿using Memorizer.Algorithm;
-using Memorizer.Controller;
-using Memorizer.DbModel;
-using ReversoApi.Models;
+using Model.Services;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -18,7 +16,7 @@ namespace TgBot.BotCommands.Commands
         private const string positive = "\u2705";
         private const string negative = "\u274C";
         public override string Name { get; } = "/lesson";
-        private ITakingLesson lessonController;
+        private ILessonService<Lesson> lessonService;
         private Lesson lesson;
         int count = 0;
 
@@ -28,8 +26,8 @@ namespace TgBot.BotCommands.Commands
 
         public async override Task<bool> Execute(User user, WebAppContext context, Message message, params string[] param)
         {
-            var learning = new LearningController(user, context);
-            lessonController = new StandardLesson(user, context);
+            var learning = new LearningService(user, context);
+            lessonService = new StandardLesson(user, context);
             if (learning.GetAll().Count < 10)
             {
                 message.Text = "Добавьте хотя бы 10 слов для изучения. Можно использовать /startpack";
@@ -37,7 +35,7 @@ namespace TgBot.BotCommands.Commands
                 return false;
             }
 
-            lesson = lessonController.GetNextLesson(context);
+            lesson = lessonService.GetNextLesson(context);
             message.Text = "Урок начат"+ Environment.NewLine;            
             await chat.ReplyMessage(message);            
             await StepAnswer(message);
@@ -122,7 +120,7 @@ namespace TgBot.BotCommands.Commands
 
         private async Task Last(Memorizer.DbModel.User user, WebAppContext context, Message message)
         {
-            await lessonController.ReturnFinishedLesson(lesson, context);
+            await lessonService.ReturnFinishedLesson(lesson, context);
             int successful = (from i in lesson.WordsList
                               where i.IsSuccessful == IsSuccessful.True || i.IsSuccessful == IsSuccessful.Finished
                               select i).Count();

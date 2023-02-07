@@ -1,6 +1,6 @@
-using Memorizer.Controller;
 using Memorizer.DbModel;
 using Microsoft.EntityFrameworkCore;
+using Model.Services;
 
 namespace MemorizerTests
 {
@@ -8,7 +8,7 @@ namespace MemorizerTests
     public class LearningControllerTests
     {
         private WebAppContext _context;
-        private LearningController _controller;
+        private LearningService _controller;
         private User _user;
 
         [TestInitialize]
@@ -20,7 +20,7 @@ namespace MemorizerTests
             .Options;
             _context = new WebAppContext(options);
             _user = new User() { Id = 1, Name = "Vasya" };
-            _controller = new LearningController(_user, _context);
+            _controller = new LearningService(_user, _context);
         }
 
         [TestMethod]

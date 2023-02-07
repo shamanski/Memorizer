@@ -55,7 +55,7 @@ namespace ReversoApi
             DatabaseMakerAssistant.Clear();
             Console.WriteLine("EnterName");
             var name = Console.ReadLine();
-            var userController = new UserController(new WebAppContext());                      
+            var userController = new UserService(new WebAppContext());                      
             var command = new CommandService();
             foreach (var c in command.Get())
             {

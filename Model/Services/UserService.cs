@@ -1,18 +1,19 @@
 ﻿using Memorizer.DbModel;
 using Microsoft.EntityFrameworkCore;
+using Model.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 
-namespace Memorizer.Controller
+namespace Model.Services
 {
-    public class UserController : BaseController
+    public class UserService : BaseController
     {
         private readonly WebAppContext _context;
         public List<User> Users { get => _context.Users.ToList(); }
-        public UserController(WebAppContext context)
+        public UserService(WebAppContext context)
         {
             _context = context;
         }

@@ -1,4 +1,4 @@
-﻿using Memorizer.Controller;
+﻿using Model.Services;
 using Memorizer.DbModel;
 using System;
 using System.Reflection;

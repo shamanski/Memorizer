@@ -2,7 +2,7 @@
 using Memorizer.DbModel;
 
 
-namespace Memorizer.Controller
+namespace Model.Services
 {
     public class WebAppContext : DbContext
     {
@@ -22,10 +22,10 @@ namespace Memorizer.Controller
         }
 
 
-       // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-       // {
-       //     optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Test;Trusted_Connection=True");
-       // }
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // {
+        //     optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Test;Trusted_Connection=True");
+        // }
 
     }
 }

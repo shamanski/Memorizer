@@ -1,7 +1,7 @@
 ﻿using Memorizer.DbModel;
 using System.Collections.Generic;
 
-namespace Memorizer.Controller
+namespace Model.Services
 {
     public abstract class BaseController
     {

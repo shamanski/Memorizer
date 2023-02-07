@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Telegram.Bot.Types;
-using Memorizer.DbModel;
+using Model.Services;
 using User = Memorizer.DbModel.User;
-using Memorizer.Controller;
 
 namespace TgBot.BotCommands
 {

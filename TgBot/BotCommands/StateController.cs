@@ -2,17 +2,17 @@
 
 namespace TgBot.BotCommands
 {
-    public class StateController
+    public class StateController<T>
     {
-        private Dictionary<string, BotCommand> UserState { get; set; } 
+        private Dictionary<string, T> UserState { get; set; } 
 
-        public StateController() => UserState = new Dictionary<string, BotCommand>();
+        public StateController() => UserState = new Dictionary<string, T>();
 
-        public void Add(string user, BotCommand cmd) => UserState.TryAdd(user, cmd);
+        public void Add(string user, T cmd) => UserState.TryAdd(user, cmd);
 
-        public BotCommand GetUserState(string user)
+        public T GetUserState(string user)
         {
-            BotCommand value = null;
+            T value = default(T);
             UserState?.TryGetValue(user,out value);
             return value;
         }

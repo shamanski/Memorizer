@@ -42,13 +42,13 @@ namespace TgBot.Keybords
                         replyMarkup: replyMarkup
                     );
 
-                var userResponse = await _telegramBotClient.AnswerCallbackQueryAsync(" ");
+                var userResponse = new Message();  //await _telegramBotClient.AnswerCallbackQueryAsync(" ");
 
-                    if (userResponse.Data == "previous")
+                    if (userResponse.Text == "previous")
                     {
                         currentPage--;
                     }
-                    else if (userResponse.Data == "next")
+                    else if (userResponse.Text == "next")
                     {
                         currentPage++;
                     }

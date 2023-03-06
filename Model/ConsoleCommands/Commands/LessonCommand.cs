@@ -1,9 +1,8 @@
 ﻿using Memorizer.Algorithm;
-using Memorizer.Controller;
+using Model.Services;
 using Memorizer.DbModel;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Memorizer.ConsoleCommands.Commands
@@ -17,10 +16,10 @@ namespace Memorizer.ConsoleCommands.Commands
             throw new NotImplementedException();
         }
 
-        public override Task Execute(User user, IEnumerable<string> arguments)
+        public async override Task Execute(User user, IEnumerable<string> arguments)
         {
             var lessonController = new StandardLesson(user, new WebAppContext());
-            var lesson = lessonController.GetNextLesson(new WebAppContext());
+            var lesson = await lessonController.GetNextLesson(new WebAppContext());
             foreach (var currWord in lesson.WordsList)
             {
                 Console.WriteLine(currWord.LearningWord.WordToLearn.Translates[0].Text);
@@ -36,8 +35,7 @@ namespace Memorizer.ConsoleCommands.Commands
                 }
 
             }
-            lessonController.ReturnFinishedLesson(lesson, new WebAppContext());
-            return Task.CompletedTask;
+            await lessonController.ReturnFinishedLesson(lesson, new WebAppContext());
         }
     }
 }

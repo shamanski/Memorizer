@@ -1,0 +1,53 @@
+﻿@using static System.Net.WebRequestMethods
+@inject HttpClient Http
+@page "/lesson"
+<div class="lesson-card">
+    @if (lesson != null)
+    {
+        foreach (var word in lesson.WordsList)
+        {
+            <div class="card">
+                <h3>@word.LearningWord.WordToLearn.Text</h3>
+                <p>Choose the correct translation:</p>
+                <form>
+                    @foreach (var option in word.AdditionalWords)
+                    {
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="@word.LearningWord.WordToLearn.Text" value="@option" @onclick="@(() => SelectAnswer(word, option))">
+                            <label class="form-check-label">@option</label>
+                        </div>
+                    }
+                </form>
+            </div>
+        }
+    }
+    <button class="btn btn-primary" @onclick="SubmitLesson">Submit</button>
+</div>
+
+@code {
+    [Parameter]
+    public Lesson lesson { get; set; }
+
+    private async Task SubmitLesson()
+    {
+        lesson.Completed = true;
+        await Http.PutAsJsonAsync<Lesson>("api/lesson", lesson);
+    }
+
+    public Lesson()
+    {
+        lesson = Http.GetFromJsonAsync<Lesson>("api/lesson").Result;
+    }
+
+    private void SelectAnswer(LessonWord word, string answer)
+    {
+        if (word.LearningWord.ToString() == answer)
+        {
+            word.IsSuccessful = IsSuccessful.True;
+        }
+        else
+        {
+            word.IsSuccessful = IsSuccessful.False;
+        }
+    }
+}

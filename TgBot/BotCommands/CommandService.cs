@@ -5,18 +5,19 @@ using System.Threading.Tasks;
 using Telegram.Bot.Types;
 using TgBot.BotCommands.Commands;
 using User = Memorizer.DbModel.User;
+using System.Reflection;
 
 namespace TgBot.BotCommands
 {
     public class CommandService : ICommandService
     {
-        private readonly StateController states;
+        private readonly StateController<BotCommand> states;
         private readonly ChatController chat;
         private readonly WebAppContext _context;
         private readonly AllWordsService _allWords;
         private List<BotCommand> _commands;
 
-        public CommandService(StateController state, ChatController chatController, AllWordsService allWords, WebAppContext context)
+        public CommandService(StateController<BotCommand> state, ChatController chatController, AllWordsService allWords, WebAppContext context)
         {
             _allWords = allWords;
             states = state;
@@ -27,18 +28,16 @@ namespace TgBot.BotCommands
 
         private void Refresh()
         {
-            _commands = new List<BotCommand>
-            {
-                {new LessonCommand(chat) },
-                {new AddCommand(chat) },
-                { new RemoveCommand(chat) },
-                { new InfoCommand(chat) },
-                { new RemoveCommand(chat) },
-                { new RemoveCommand(chat) },
-                { new HelpCommand(chat) },
-                { new LoadFileCommand(chat, _allWords) },
-                {new StartCommand(chat) }
-            };
+            var commandClasses = Assembly.GetExecutingAssembly()
+            .GetTypes()
+            .Where(t => t.GetCustomAttributes(typeof(CommandAttribute), true).Length > 0)
+            .ToList();
+            _commands = new List<BotCommand>();
+        foreach (var commandClass in commandClasses)
+        {
+            var instance = (BotCommand)System.Activator.CreateInstance(commandClass);
+            _commands.Add(instance);
+        }
         }
 
         public List<BotCommand> Get() => _commands;
@@ -54,12 +53,12 @@ namespace TgBot.BotCommands
                 {
                     split = message.Text?.Split(' ');
                     states.RemoveUserState(user.Name);  //Stop current command if exists
-                    var res = await _commands.FirstOrDefault(i => i.Name == split.First()).Execute(user, _context, message, split[1..]); //Try to execute new command
-                    if (res) // Command should continue
+                    var hasNext = await _commands.FirstOrDefault(i => i.Name == split.First()).Execute(user, _context, message, split[1..]); //Try to execute new command
+                    if (hasNext) // Command should continue
                     {
                         states.Add(user.Name, _commands.First(i => i.Name == split.First())); //Save command
                     }
-                    return res; //True if command has next steps
+                    return hasNext; //True if command has next steps
                 }
 
                 else if (state != null) // If request is not a command and saved command exists

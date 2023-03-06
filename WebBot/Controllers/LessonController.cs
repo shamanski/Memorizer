@@ -1,0 +1,39 @@
+﻿using Memorizer.Algorithm;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Model.Services;
+
+namespace WebBot.Controllers
+{
+    [Route("api/lesson")]
+    [ApiController]
+    public class LessonController : ControllerBase
+    {
+        private readonly StandardLesson _standardLesson;
+        private readonly WebAppContext _context;
+
+        public LessonController(StandardLesson standardLesson, WebAppContext context)
+        {
+            _standardLesson = standardLesson;
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<Lesson>> GetNextLesson()
+        {
+            Lesson nextLesson = await _standardLesson.GetNextLesson(_context);
+            if (nextLesson == null)
+            {
+                return NotFound();
+            }
+            return nextLesson;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Lesson>> ReturnFinishedLesson(Lesson lesson)
+        {
+            await _standardLesson.ReturnFinishedLesson(lesson, _context);
+            return CreatedAtAction(nameof(GetNextLesson), new { id = lesson.Id }, lesson);
+        }
+    }
+}

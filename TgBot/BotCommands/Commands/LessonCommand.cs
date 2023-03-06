@@ -35,7 +35,7 @@ namespace TgBot.BotCommands.Commands
                 return false;
             }
 
-            lesson = lessonService.GetNextLesson(context);
+            lesson = await lessonService.GetNextLesson(context);
             message.Text = "Урок начат"+ Environment.NewLine;            
             await chat.ReplyMessage(message);            
             await StepAnswer(message);

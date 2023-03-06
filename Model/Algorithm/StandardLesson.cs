@@ -28,6 +28,18 @@ namespace Memorizer.Algorithm
             settings = new LessonSetings();            
         }
 
+        public StandardLesson(UserService userService, WebAppContext context)
+        {
+            this.user = userService.GetUser("468377683");
+            _context = context;
+            words = _context.LearningWords
+                .Where(i => i.UserId == user.Id)
+                .Include(i => i.WordToLearn)
+                .ThenInclude(i => i.Translates)
+                .ToList();
+            settings = new LessonSetings();
+        }
+
         private List<string> GetAdditionalWords(string source)
         {
            var rnd = new Random();
@@ -54,7 +66,7 @@ namespace Memorizer.Algorithm
             };
         }
 
-        public Lesson GetNextLesson(WebAppContext _context)
+        public async Task<Lesson> GetNextLesson(WebAppContext _context)
         {
             if (!( _context.LearningWords.Where(i => i.UserId == user.Id)?.Any() ?? false)) throw new ArgumentException("Nothing to learn");
             var lesson = new Lesson();
@@ -72,7 +84,7 @@ namespace Memorizer.Algorithm
             {
                 lesson.WordsList.Add(MakeLessonWord(word));
             }
-            return lesson;
+            return await Task.FromResult(lesson);
         }
 
         public async Task ReturnFinishedLesson(Lesson lesson, WebAppContext context)

@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using Memorizer.DbModel;
-using Memorizer.Controller;
+using Model.Services;
 using Memorizer.ConsoleCommands;
 
 namespace ReversoApi

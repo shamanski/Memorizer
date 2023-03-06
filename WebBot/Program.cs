@@ -5,6 +5,7 @@ using TgBot.BotCommands.Commands;
 using WebBot.Controllers;
 using Microsoft.Extensions.Configuration;
 using Model.Services;
+using Memorizer.Algorithm;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +23,10 @@ builder.Services.AddDbContext<Model.Services.WebAppContext>(options =>
 builder.Services.AddSingleton<TelegramBot>();
 builder.Services.AddScoped<WebBotController>();
 builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<StandardLesson>();
 builder.Services.AddScoped<ChatController>();
 builder.Services.AddScoped<AllWordsService>();
-builder.Services.AddSingleton<StateController>();
+builder.Services.AddSingleton<StateController<BotCommand>>();
 builder.Services.AddScoped<ICommandService, CommandService>();
 
 var app = builder.Build();

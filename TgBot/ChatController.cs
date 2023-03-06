@@ -1,4 +1,4 @@
-﻿using Memorizer.Controller;
+﻿using Model.Services;
 using Microsoft.Extensions.Configuration;
 using System.Threading;
 using System.Threading.Tasks;

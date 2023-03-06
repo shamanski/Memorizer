@@ -1,8 +1,6 @@
 ﻿using Memorizer.DbModel;
-using System;
-using System.Collections;
+using Model.Services;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Memorizer.ConsoleCommands

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using Model.Services;
 
 namespace ReversoApi
 {
@@ -37,7 +38,7 @@ namespace ReversoApi
                 }
                 else Console.WriteLine($"{word.Sources[0].DisplaySource }");
             }
-            using var db = new Memorizer.Controller.WebAppContext();
+            using var db = new WebAppContext();
             db.AddRange(dbmodel);
             db.SaveChanges();
             Console.WriteLine("Объекты успешно сохранены");

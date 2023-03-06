@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "..\Model\Model.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MemorizerTests", "..\MemorizerTests\MemorizerTests.csproj", "{ED43E920-3CBE-427B-98ED-82DAABCC27AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorFront", "..\BlazorFront\BlazorFront.csproj", "{A2AB6DDA-C1D7-41B6-8BDE-45CAD0EE9AF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{ED43E920-3CBE-427B-98ED-82DAABCC27AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED43E920-3CBE-427B-98ED-82DAABCC27AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED43E920-3CBE-427B-98ED-82DAABCC27AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2AB6DDA-C1D7-41B6-8BDE-45CAD0EE9AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2AB6DDA-C1D7-41B6-8BDE-45CAD0EE9AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2AB6DDA-C1D7-41B6-8BDE-45CAD0EE9AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2AB6DDA-C1D7-41B6-8BDE-45CAD0EE9AF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

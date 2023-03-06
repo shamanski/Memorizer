@@ -6,6 +6,8 @@ using Telegram.Bot.Types;
 using TgBot.BotCommands.Commands;
 using User = Memorizer.DbModel.User;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace TgBot.BotCommands
 {
@@ -13,12 +15,14 @@ namespace TgBot.BotCommands
     {
         private readonly StateController<BotCommand> states;
         private readonly ChatController chat;
+        private readonly IServiceProvider _provider;
         private readonly WebAppContext _context;
         private readonly AllWordsService _allWords;
         private List<BotCommand> _commands;
 
-        public CommandService(StateController<BotCommand> state, ChatController chatController, AllWordsService allWords, WebAppContext context)
+        public CommandService(StateController<BotCommand> state, ChatController chatController, AllWordsService allWords, WebAppContext context, IServiceProvider provider)
         {
+            _provider = provider;
             _allWords = allWords;
             states = state;
             _context = context;
@@ -28,16 +32,8 @@ namespace TgBot.BotCommands
 
         private void Refresh()
         {
-            var commandClasses = Assembly.GetExecutingAssembly()
-            .GetTypes()
-            .Where(t => t.GetCustomAttributes(typeof(CommandAttribute), true).Length > 0)
-            .ToList();
-            _commands = new List<BotCommand>();
-        foreach (var commandClass in commandClasses)
-        {
-            var instance = (BotCommand)System.Activator.CreateInstance(commandClass);
-            _commands.Add(instance);
-        }
+           _commands = _provider.GetServices<BotCommand>().ToList();
+  
         }
 
         public List<BotCommand> Get() => _commands;

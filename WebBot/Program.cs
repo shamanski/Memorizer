@@ -6,6 +6,8 @@ using WebBot.Controllers;
 using Microsoft.Extensions.Configuration;
 using Model.Services;
 using Memorizer.Algorithm;
+using System.Reflection;
+using WebBot.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCommands("TgBot", typeof(BotCommand));
 builder.Services.AddDbContext<Model.Services.WebAppContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetValue<string>("ConnectionStrings:DefaultConnection"));

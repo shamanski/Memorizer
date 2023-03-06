@@ -16,7 +16,6 @@ namespace TgBot.BotCommands.Commands
 
         public AddCommand(ChatController chatController) : base(chatController)
         {
- 
         }
 
         public async override Task<bool> Execute(User user, WebAppContext context, Message message, params string[] param)

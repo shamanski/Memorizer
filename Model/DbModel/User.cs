@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace Memorizer.DbModel
 {
-    public class User : LearningModelBase
+    public class User : BaseEntity
     {
-        public override int Id { get; set; }
         public string Name { get; set; }
         public User() { }
         public User(string name)

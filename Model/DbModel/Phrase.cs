@@ -1,8 +1,7 @@
 ﻿namespace Memorizer.DbModel
 {
-    public class Phrase : LearningModelBase
+    public class Phrase : BaseEntity
     {
-        public override int Id { get; set; }
         public string PhraseTextSource { get; set; }
         public string PhraseTextTranslate { get; set; }
     }

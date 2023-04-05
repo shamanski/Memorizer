@@ -4,37 +4,30 @@ using Memorizer.DbModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Model.Extensions;
+using Model.Data.Repositories;
+using System.Threading.Tasks;
 
 namespace Model.Services
 {
     public class LearningService : BaseController
     {
-        private readonly User user;
-        private readonly WebAppContext _context;
+        private readonly UserService users;
+        private readonly IGenericRepository<LearningWord> repository;
 
 
-        public LearningService(User user, WebAppContext context)
+        public LearningService(UserService users, IGenericRepository<LearningWord> repository)
         {
-            this.user = user ?? throw new ArgumentNullException(nameof(user), "Username is empty");
-            _context = context;
-        }
+             this.users = users;          
+             this.repository = repository;
+        }     
 
-        public List<LearningWord> GetAll()
+        public async Task<LearningWord> Find(string text)
         {
-            return _context.LearningWords
-                .Where(i => i.UserId == user.Id)
-                .Include(i => i.WordToLearn)
-                .ThenInclude(i => i.Translates)
-                .ToList();
-        }
-
-        public LearningWord Find(string text)
-        {
+            var user = users.GetCurrentUser();
             text = string.Concat(text[0].ToString().ToUpper(), text.AsSpan(1));
-            return _context.LearningWords
-                .Where(i => i.UserId == user.Id)
-                .DefaultIfEmpty()
+            var word = await repository.GetByConditionAsync(i => i.User.Id == user.Id);
+              return  word.DefaultIfEmpty()
                 .FirstOrDefault(i => i.WordToLearn.Text == text);
         }
 
@@ -42,30 +35,43 @@ namespace Model.Services
         {
             if (Find(word.ToString()) == null)
             {
-                _context.LearningWords.Add(word);
-                _context.SaveChangesAsync();
+                repository.AddAsync(word);
+                repository.SaveChangesAsync();
                 return true;
             }
+
             return false;
         }
 
         public int AddNewWords(List<Word> words)
         {
+            var user = users.GetCurrentUser();
             var lwords = words
             .Where(x => Find(x.Text) == null)
             .Select(x => new LearningWord(user, x))
             .ToList();
-            _context.LearningWords.AddRange(lwords);
-            _context.SaveChangesAsync();
+            repository.AddRangeAsync(lwords);
+            repository.SaveChangesAsync();
             return lwords.Count;
         }
 
         public bool RemoveWord(LearningWord word)
         {
-            _context.LearningWords.Remove(word);
-            _context.SaveChangesAsync();
-
+            repository.DeleteAsync(word.Id);
+            repository.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<LearningWord>> GetLearnedWords()
+        {
+            var user = users.GetCurrentUser();
+            var learned = await repository.GetByConditionAsync(x => x.UserId == user.Id && x.Level == 7);
+              return learned;
+        }
+
+        public int Count()
+        {
+            return repository.Count();
         }
     }
 }

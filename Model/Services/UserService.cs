@@ -1,35 +1,61 @@
 ﻿using Memorizer.DbModel;
 using Microsoft.EntityFrameworkCore;
-using Model.Services;
+using Model.Data.Repositories;
+using Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 
 namespace Model.Services
 {
-    public class UserService : BaseController
+    public class UserService : IUserService, ICurrentUserService
     {
-        private readonly WebAppContext _context;
-        public List<User> Users { get => _context.Users.ToList(); }
-        public UserService(WebAppContext context)
+        private readonly IGenericRepository<User> _userRepository;
+        private User currentUser;
+
+        public UserService(IGenericRepository<User> userRepository)
         {
-            _context = context;
+            _userRepository = userRepository;
+        }
+        
+
+        public async Task SetCurrentUser(string id)
+        {
+            var users = await _userRepository.GetByConditionAsync(i => i.TelegramId == id);
+            this.currentUser = await users.FirstOrDefaultAsync();
         }
 
-        public User GetUser(string userName)
+        public User GetCurrentUser()
         {
-            var _user = _context.Users.SingleOrDefault(u => u.Name == userName);
-            if (_user == null)
-            {
-                _context.Users.Add(new User(userName));
-                _context.SaveChanges();
-                _user = Users.SingleOrDefault(u => u.Name == userName);
-            }
-
-            return _user;
+            return this.currentUser;
         }
 
+        public async Task<User> GetUserAsync(int id)
+        {
+            return await _userRepository.GetByIdAsync(id);
+        }
+
+        public async Task<User> GetUserByTelegramIdAsync(string id)
+        {
+            var user = await _userRepository.GetByConditionAsync(i => i.TelegramId == id);
+            return await user.FirstOrDefaultAsync();
+        }
+
+        public async Task AddUserAsync(User user)
+        {
+            await _userRepository.AddAsync(user);
+        }
+
+        public async Task UpdateUserAsync(User user)
+        {
+            await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task DeleteUserAsync(int id)
+        {
+            await _userRepository.DeleteAsync(id);
+        }
     }
 }

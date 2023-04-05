@@ -11,31 +11,33 @@ using User = Memorizer.DbModel.User;
 namespace TgBot.BotCommands.Commands
 {
     [Command(Description = "/lesson - Начать урок")]
-    public class LessonCommand : BotCommand
+    public class LessonCommand : BotCommand, IBotCommand
     {
         private const string positive = "\u2705";
         private const string negative = "\u274C";
         public override string Name { get; } = "/lesson";
-        private ILessonService<Lesson> lessonService;
-        private Lesson lesson;
+        private readonly ILessonService<Lesson> lessonService;
+        private readonly LearningService learning;
+        public Lesson lesson;
         int count = 0;
 
-        public LessonCommand(ChatController chatController) : base(chatController)
+        public LessonCommand(ChatController chatController, LearningService learning, StandardLesson lessonService) : base(chatController)
         {
+            this.lessonService = lessonService;
+            this.learning = learning;
+
         }
 
-        public async override Task<bool> Execute(User user, WebAppContext context, Message message, params string[] param)
+        public async override Task<bool> Execute(User user, Message message, params string[] param)
         {
-            var learning = new LearningService(user, context);
-            lessonService = new StandardLesson(user, context);
-            if (learning.GetAll().Count < 10)
+            if (learning.Count() < 10)
             {
                 message.Text = "Добавьте хотя бы 10 слов для изучения. Можно использовать /startpack";
                 await chat.ReplyMessage(message);
                 return false;
             }
 
-            lesson = await lessonService.GetNextLesson(context);
+            lesson = await lessonService.GetNextLesson();
             message.Text = "Урок начат"+ Environment.NewLine;            
             await chat.ReplyMessage(message);            
             await StepAnswer(message);
@@ -48,10 +50,10 @@ namespace TgBot.BotCommands.Commands
         {
             var currentWord = lesson.WordsList[count].LearningWord.WordToLearn;
             message.Text = String.Join(", ", currentWord.Translates.Take(10));
-            var additianalList = lesson.WordsList[count].AdditionalWords;
+            var additionalList = lesson.WordsList[count].AdditionalWords;
             var rnd = new Random();
-            additianalList.Insert(rnd.Next(additianalList.Count), lesson.WordsList[count].LearningWord.WordToLearn.Text);
-            message.ReplyMarkup = new LessonKeyboard(additianalList, currentWord.Text).Keyboard;
+            additionalList.Insert(rnd.Next(additionalList.Count), lesson.WordsList[count].LearningWord.WordToLearn.Text);
+            message.ReplyMarkup = new LessonKeyboard(additionalList, currentWord.Text).Keyboard;
             await chat.ReplyMessage(message);  
         }
         
@@ -93,7 +95,7 @@ namespace TgBot.BotCommands.Commands
             return ti.ToTitleCase(input);
         } 
         
-        public async override Task<bool> Next(Memorizer.DbModel.User user, WebAppContext context, Message message)
+        public async override Task<bool> Next(Memorizer.DbModel.User user, Message message)
         {
             var currWord = lesson.WordsList[count].ToString();
             if (message.Text == "!rm") // Button 'already have known' pressed
@@ -110,7 +112,7 @@ namespace TgBot.BotCommands.Commands
             await CheckBox(message, currWord);
             if (count == lesson.WordsList.Count) //after last answer
             {                
-                await Last(user, context, message);                
+                await Last(user, message);                
                 return false;
             }
 
@@ -118,9 +120,9 @@ namespace TgBot.BotCommands.Commands
             return true;
         }
 
-        private async Task Last(Memorizer.DbModel.User user, WebAppContext context, Message message)
+        private async Task Last(Memorizer.DbModel.User user, Message message)
         {
-            await lessonService.ReturnFinishedLesson(lesson, context);
+            await lessonService.ReturnFinishedLesson(lesson);
             int successful = (from i in lesson.WordsList
                               where i.IsSuccessful == IsSuccessful.True || i.IsSuccessful == IsSuccessful.Finished
                               select i).Count();

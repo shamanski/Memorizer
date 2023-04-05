@@ -21,7 +21,7 @@ namespace WebBot.Controllers
         [HttpGet]
         public async Task<ActionResult<Lesson>> GetNextLesson()
         {
-            Lesson nextLesson = await _standardLesson.GetNextLesson(_context);
+            Lesson nextLesson = await _standardLesson.GetNextLesson();
             if (nextLesson == null)
             {
                 return NotFound();
@@ -32,7 +32,7 @@ namespace WebBot.Controllers
         [HttpPost]
         public async Task<ActionResult<Lesson>> ReturnFinishedLesson(Lesson lesson)
         {
-            await _standardLesson.ReturnFinishedLesson(lesson, _context);
+            await _standardLesson.ReturnFinishedLesson(lesson);
             return CreatedAtAction(nameof(GetNextLesson), new { id = lesson.Id }, lesson);
         }
     }

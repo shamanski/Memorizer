@@ -1,4 +1,6 @@
-﻿namespace WebBot.Extensions
+﻿using System;
+
+namespace Model.Extensions
 {
     public static class Guard
     {

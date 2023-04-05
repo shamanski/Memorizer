@@ -5,95 +5,83 @@ using Microsoft.EntityFrameworkCore;
 using Memorizer.DbModel;
 using System.Threading.Tasks;
 using Model.Services;
+using Model.Data.Repositories;
+using Model.Extensions;
 
 namespace Memorizer.Algorithm
 {
     public class StandardLesson : BaseController, ILessonService<Lesson>
     {
         public readonly LessonSetings settings; 
-        private readonly WebAppContext _context;
-        private readonly User user;
-        private readonly List<LearningWord> words;
+        private readonly UserService users;
+        private readonly IGenericRepository<LearningWord> repository;
 
-       
-        public StandardLesson(User user, WebAppContext context)
+
+
+        public StandardLesson(UserService users, IGenericRepository<LearningWord> repository)
         {
-            this.user = user;
-            _context = context;
-            words = _context.LearningWords
-                .Where(i => i.UserId == user.Id)
-                .Include(i => i.WordToLearn)
-                .ThenInclude(i => i.Translates)
-                .ToList();
+            this.users = users;
+            this.repository = repository;
             settings = new LessonSetings();            
         }
 
-        public StandardLesson(UserService userService, WebAppContext context)
+        private async Task<List<string>> GetAdditionalWords(string source)
         {
-            this.user = userService.GetUser("468377683");
-            _context = context;
-            words = _context.LearningWords
-                .Where(i => i.UserId == user.Id)
-                .Include(i => i.WordToLearn)
-                .ThenInclude(i => i.Translates)
-                .ToList();
-            settings = new LessonSetings();
-        }
-
-        private List<string> GetAdditionalWords(string source)
-        {
-           var rnd = new Random();
-            return words
-            .Where(x => x.ToString() != source)
-            .OrderBy(x => rnd.Next())
+            var user = users.GetCurrentUser();
+            var additional = await repository.GetByConditionAsync(x => (x.UserId == user.Id) && (x.WordToLearn.Text != source));
+            return additional.OrderBy(x => Guid.NewGuid())
             .Take(5)
-            .Select(x => x.ToString())
+            .Select(x => x.WordToLearn.Text)
             .ToList();               
         }
 
         private DateTime GetNextTime(LearningWord word)
         {
-            return word.LastTime+TimeSpan.FromMinutes(settings.PeriodsInMinutes[word.Level]);
+            return DateTime.Now + TimeSpan.FromMinutes(settings.PeriodsInMinutes[word.Level]);
         }
 
-        private LessonWord MakeLessonWord(LearningWord word)
+        private async Task<LessonWord> MakeLessonWord(LearningWord word)
         {
             
             return new LessonWord
             {
                 LearningWord = word,                  
-                AdditionalWords = GetAdditionalWords(word.ToString())
+                AdditionalWords = await GetAdditionalWords(word.ToString())
             };
         }
 
-        public async Task<Lesson> GetNextLesson(WebAppContext _context)
+        public async Task<Lesson> GetNextLesson()
         {
-            if (!( _context.LearningWords.Where(i => i.UserId == user.Id)?.Any() ?? false)) throw new ArgumentException("Nothing to learn");
+            var user = users.GetCurrentUser();
+            if (repository.Count() < settings.NewWordsInLesson) throw new ArgumentException("Nothing to learn");
             var lesson = new Lesson();
-            var newWords = words
-                .Where(i => i.Level == 0 )
+            var newWords = await repository.GetByConditionAsync(i => (i.UserId == user.Id) && (i.Level == 0));
+             var newWordsList =   newWords.OrderBy(i => i.Id)
                 .Take(settings.NewWordsInLesson)
+                .Include(x => x.WordToLearn)
+                .ThenInclude(x => x.Translates)
                 .ToList();
-            var repeat = words
-                .Where(i => i.Level > 0)
-                .OrderBy(i => GetNextTime(i))
-                .Take(settings.WordsInLesson - newWords.Count)
-                .Union(newWords)
+            var repeat = await repository.GetByConditionAsync(i => (i.UserId == user.Id) && (i.Level > 0));             
+               var repeatList = repeat.OrderBy(i => i.LastTime)
+                .Take(settings.WordsInLesson - newWordsList.Count)
+                .Include(x => x.WordToLearn)
+                .ThenInclude(x => x.Translates)
                 .ToList();
-            foreach (var word in repeat)
+            repeatList.AddRange(newWordsList);
+            foreach (var word in repeatList)
             {
-                lesson.WordsList.Add(MakeLessonWord(word));
+                lesson.WordsList.Add(await MakeLessonWord(word));
             }
             return await Task.FromResult(lesson);
         }
 
-        public async Task ReturnFinishedLesson(Lesson lesson, WebAppContext context)
+        public async Task ReturnFinishedLesson(Lesson lesson)
         {
             
             foreach (var i in lesson.WordsList)
             {
-                var entry = context.LearningWords.Where(x => x.WordToLearnId == i.LearningWord.WordToLearnId).FirstOrDefault();
-                entry.LastTime = DateTime.Now;
+                var entry = await repository.GetByIdAsync(i.LearningWord.Id);
+                entry.LastTime = GetNextTime(i.LearningWord);
                 entry.Level = i.IsSuccessful switch
                 {
                     IsSuccessful.True when (i.LearningWord.Level < settings.maxLevel) => i.LearningWord.Level + 1,
@@ -102,10 +90,11 @@ namespace Memorizer.Algorithm
                     _ => i.LearningWord.Level
                 };
 
-                context.Update(entry);  
+                await repository.UpdateAsync(entry); 
             }
 
-            await context.SaveChangesAsync();
+            await repository.SaveChangesAsync();
+
         }
     }
 }

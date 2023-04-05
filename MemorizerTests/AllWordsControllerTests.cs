@@ -1,6 +1,8 @@
 using Memorizer.DbModel;
 using Microsoft.EntityFrameworkCore;
+using Model.Data.Repositories;
 using Model.Services;
+using ReversoApi.Models;
 
 namespace MemorizerTests
 {
@@ -9,6 +11,9 @@ namespace MemorizerTests
     {
         private WebAppContext _context;
         private AllWordsService _controller;
+        private GenericRepository<LearningWord> learning;
+        private GenericRepository<Word> allRep;
+        private AllWordsService allService;
 
         [TestInitialize]
         public void TestInitialize()
@@ -18,7 +23,9 @@ namespace MemorizerTests
             .UseInMemoryDatabase(databaseName: "Test")
             .Options;
             _context = new WebAppContext(options);
-            _controller = new AllWordsService(_context);
+            learning = new GenericRepository<LearningWord>(_context);
+            allRep = new GenericRepository<Word>(_context);
+            allService = new AllWordsService(allRep);
         }
 
         [TestMethod]

@@ -5,30 +5,30 @@ using Telegram.Bot.Types;
 namespace TgBot.BotCommands.Commands
 {
     [Command(Description = "/remove - Удалить слово")]
-    public class RemoveCommand : BotCommand
+    public class RemoveCommand : BotCommand, IBotCommand
     {
         public override string Name { get; } = "/remove";
-        private LearningService learningService;
+        private readonly LearningService learning;
 
-        public RemoveCommand(ChatController chatController) : base(chatController)
+        public RemoveCommand(ChatController chatController, LearningService learning) : base(chatController)
         {
+            this.learning = learning;
         }
 
-        public async override Task<bool> Execute(Memorizer.DbModel.User user, WebAppContext context, Message message, params string[] param)
+        public async override Task<bool> Execute(Memorizer.DbModel.User user, Message message, params string[] param)
         {
-            learningService = new LearningService(user, context);
             message.Text = $"Введите слово:";
             message.ReplyMarkup = null;
             await chat.ReplyMessage(message);
             return true;
         }
 
-        public async override Task<bool> Next(Memorizer.DbModel.User user, WebAppContext context, Message message)
+        public async override Task<bool> Next(Memorizer.DbModel.User user, Message message)
         {
             try
             {
-                var word = learningService.Find(message.Text);
-                if (learningService.RemoveWord(word) )
+                var word = learning.Find(message.Text);
+                if (learning.RemoveWord(word) )
                      message.Text = $"Удалено {word}";
                 else
                 {

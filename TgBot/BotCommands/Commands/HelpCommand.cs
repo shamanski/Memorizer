@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace TgBot.BotCommands.Commands
 {
-    public class HelpCommand : BotCommand
+    public class HelpCommand : BotCommand, IBotCommand
     {
         public HelpCommand(ChatController chatController) : base(chatController)
         {
@@ -17,7 +17,7 @@ namespace TgBot.BotCommands.Commands
 
         public override string Name { get; } = "/help";
 
-        public async override Task<bool> Execute(User user, WebAppContext context, Telegram.Bot.Types.Message message, params string[] param)
+        public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
         {
             var str = new StringBuilder();
             foreach (var attr in Assembly.GetExecutingAssembly().GetTypes())
@@ -32,7 +32,7 @@ namespace TgBot.BotCommands.Commands
             return false;
         }
 
-        public override Task<bool> Next(User user, WebAppContext context, Telegram.Bot.Types.Message message)
+        public override Task<bool> Next(User user, Telegram.Bot.Types.Message message)
         {
             throw new NotImplementedException();
         }

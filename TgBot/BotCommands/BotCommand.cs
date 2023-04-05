@@ -12,8 +12,8 @@ namespace TgBot.BotCommands
 
         protected BotCommand(ChatController chatController) => chat = chatController;
 
-        public abstract Task<bool> Execute(User user, WebAppContext context, Message message, params string[] param);
+        public abstract Task<bool> Execute(User user, Message message, params string[] param);
 
-        public abstract Task<bool> Next(User user, WebAppContext context, Message message);
+        public abstract Task<bool> Next(User user, Message message);
     }
 }

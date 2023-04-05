@@ -10,18 +10,19 @@ namespace TgBot.BotCommands.Commands
 {
 
     [Command(Description = "/startpack - Добавить набор слов")]
-    public class StartCommand : BotCommand
+    public class StartCommand : BotCommand, IBotCommand
     {
-        public StartCommand(ChatController chatController) : base(chatController)
+        private readonly AllWordsService allWords;
+        public StartCommand(ChatController chatController, LearningService learning, AllWordsService allWords) : base(chatController)
         {
+            this.allWords = allWords;
         }
 
         public override string Name { get; } = "/startpack";
+        private readonly LearningService learning;
 
-        public async override Task<bool> Execute(User user, WebAppContext context, Message message, params string[] param)
+        public async override Task<bool> Execute(User user, Message message, params string[] param)
         {
-            LearningService learningController = new LearningService(user, context);
-            AllWordsService allWords = new AllWordsService(context);
             int start = default, count = default;
             switch (param.Length)
             {
@@ -50,7 +51,7 @@ namespace TgBot.BotCommands.Commands
             {
                 var wordsToAdd = allWords.FindWordsById(start, count);
                 
-                message.Text = $"Добавлено {learningController.AddNewWords(wordsToAdd)} слов";
+                message.Text = $"Добавлено {learning.AddNewWords(wordsToAdd)} слов";
             }
             catch
             {
@@ -66,7 +67,7 @@ namespace TgBot.BotCommands.Commands
             return false;
         }
 
-        public async override Task<bool> Next(Memorizer.DbModel.User user, WebAppContext context, Message message)
+        public async override Task<bool> Next(Memorizer.DbModel.User user, Message message)
         {
             message.ReplyMarkup = new AddWordsKeyboard().Keyboard;
             await chat.ReplyMessage(message);

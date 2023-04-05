@@ -9,18 +9,19 @@ using System.Threading.Tasks;
 namespace TgBot.BotCommands.Commands
 {
     [Command(Description = "/info - Статистика")]
-    public class InfoCommand : BotCommand
+    public class InfoCommand : BotCommand, IBotCommand
     {
-        public InfoCommand(ChatController chatController) : base(chatController)
+        public InfoCommand(ChatController chatController, LearningService learning) : base(chatController)
         {
         }
 
+        private readonly LearningService learning;
         public override string Name { get; } = "/info";
 
-        public async override Task<bool> Execute(User user, WebAppContext context, Telegram.Bot.Types.Message message, params string[] param)
+        public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
         {
-            var learningController = new LearningService(user, context);
-            var i = learningController
+           // var learningController = new LearningService(user, context);
+            var i = learning
                 .GetAll().OrderByDescending(i => i.Level)
                 .ToList();
             var str = new StringBuilder();
@@ -48,7 +49,7 @@ namespace TgBot.BotCommands.Commands
             return false;
         }
 
-        public override Task<bool> Next(User user, WebAppContext context, Telegram.Bot.Types.Message message)
+        public override Task<bool> Next(User user, Telegram.Bot.Types.Message message)
         {
             throw new NotImplementedException();
         }

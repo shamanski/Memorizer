@@ -10,19 +10,21 @@ namespace TgBot.BotCommands.Commands
 {
 
     [Command(Description = "/load - Загрузка слов из файла")]
-    public class LoadFileCommand : BotCommand
+    public class LoadFileCommand : BotCommand, IBotCommand
     {
         private readonly ChatController chatController;
         private readonly AllWordsService allWords;
+        private readonly LearningService learning;
         public override string Name { get; } = "/load";
 
-        public LoadFileCommand(ChatController chatController, AllWordsService allWords) : base(chatController)
+        public LoadFileCommand(ChatController chatController, AllWordsService allWords, LearningService learnig) : base(chatController)
         {
             this.chatController = chatController;
             this.allWords = allWords;
+            this.learning = learnig;
         }
 
-        public async override Task<bool> Execute(User user, WebAppContext context, Telegram.Bot.Types.Message message, params string[] param)
+        public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
         {
             message.Text = $"Отправьте файл txt";
             message.ReplyMarkup = null;
@@ -30,9 +32,9 @@ namespace TgBot.BotCommands.Commands
             return true;
         }
 
-        public async override Task<bool> Next(User user, WebAppContext context, Telegram.Bot.Types.Message message)
+        public async override Task<bool> Next(User user, Telegram.Bot.Types.Message message)
         {
-            var learningController = new LearningService(user, chat.GetContext);
+            //var learningController = new LearningService(user, chat.GetContext);
             if (message.Type == MessageType.Document)
             {
                 using var client = new WebClient();
@@ -47,7 +49,7 @@ namespace TgBot.BotCommands.Commands
                     if (w != null) wordsToAdd.Add(w);
                 }
 
-                message.Text = $"Добавлено {learningController.AddNewWords(wordsToAdd)} слов";
+                message.Text = $"Добавлено {learning.AddNewWords(wordsToAdd)} слов";
                 await chat.ReplyMessage(message);
             }
             return false;

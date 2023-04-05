@@ -1,5 +1,6 @@
 using Memorizer.DbModel;
 using Microsoft.EntityFrameworkCore;
+using Model.Data.Repositories;
 using Model.Services;
 
 namespace MemorizerTests
@@ -9,7 +10,7 @@ namespace MemorizerTests
     {
         private WebAppContext _context;
         private LearningService _controller;
-        private User _user;
+        private UserService _user;
 
         [TestInitialize]
         public void TestInitialize()
@@ -19,8 +20,9 @@ namespace MemorizerTests
             .UseInMemoryDatabase(databaseName: "Test")
             .Options;
             _context = new WebAppContext(options);
-            _user = new User() { Id = 1, Name = "Vasya" };
-            _controller = new LearningService(_user, _context);
+            //_user = new User("ff");
+            var rep = new GenericRepository<LearningWord>(_context);
+            _controller = new LearningService(_user, rep);
         }
 
         [TestMethod]
@@ -41,7 +43,7 @@ namespace MemorizerTests
         {
             // Arrange
             TestInitialize();
-            var word = new LearningWord(_user, new Word { Text = "TestCase", Id = 888 }) { Id=999};
+            var word = new LearningWord();
             _context.LearningWords.Add(word);
             // Act
             var result = _controller.Find("TestCase");
@@ -56,7 +58,7 @@ namespace MemorizerTests
         {
             // Arrange
             TestInitialize();
-            var word = new LearningWord(_user, new Word { Text = "test" });
+            var word = new LearningWord();
 
             // Act
             var result = _controller.AddNewWord(word);
@@ -90,7 +92,7 @@ namespace MemorizerTests
         {
             // Arrange
             TestInitialize();
-            var word = new LearningWord(_user, new Word { Text = "test" });
+            var word = new LearningWord();
             _context.LearningWords.Add(word);
 
             // Act

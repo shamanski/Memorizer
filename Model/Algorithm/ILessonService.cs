@@ -6,7 +6,7 @@ namespace Memorizer.Algorithm
 {
     public interface ILessonService<T>
     {
-        public Task<T> GetNextLesson(WebAppContext context);
-        public Task ReturnFinishedLesson(T lesson, WebAppContext context);
+        public Task<T> GetNextLesson();
+        public Task ReturnFinishedLesson(T lesson);
     }
 }

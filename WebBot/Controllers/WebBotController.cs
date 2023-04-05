@@ -56,7 +56,8 @@ namespace WebBot.Controllers
 
         protected async Task OnCallBack(CallbackQuery data)
         {
-            var user = users.GetUser(data.From.Id.ToString());
+            await users.SetCurrentUser(data?.From?.Id.ToString());
+            var user = await users.GetUserByTelegramIdAsync(data?.From.Id.ToString());
             data.Message!.Text = data.Data;
             data.Message!.Caption = data.Id;
             await command.Execute(user, data.Message);
@@ -66,7 +67,9 @@ namespace WebBot.Controllers
         {
             var chatId = message.Chat.Id;
             var messageText = message.Text;
-            var user = users.GetUser(message?.From?.Id.ToString());
+            await users.SetCurrentUser(message?.From?.Id.ToString());
+            var user = await users.GetUserByTelegramIdAsync(message?.From?.Id.ToString());
+            
             Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
             await command.Execute(user, message);
 

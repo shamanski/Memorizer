@@ -7,50 +7,38 @@ using System.Threading.Tasks;
 using ReversoApi;
 using ReversoApi.Models.Word;
 using Microsoft.EntityFrameworkCore;
+using Model.Data.Repositories;
 
 namespace Model.Services
 {
     public class AllWordsService : BaseController
     {
-        private readonly WebAppContext _context;
-        public AllWordsService(WebAppContext context)
+        private readonly IGenericRepository<Word> repository;
+        public AllWordsService(IGenericRepository<Word> repository)
         {
-            _context = context;
-        }
-
-        public List<Word> GetAllWords()
-        {
-            return _context.Words.ToList();
+            this.repository = repository;
         }
 
         public async Task<Word> FindWordByName(string name)
         {
             if (string.IsNullOrEmpty(name)) return null;
             name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
-            if (_context.Words.Where(f => f.Text == name).Any())
+            if (repository.GetByConditionAsync(f => f.Text == name).Result.Any())
             {
-                return _context.Words
-                    .Where(i => i.Text == name)
-                    .Include(i => i.Translates)
-                    .First();
+                var words = await repository.GetByConditionAsync(i => i.Text == name);
+                 //   .Include(i => i.Translates)
+                 return words.First();
             }
 
             else
             {
                 var res = await Do(name);
                 if (res == null) return null;
-                _context.Words.Add(res);
-                _context.SaveChanges();
+                await repository.AddAsync(res);
+                await repository.SaveChangesAsync();
                 return res;
             }
         }
-
-        public List<Word> FindWordsById(int start, int count) =>
-            _context.Words
-                .Skip(start)
-                .Take(count)
-                .Include(i => i.Translates)
-                .ToList();
 
         private static async Task<Word> Do(string wordName)
         {

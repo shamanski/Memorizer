@@ -8,6 +8,8 @@ using User = Memorizer.DbModel.User;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Windows.Input;
+using ReversoApi.Models;
 
 namespace TgBot.BotCommands
 {
@@ -15,32 +17,27 @@ namespace TgBot.BotCommands
     {
         private readonly StateController<BotCommand> states;
         private readonly ChatController chat;
-        private readonly IServiceProvider _provider;
-        private readonly WebAppContext _context;
-        private readonly AllWordsService _allWords;
-        private List<BotCommand> _commands;
+        private readonly IServiceProvider provider;
+        private readonly AllWordsService allWords;
+        private readonly IEnumerable<IBotCommand> commands;
 
-        public CommandService(StateController<BotCommand> state, ChatController chatController, AllWordsService allWords, WebAppContext context, IServiceProvider provider)
+        public CommandService(StateController<BotCommand> state, ChatController chatController, AllWordsService allWords, IEnumerable<IBotCommand> commands, IServiceProvider provider)
         {
-            _provider = provider;
-            _allWords = allWords;
+            this.provider = provider;
+            this.allWords = allWords;
+            this.states = state;
+            this.chat = chatController;
+            this.commands = commands;
             states = state;
-            _context = context;
             chat = chatController;  
-            Refresh(); 
+
         }
 
-        private void Refresh()
-        {
-           _commands = _provider.GetServices<BotCommand>().ToList();
-  
-        }
-
-        public List<BotCommand> Get() => _commands;
+        public List<IBotCommand> Get() => commands.ToList();
 
         public async Task<bool> Execute(User user, Message message)
         {
-            var state = states.GetUserState(user.Name);
+            var state = await states.GetUserState(user);
             string[] split = { };
             try
             {
@@ -48,21 +45,29 @@ namespace TgBot.BotCommands
                 if (message.Text != null && message.Text.StartsWith('/')) // Got a command
                 {
                     split = message.Text?.Split(' ');
-                    states.RemoveUserState(user.Name);  //Stop current command if exists
-                    var hasNext = await _commands.FirstOrDefault(i => i.Name == split.First()).Execute(user, _context, message, split[1..]); //Try to execute new command
-                    if (hasNext) // Command should continue
+                    var t = Get();
+                    await states.RemoveUserState(user.Id);  //Stop current command if exists
+                    var command = commands.FirstOrDefault(c => c.Name == split.First());                    
+                    if (command != null)
                     {
-                        states.Add(user.Name, _commands.First(i => i.Name == split.First())); //Save command
+                        var hasNext = await command.Execute(user, message, split[1..]);
+                        if (hasNext)
+                        {
+                            await states.Add(user.Id, (BotCommand)command);
+                        }
+                        return hasNext;
                     }
-                    return hasNext; //True if command has next steps
+                    else
+                    {
+                        System.Console.WriteLine($"Command '{split.First()}' doesn't exist");
+                    }
                 }
 
                 else if (state != null) // If request is not a command and saved command exists
                 {
-                    if ( !await state.Next(user, _context, message)) //Execute saved command and check if it should continue
+                    if ( !await state.Next(user, message)) //Execute saved command and check if it should continue
                     {
-                        states.RemoveUserState(user.Name);
-                        Refresh();
+                        await states.RemoveUserState(user.Id);
                     }
                     return false; // Nothing to do
                 }

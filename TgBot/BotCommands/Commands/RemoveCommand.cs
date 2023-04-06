@@ -27,7 +27,7 @@ namespace TgBot.BotCommands.Commands
         {
             try
             {
-                var word = learning.Find(message.Text);
+                var word = await learning.Find(message.Text);
                 if (learning.RemoveWord(word) )
                      message.Text = $"Удалено {word}";
                 else

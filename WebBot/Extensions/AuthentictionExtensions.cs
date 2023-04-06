@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 namespace WebBot.Extensions
 {
-    
-
-    public static class AuthenticationExtensions
+    public static class AuthentictionExtensions
     {
         public static void AddJwtAuthentication(this IServiceCollection services, string jwtSecret)
         {

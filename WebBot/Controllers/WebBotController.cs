@@ -14,10 +14,10 @@ namespace WebBot.Controllers
     [ApiController]
     public class WebBotController : ControllerBase
     {
-        private readonly UserService users;
+        private readonly MyUserService users;
         private readonly ICommandService command;
 
-        public WebBotController(UserService usersService, ICommandService commandService)
+        public WebBotController(MyUserService usersService, ICommandService commandService)
         {
             users = usersService;    
             command = commandService;   

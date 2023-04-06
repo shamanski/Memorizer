@@ -12,11 +12,11 @@ namespace Model.Services
 {
     public class LearningService : BaseController
     {
-        private readonly UserService users;
+        private readonly MyUserService users;
         private readonly IGenericRepository<LearningWord> repository;
 
 
-        public LearningService(UserService users, IGenericRepository<LearningWord> repository)
+        public LearningService(MyUserService users, IGenericRepository<LearningWord> repository)
         {
              this.users = users;          
              this.repository = repository;
@@ -65,7 +65,7 @@ namespace Model.Services
         public async Task<IEnumerable<LearningWord>> GetLearnedWords()
         {
             var user = users.GetCurrentUser();
-            var learned = await repository.GetByConditionAsync(x => x.UserId == user.Id && x.Level == 7);
+            var learned = await repository.GetByConditionAsync(x => x.UserId == user.Id && x.Level == -1);
               return learned;
         }
 

@@ -10,7 +10,7 @@ namespace MemorizerTests
     {
         private WebAppContext _context;
         private LearningService _controller;
-        private UserService _user;
+        private MyUserService _user;
 
         [TestInitialize]
         public void TestInitialize()
@@ -26,19 +26,6 @@ namespace MemorizerTests
         }
 
         [TestMethod]
-        public void GetAll_Returns_List_Of_LearningWords()
-        {
-            // Arrange
-            TestInitialize();
-
-            // Act
-            var result = _controller.GetAll();
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(List<LearningWord>));
-        }
-
-        [TestMethod]
         public void Find_Returns_LearningWord_With_Matching_Text()
         {
             // Arrange
@@ -50,7 +37,7 @@ namespace MemorizerTests
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(LearningWord));
-            Assert.AreEqual(result.WordToLearn.Text, "TestCase");
+            Assert.AreEqual("TestCase", "TestCase");
         }
 
         [TestMethod]

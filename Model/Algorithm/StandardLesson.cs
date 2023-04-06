@@ -13,12 +13,12 @@ namespace Memorizer.Algorithm
     public class StandardLesson : BaseController, ILessonService<Lesson>
     {
         public readonly LessonSetings settings; 
-        private readonly UserService users;
+        private readonly MyUserService users;
         private readonly IGenericRepository<LearningWord> repository;
 
 
 
-        public StandardLesson(UserService users, IGenericRepository<LearningWord> repository)
+        public StandardLesson(MyUserService users, IGenericRepository<LearningWord> repository)
         {
             this.users = users;
             this.repository = repository;

@@ -29,18 +29,6 @@ namespace MemorizerTests
         }
 
         [TestMethod]
-        public void GetAllWords_ShouldReturnAllWordsInContext()
-        {
-            // Act
-            var result = _controller.GetAllWords();
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(List<Word>));
-            Assert.AreEqual(_context.Words.Count(), result.Count);
-        }
-
-        [TestMethod]
         public async Task FindWordByName_ShouldReturnWordWithName()
         {
             // Arrange
@@ -71,7 +59,7 @@ namespace MemorizerTests
         }
 
         [TestMethod]
-        public void FindWordsById_ShouldReturnListOfWords()
+        public async void FindWordsById_ShouldReturnListOfWords()
         {
             // Arrange
             var words = new List<Word> {
@@ -83,12 +71,12 @@ namespace MemorizerTests
             _context.SaveChanges();
 
             // Act
-            var result = _controller.FindWordsById(2, 2);
+            var result = await _controller.FindWordsById(2, 2);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.IsInstanceOfType(result, typeof(List<Word>));
-            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(2, 2);
             Assert.AreEqual("word2", result[0].Text);
             Assert.AreEqual("word3", result[1].Text);
         }

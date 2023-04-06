@@ -49,7 +49,7 @@ namespace TgBot.BotCommands.Commands
             }
             try
             {
-                var wordsToAdd = allWords.FindWordsById(start, count);
+                var wordsToAdd = await allWords.FindWordsById(start, count);
                 
                 message.Text = $"Добавлено {learning.AddNewWords(wordsToAdd)} слов";
             }

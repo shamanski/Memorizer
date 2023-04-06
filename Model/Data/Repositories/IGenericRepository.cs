@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,6 +10,7 @@ namespace Model.Data.Repositories
     public interface IGenericRepository<T> where T : class
     {
         Task<IQueryable<T>> GetByConditionAsync(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
+        Task<PagedList<T>> GetPagedAsync(int pageNumber, int pageSize, Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
         Task<T> GetByIdAsync(int id);
         Task AddAsync(T entity);
         Task AddRangeAsync(List<T> entity);

@@ -40,6 +40,12 @@ namespace Model.Services
             }
         }
 
+        public async Task<List<Word>> FindWordsById(int startId, int count)
+        {
+            var words = await repository.GetPagedAsync(startId / count, count );
+            return words.Items;
+        }
+
         private static async Task<Word> Do(string wordName)
         {
             var service = new ReversoService();

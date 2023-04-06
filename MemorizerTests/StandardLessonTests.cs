@@ -14,14 +14,14 @@ namespace MemorizerTests
     [TestClass]
     public class StandardLessonTests
     {
-        private UserService user;
+        private MyUserService user;
         private WebAppContext context;
         private GenericRepository<LearningWord> learning;
 
         [TestInitialize]
         public void Initialize()
         {
-            user = new UserService(context);
+          //  user = new MyUserService();
             var options = new DbContextOptionsBuilder<WebAppContext>()
             .UseInMemoryDatabase(databaseName: "Test")
             .Options;

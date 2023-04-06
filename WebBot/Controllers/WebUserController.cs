@@ -1,4 +1,5 @@
 ﻿using Memorizer.DbModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.Entities;
@@ -32,7 +33,6 @@ namespace WebBot.Controllers
             {
                 Id = user.Id,
                 Name = user.Name,
-                Email = user.Email,
             };
 
             return userDto;
@@ -46,8 +46,7 @@ namespace WebBot.Controllers
             var userDtos =new UserDTO
             {
                 Id = u.Id,
-                Name = u.Name,
-                Email = u.Email,    
+                Name = u.Name, 
             };
 
             return userDtos;

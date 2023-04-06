@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Model.Services
 {
-    public class UserService : IUserService, ICurrentUserService
+    public class MyUserService : IUserService, ICurrentUserService
     {
         private readonly IGenericRepository<User> _userRepository;
         private User currentUser;
 
-        public UserService(IGenericRepository<User> userRepository)
+        public MyUserService(IGenericRepository<User> userRepository)
         {
             _userRepository = userRepository;
         }

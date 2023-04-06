@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Model.Common;
 using Model.Services;
 using System;
 using System.Collections.Generic;
@@ -73,6 +74,26 @@ namespace Model.Data.Repositories
             {
                 return query;
             }
+        }
+
+        public async Task<PagedList<T>> GetPagedAsync(int pageNumber, int pageSize, Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "")
+        {
+            IQueryable<T> query = dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+            int totalCount = await query.CountAsync();
+            List<T> items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+            return new PagedList<T>(items, totalCount, pageNumber, pageSize);
         }
 
         public virtual async Task UpdateAsync(T entity)

@@ -20,28 +20,29 @@ namespace TgBot.BotCommands.Commands
 
         public async override Task<bool> Execute(User user, Telegram.Bot.Types.Message message, params string[] param)
         {
-           // var learningController = new LearningService(user, context);
-            var i = learning
-                .GetAll().OrderByDescending(i => i.Level)
-                .ToList();
             var str = new StringBuilder();
-            foreach (var word in i)
-            {
-                if (word.Level == -1)
-                {
-                    str.Append(Enumerable.Repeat('\u25CF', 8).ToArray());
-                }
-                else
-                {
-                    str.Append(Enumerable.Repeat('\u25CF', word.Level).ToArray());
-                    str.Append(Enumerable.Repeat('\u25CB', 8 - word.Level).ToArray());
-                }
-                
-                str.Append($"   {word} - {word.WordToLearn.Translates[0].Text}".PadRight(30));               
-                str.AppendLine();
-            }
-            str.AppendLine($"Всего {i.Count} слов");
-            str.AppendLine($"Изучено {i.Count(word => word.Level == -1)} слов");
+            /* var learningController = new LearningService(user, context);
+             var i = learning
+                 .GetAll().OrderByDescending(i => i.Level)
+                 .ToList();
+
+             foreach (var word in i)
+             {
+                 if (word.Level == -1)
+                 {
+                     str.Append(Enumerable.Repeat('\u25CF', 8).ToArray());
+                 }
+                 else
+                 {
+                     str.Append(Enumerable.Repeat('\u25CF', word.Level).ToArray());
+                     str.Append(Enumerable.Repeat('\u25CB', 8 - word.Level).ToArray());
+                 }
+
+                 str.Append($"   {word} - {word.WordToLearn.Translates[0].Text}".PadRight(30));               
+                 str.AppendLine();
+             } */
+            str.AppendLine($"Всего {learning.Count()} слов");
+            str.AppendLine($"Изучено {learning.GetLearnedWords()} слов");
 
 
             message.Text = str.ToString();

@@ -8,18 +8,21 @@ namespace Model.Services
     public class IdentityDbContext : IdentityDbContext<ApplicationUser>
     {
 
+        public IdentityDbContext()
+        {
+        }
+
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options)
         {
-              Database.EnsureCreated();
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
+            base.OnModelCreating(modelBuilder);        
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-  => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Test;Trusted_Connection=True");
+  => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Identity;Trusted_Connection=True");
     }
 }

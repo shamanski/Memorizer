@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Memorizer.DbModel;
+using System.Reflection.Emit;
 
 
 namespace Model.Services
@@ -11,18 +12,24 @@ namespace Model.Services
         public DbSet<User> Users { get; set; }
         public DbSet<Translate> Translates { get; set; }
         public DbSet<WebAppState> CommandStates { get; set; }
+        public DbSet<TelegramCode> TelegramCodes { get; set; }
 
         public WebAppContext()
         {
-           // Database.EnsureCreated();
+            Database.EnsureCreated();
         }
 
         public WebAppContext(DbContextOptions<WebAppContext> options) : base(options)
         {
-          //  Database.EnsureCreated();
+            Database.EnsureCreated();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-  => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Test;Trusted_Connection=True");
+  => options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=Memorize;Trusted_Connection=True");
     }
 }

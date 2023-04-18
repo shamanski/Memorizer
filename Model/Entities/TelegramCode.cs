@@ -9,6 +9,7 @@ namespace Memorizer.DbModel
 {
     public class TelegramCode : BaseEntity
     {
+        public string UserId { get; set; }
         public string Code { get; set; }
     }
 }

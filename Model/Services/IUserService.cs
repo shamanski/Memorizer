@@ -9,6 +9,7 @@ namespace Model.Services
 {
     public interface IUserService
     {
+        Task LinkTelegramAccountAsync(User user, string telegramId, string code);
         Task AddUserAsync(User user);
         Task<User> GetUserAsync(int id);
         Task UpdateUserAsync(User user);

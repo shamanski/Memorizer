@@ -13,11 +13,13 @@ namespace Model.Services
     public class MyUserService : IUserService, ICurrentUserService
     {
         private readonly IGenericRepository<User> _userRepository;
+        private readonly IGenericRepository<TelegramCode> _codes;
         private User currentUser;
 
-        public MyUserService(IGenericRepository<User> userRepository)
+        public MyUserService(IGenericRepository<User> userRepository, IGenericRepository<TelegramCode> codes)
         {
             _userRepository = userRepository;
+            _codes = codes;
         }
         
 
@@ -56,6 +58,34 @@ namespace Model.Services
         public async Task DeleteUserAsync(int id)
         {
             await _userRepository.DeleteAsync(id);
+        }
+
+        public async Task LinkTelegramAccountAsync(User user, string telegramUserId, string VerifyCode)
+        {            
+
+
+            if (user.TelegramId != null)
+            {
+                throw new InvalidOperationException("User already has a linked Telegram account");
+            }
+
+            var existingUser = await _userRepository.GetByConditionAsync(i => i.TelegramId == telegramUserId);
+
+            if (existingUser != null)
+            {
+                throw new InvalidOperationException("Telegram account is already linked to another user");
+            }
+
+            var c = await _codes.GetByConditionAsync(i => i.Code == VerifyCode);
+            var code = await c.FirstOrDefaultAsync();
+            if (code == null)
+            {
+                throw new InvalidOperationException("Invalid code");
+            }
+
+            user.TelegramId = telegramUserId;
+
+            await _userRepository.UpdateAsync(user);
         }
     }
 }

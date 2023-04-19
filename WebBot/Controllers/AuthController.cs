@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.Entities;
+using Model.Services;
 
 namespace WebBot.Controllers
 {
@@ -11,11 +12,13 @@ namespace WebBot.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IIdentityUserService _userManager;
+        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService, IIdentityUserService userManager)
+        public AuthController(IAuthService authService, IIdentityUserService userManager, IUserService userService)
         {
             _authService = authService;
             _userManager = userManager;
+            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -45,6 +48,7 @@ namespace WebBot.Controllers
             }
 
             var result = await _userManager.CreateUserAsync(model);
+            
 
             if (!result.Succeeded)
             {
@@ -56,7 +60,7 @@ namespace WebBot.Controllers
                 Email = model.Email,
                 Password = model.Password
             });
-
+            await _userService.AddUserAsync(new Memorizer.DbModel.User { Email = model.Email, Name = model.Name });
             return Ok(authResult);
         }
     }

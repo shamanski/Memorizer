@@ -1,4 +1,6 @@
 ﻿using Memorizer.Algorithm;
+using Memorizer.DbModel;
+using Model.Entities;
 using Model.Services;
 using System;
 using System.Globalization;

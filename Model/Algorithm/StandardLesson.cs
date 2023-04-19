@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Model.Services;
 using Model.Data.Repositories;
 using Model.Extensions;
+using Model.Entities;
 
 namespace Memorizer.Algorithm
 {
@@ -15,14 +16,15 @@ namespace Memorizer.Algorithm
         public readonly LessonSetings settings; 
         private readonly MyUserService users;
         private readonly IGenericRepository<LearningWord> repository;
+        private readonly IGenericRepository<Lesson> lessonRepository;
 
 
-
-        public StandardLesson(MyUserService users, IGenericRepository<LearningWord> repository)
+        public StandardLesson(MyUserService users, IGenericRepository<LearningWord> repository, IGenericRepository<Lesson> lessonRepository)
         {
             this.users = users;
             this.repository = repository;
-            settings = new LessonSetings();            
+            settings = new LessonSetings();
+            this.lessonRepository = lessonRepository;
         }
 
         private async Task<List<string>> GetAdditionalWords(string source)
@@ -48,6 +50,13 @@ namespace Memorizer.Algorithm
                 LearningWord = word,                  
                 AdditionalWords = await GetAdditionalWords(word.ToString())
             };
+        }
+
+        public async Task<Lesson> GetCurrentLesson()
+        {
+            var user = users.GetCurrentUser();
+            var lesson = await lessonRepository.GetByConditionAsync(i => i.UserId == user.Id).Result.FirstOrDefaultAsync();
+            return lesson;
         }
 
         public async Task<Lesson> GetNextLesson()

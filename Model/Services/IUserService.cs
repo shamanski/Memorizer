@@ -14,5 +14,6 @@ namespace Model.Services
         Task<User> GetUserAsync(int id);
         Task UpdateUserAsync(User user);
         Task DeleteUserAsync(int id);
+        Task<User> GetUserByEmailAsync(string email);
     }
 }

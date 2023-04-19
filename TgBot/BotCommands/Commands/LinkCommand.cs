@@ -31,7 +31,7 @@ namespace TgBot.BotCommands.Commands
         {
             try
             {
-                await _userService.LinkTelegramAccountAsync(user, message.Text, user.Id);
+                await _userService.LinkTelegramAccountAsync(user, message.Text, user.TelegramId);
             }
             catch (InvalidOperationException ex)
             {

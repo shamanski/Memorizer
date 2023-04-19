@@ -5,6 +5,7 @@ using Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,25 +40,38 @@ namespace Model.Services
             return await _userRepository.GetByIdAsync(id);
         }
 
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _userRepository.GetByConditionAsync(i => i.Email == email).Result.FirstOrDefaultAsync();
+        }
+
         public async Task<User> GetUserByTelegramIdAsync(string id)
         {
             var user = await _userRepository.GetByConditionAsync(i => i.TelegramId == id);
-            return await user.FirstOrDefaultAsync();
+            var ret = await user.FirstOrDefaultAsync();
+            if (ret == null)
+            {
+                throw new ArgumentNullException("User doesn't exists");
+            }
+            return ret;
         }
 
         public async Task AddUserAsync(User user)
         {
             await _userRepository.AddAsync(user);
+            await _userRepository.SaveChangesAsync();
         }
 
         public async Task UpdateUserAsync(User user)
         {
             await _userRepository.UpdateAsync(user);
+            await _userRepository.SaveChangesAsync();
         }
 
         public async Task DeleteUserAsync(int id)
         {
             await _userRepository.DeleteAsync(id);
+            await _userRepository.SaveChangesAsync();
         }
 
         public async Task LinkTelegramAccountAsync(User user, string telegramUserId, string VerifyCode)
@@ -86,6 +100,7 @@ namespace Model.Services
             user.TelegramId = telegramUserId;
 
             await _userRepository.UpdateAsync(user);
+            await _userRepository.SaveChangesAsync();
         }
     }
 }

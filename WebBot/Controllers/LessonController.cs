@@ -1,6 +1,8 @@
 ﻿using Memorizer.Algorithm;
+using Memorizer.DbModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Model.Entities;
 using Model.Services;
 
 namespace WebBot.Controllers

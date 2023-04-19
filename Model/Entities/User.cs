@@ -7,6 +7,7 @@ namespace Memorizer.DbModel
     {
         public string Name { get; set; }
         public string TelegramId { get; set; }
+        public string TelegramName { get; set; }
         public string WebAppId { get; set; }
         public string Email { get; set; }
 

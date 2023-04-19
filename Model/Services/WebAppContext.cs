@@ -13,6 +13,7 @@ namespace Model.Services
         public DbSet<Translate> Translates { get; set; }
         public DbSet<WebAppState> CommandStates { get; set; }
         public DbSet<TelegramCode> TelegramCodes { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
 
         public WebAppContext()
         {

@@ -36,8 +36,7 @@ namespace TgBot.BotCommands
         public List<IBotCommand> Get() => commands.ToList();
 
         public async Task<bool> Execute(User user, Message message)
-        {
-            var state = await states.GetUserState(user);
+        {            
             string[] split = { };
             try
             {
@@ -63,9 +62,10 @@ namespace TgBot.BotCommands
                     }
                 }
 
-                else if (state != null) // If request is not a command and saved command exists
+                else // If request is not a command and saved command exists
                 {
-                    if ( !await state.Next(user, message)) //Execute saved command and check if it should continue
+                    var state = await states.GetUserState(user);
+                    if ( state != null && !await state.Next(user, message)) //Execute saved command and check if it should continue
                     {
                         await states.RemoveUserState(user.Id);
                     }

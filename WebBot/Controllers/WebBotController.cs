@@ -56,8 +56,19 @@ namespace WebBot.Controllers
 
         protected async Task OnCallBack(CallbackQuery data)
         {
-            await users.SetCurrentUser(data?.From?.Id.ToString());
-            var user = await users.GetUserByTelegramIdAsync(data?.From.Id.ToString());
+            var tgId = data?.From?.Id.ToString();
+            var tgName = data?.From?.Username;
+            var user = new Memorizer.DbModel.User { TelegramId = tgId, TelegramName = tgName };
+            await users.SetCurrentUser(tgId);
+            try
+            {
+                user = await users.GetUserByTelegramIdAsync(tgId);
+            }
+            catch
+            {
+                await users.AddUserAsync(user);
+            }    
+
             data.Message!.Text = data.Data;
             data.Message!.Caption = data.Id;
             await command.Execute(user, data.Message);
@@ -67,9 +78,19 @@ namespace WebBot.Controllers
         {
             var chatId = message.Chat.Id;
             var messageText = message.Text;
-            await users.SetCurrentUser(message?.From?.Id.ToString());
-            var user = await users.GetUserByTelegramIdAsync(message?.From?.Id.ToString());
-            
+            var tgId = message.From.Id.ToString();
+            var tgName = message.From.Username;
+            var user = new Memorizer.DbModel.User { TelegramId = tgId, TelegramName = tgName };
+            await users.SetCurrentUser(tgId);
+            try
+            {
+                user = await users.GetUserByTelegramIdAsync(tgId);
+            }
+            catch
+            {
+                await users.AddUserAsync(user);
+            }
+
             Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
             await command.Execute(user, message);
 

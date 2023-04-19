@@ -23,8 +23,8 @@ namespace WebBot.Extensions
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = "your-issuer-name",
-                    ValidAudience = "your-audience-name",
+                    ValidIssuer = "https://myapp.com",
+                    ValidAudience = "https://myapp.com",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
                     ClockSkew = TimeSpan.Zero // remove delay of token when expire
                 };

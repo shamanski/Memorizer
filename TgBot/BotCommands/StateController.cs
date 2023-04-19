@@ -1,31 +1,33 @@
 ﻿using Memorizer.DbModel;
 using Microsoft.EntityFrameworkCore;
 using Model.Data.Repositories;
-using Newtonsoft.Json;
+using System.Text.Json;
 using ReversoApi.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Telegram.Bot.Types;
+using TgBot.BotCommands.Commands;
+using System.IO;
+using System.Text;
 
 namespace TgBot.BotCommands
 {
     public class StateController<T>
     {
-        private Dictionary<int, T> UserState { get; set; }
 
         private readonly IGenericRepository<WebAppState> repository;
 
         public StateController(IGenericRepository<WebAppState> repository)
         {
-            UserState = new Dictionary<int, T>();
             this.repository = repository;
         }
 
-        public async Task Add(int userId, T state)
+        public async Task Add(int userId, BotCommand state)
         {
             var userState = await repository.GetByIdAsync(userId);
             if (userState != null)
             {
-                userState.StateData = JsonConvert.SerializeObject(state);
+                userState.StateData = JsonSerializer.Serialize<BotCommand>(state);
             }
 
             else
@@ -33,34 +35,34 @@ namespace TgBot.BotCommands
                 await repository.AddAsync(new WebAppState
                 {
                     UserId = userId,
-                    StateData = JsonConvert.SerializeObject(state)
+                    StateData = JsonSerializer.Serialize<BotCommand>(state)
                 });
             }
 
             await repository.SaveChangesAsync();
         }
 
-        public async Task<T> GetUserState(User user)
+        public async Task<BotCommand> GetUserState(Memorizer.DbModel.User user)
         {
-            var state = await repository.GetByIdAsync(user.Id);
-       
+            var state = await repository.GetByConditionAsync(i => i.UserId == user.Id).Result.FirstOrDefaultAsync();
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(state.StateData));
 
             if (state != null)
             {
-                var d = JsonConvert.DeserializeObject<T>(state.StateData);
+                var d = JsonSerializer.DeserializeAsync<BotCommand>(stream).Result;
                 return d;
             }
 
-            else return default(T);
+            else return default(BotCommand);
         }
 
         public async Task RemoveUserState(int userId)
         {
-            var userState = await repository.GetByIdAsync(userId);
+            var userState = await repository.GetByConditionAsync(i => i.UserId == userId);
             if (userState != null)
             {
-                await repository.DeleteAsync(userId);
-                await repository.SaveChangesAsync();
+               foreach (var item in userState) await repository.DeleteAsync(item.Id);
+               await repository.SaveChangesAsync();
             }
         }
 

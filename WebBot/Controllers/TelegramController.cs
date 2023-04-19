@@ -1,4 +1,5 @@
 ﻿using Memorizer.DbModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Model.Entities;
@@ -6,29 +7,34 @@ using Model.Services;
 
 namespace WebBot.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class TelegramController : Controller
     {
         private readonly WebAppContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserService _userService;
 
-        public TelegramController(WebAppContext dbContext, UserManager<ApplicationUser> userManager)
+        public TelegramController(WebAppContext dbContext, UserManager<ApplicationUser> userManager, IUserService userService)
         {
             _dbContext = dbContext;
             _userManager = userManager;
+            _userService = userService;
         }
 
-        [HttpGet]
-        public IActionResult GetCode()
+        [HttpGet("Code")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult<string>> GetCode()
         {
             var code = GenerateUniqueCode();
-            ViewData["Code"] = code;
 
-            var userId = _userManager.GetUserId(User);
-            var telegramCode = new TelegramCode { UserId = userId, Code = code };
+            var email = _userManager.GetUserId(User);
+            var appUser = _userService.GetUserByEmailAsync(email);
+            var telegramCode = new TelegramCode { UserId = appUser.Result.Email, Code = code };
             _dbContext.TelegramCodes.Add(telegramCode);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
-            return View();
+            return code;
         }
 
         private string GenerateUniqueCode()
@@ -36,7 +42,6 @@ namespace WebBot.Controllers
             var random = new Random();
             var code = string.Empty;
 
-            // Генерируем уникальный код из 6 цифр
             do
             {
                 code = random.Next(100000, 999999).ToString();

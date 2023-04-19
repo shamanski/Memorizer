@@ -13,5 +13,6 @@ namespace TgBot.BotCommands.Commands
     {
         string Name { get; }
         Task<bool> Execute(User user, Message message, string[] args);
+        Task<bool> Next(User user, Message message);
     }
 }

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Memorizer.Algorithm;
 using Memorizer.DbModel;
 
-namespace Memorizer.Algorithm
+namespace Memorizer.DbModel
 {
-    public class Lesson
+    public class Lesson : BaseEntity
     {
         public bool Completed { get; set; } = false;
         public List<LessonWord> WordsList { get; set; } = new List<LessonWord>();
-        public long Id { get; set; } = 0;
+        public int UserId { get; set; }
     }
 }
